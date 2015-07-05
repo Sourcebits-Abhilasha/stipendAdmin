@@ -81,13 +81,14 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     };
 
-    $scope.delSelectedAddress = function(count) {
+    $scope.delSelectedLinkAndAddress = function(count) {
 
         console.log('i m here in count', count);
-        console.log('$scope.addressArray', $scope.addressArray);
+        console.log('$scope.websiteNameArray', $scope.websiteNameArray);
         $('.college-address-div-' + count).remove();
-        console.log('$scope.addressArray', $scope.addressArray);
-        delete $scope.addressArray[count]
+        console.log('$scope.websiteNameArray', $scope.websiteNameArray);
+        delete $scope.websiteNameArray[count];
+        delete $scope.websiteURLArray[count];
 
     };
 
@@ -225,10 +226,10 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.collegeRanking = data.CollegeRanking;
                         $scope.prominentAlumni = data.ProminentAlumini;
                         $scope.similerSchool = data.similarSchool;
-                        $scope.address = data.LinksAndAddresses;
-                        $scope.webDetailID = data['LinksAndAddresses'][0].websiteDetailsId;
-                        $scope.websiteName = data['websiteName'].websiteName;
-                        console.log(' $scope.webDetailID', $scope.webDetailID);
+                        $scope.linkAndAddress = data.LinksAndAddresses;
+                        //$scope.webDetailID = data['LinksAndAddresses'][0].websiteDetailsId;
+                        //$scope.websiteName = data['websiteName'].websiteName;
+                        //console.log(' $scope.webDetailID', $scope.webDetailID);
                         // $scope.data.quickFactsValue = data.QuickFacts[0].quickFactsValue;
 
                         //----------- Fees and financial Aid
@@ -283,11 +284,11 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 function(data) {
                     console.log('save detail====>', data);
                 });
-//$('body').removeClass('page-loader');
+        //$('body').removeClass('page-loader');
 
     }
 
-     $scope.saveQuickFact = function() {
+    $scope.saveQuickFact = function() {
         //debugger
         console.log('save saveQuickFact====>', $rootScope.colgData);
         var qukFact = {
@@ -476,43 +477,43 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     };
 
     $scope.saveAddress = function() {
-        console.log('Save Address data', $scope.address);
+        console.log('Save Address data', $scope.linkAndAddress);
         var finalLinkAndAddressData = [],
-           collegeId = $scope.address[0].collegeId;
+            collegeId = $scope.linkAndAddress[0].collegeId;
 
-       /* Scope Data */
-       for (var count = 0; count < $scope.address.length; count++) {
-           var finalLinkAndAddressObject = {};
-           finalLinkAndAddressObject['websiteName'] = $scope.address[count].websiteName;
-           finalLinkAndAddressObject['websiteUrl'] = $scope.address[count].websiteUrl;
-           finalLinkAndAddressObject['websiteDetailsId'] = $scope.address[count].websiteDetailsId;
+        /* Scope Data */
+        for (var count = 0; count < $scope.linkAndAddress.length; count++) {
+            var finalLinkAndAddressObject = {};
+            finalLinkAndAddressObject['websiteName'] = $scope.linkAndAddress[count].websiteName;
+            finalLinkAndAddressObject['websiteUrl'] = $scope.linkAndAddress[count].websiteUrl;
+            finalLinkAndAddressObject['websiteDetailsId'] = $scope.linkAndAddress[count].websiteDetailsId;
 
-           finalLinkAndAddressData.push(finalLinkAndAddressObject);
-       }
+            finalLinkAndAddressData.push(finalLinkAndAddressObject);
+        }
 
 
-       /* Custom Array from Directive */
-       var addressArray = $scope.addressArray;
-       for (var i = 1; i < addressArray.length; i++) {
-           if (addressArray[i] != undefined) {
-               var finalLinkAndAddressObject = {};
-                   finalLinkAndAddressObject['collegeId'] = $rootScope.colgData['collegeId']
-                   finalLinkAndAddressObject['websiteName'] = $scope.address[count].websiteName;
-                   //finalLinkAndAddressObject['websiteUrl'] = $scope.address[count].websiteUrl;
+        /* Custom Array from Directive */
+        var websiteNameArray = $scope.websiteNameArray;
+        for (var i = 1; i < websiteNameArray.length; i++) {
+            if (websiteNameArray[i] != undefined) {
+                var finalLinkAndAddressObject = {};
+                finalLinkAndAddressObject['collegeId'] = $rootScope.colgData['collegeId']
+                finalLinkAndAddressObject['websiteName'] = $scope.websiteNameArray[i];
+                finalLinkAndAddressObject['websiteUrl'] = $scope.websiteURLArray[i];
 
-                   finalLinkAndAddressData.push(finalLinkAndAddressObject);
-           }
-       }
+                finalLinkAndAddressData.push(finalLinkAndAddressObject);
+            }
+        }
 
-       console.log('final array', finalLinkAndAddressData);
+        console.log('final array', finalLinkAndAddressData);
 
         editCollegeAPI.saveLinkAndAddressDetail(finalLinkAndAddressData)
             .then(
                 function(data) {
                     console.log('save detail LinkAndAddress====>', data);
                 });
-
-            var data = {
+        //AnotherAPI CAll
+        var data = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeName': $scope.college.colgName ? $scope.college.colgName : null,
             'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
@@ -564,7 +565,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             var finalFeesAndFinancialObject = {};
             finalFeesAndFinancialObject['collegeFeesID'] = $scope.feesAndFinancial[count].collegeFeesID;
             finalFeesAndFinancialObject['fees'] = $scope.feesAndFinancial[count].fees;
-            
+
 
             finalFeesAndFinancialData.push(finalFeesAndFinancialObject);
         }
@@ -616,7 +617,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
     $scope.saveWeather = function() {
-        
+
         var finalWeatherData = {
             'weatherId': $scope.weatherObj.weatherId ? $scope.weatherObj.weatherId : null,
             'averageFallLowTemp': $scope.weatherObj.avgFallLowTemp ? $scope.weatherObj.avgFallLowTemp : null,
@@ -640,7 +641,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 });
     }
 
-   
+
 
     $scope.backCollegeList = function() {
 
@@ -732,8 +733,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         //for(counter = 0; counter < $scope.address.length; counter++) {
         //if(values.surveyAnswersID == $scope.address[counter].surveyAnswersID) {
         //  console.log('counter is',counter,$scope.address[counter].surveyAnswersID);
-        $scope.address.splice(count, 1);
-        console.log('$scope.address ---->', $scope.address);
+        $scope.linkAndAddress.splice(count, 1);
+        console.log('$scope.linkAndAddress ---->', $scope.linkAndAddress);
         //}
         //}
     }

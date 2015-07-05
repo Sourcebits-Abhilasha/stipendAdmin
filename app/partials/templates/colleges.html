@@ -738,13 +738,17 @@
             <h3 class="accordion-h3 ">Links & Addresses</h3>
             <div class="row ">
                 <form class="form-horizontal ">
-                    <div class="form-group " style="color :black; " ng-repeat="data in address ">
-                        <div class="col-xs-10 ">
-                            <input type="text " class="form-control " ng-model="data.websiteName " />
+                    <div class="form-group " style="color :black; " ng-repeat="data in linkAndAddress ">
+                        <div class="col-xs-5 ">
+                            <input type="text " class="form-control " ng-model="data.websiteName" />
+                        </div>
+                        <div class="col-xs-5 ">
+                            <input type="text " class="form-control " ng-model="data.websiteUrl" />
                         </div>
                         <div style="cursor: pointer; margin: 9px 2px; " class="col-xs-1 " ng-click="deleteAddress($index) ">X</div>
                     </div>
-                    <div class="college-address ">
+
+                    <div class="college-address">
                     </div>
                     <div class="form-group ">
                         <div class="col-xs-10 ">
