@@ -18,6 +18,7 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
+				alert('Unable to load list of colleges..');
 				deferred.reject(err);
 			});
 

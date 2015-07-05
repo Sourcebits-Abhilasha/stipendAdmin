@@ -414,9 +414,15 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.college.colgType = $scope.college.collegeTypeId;
 
                         $scope.college.accessTypeID = data['College'].accessTypeID;
-                        $scope.college.colgArea = $scope.college.accessTypeID;
+                        //$scope.college.colgArea = $scope.college.accessTypeID;
+                        $scope.college.accessType = $scope.college.accessTypeID;
 
                         $scope.college.colgAreaID = data['College'].collegeAreaID;
+
+                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
+
+                        $scope.college.colgArea = $scope.college.colgAreaID;
+
 
                         $scope.college.colgLongitude = data['College'].collegeLongitude;
                         $scope.college.colgLatitude = data['College'].collegeLatitude;
@@ -486,10 +492,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                             tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
                         };
 
-                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
-
-                        $scope.college.colgArea = $scope.college.collegeAreaID;
-                        $scope.college.accessType = $scope.college.accessTypeID;
 
                         $scope.test = data.Calender;
                         $scope.collegeRanking = data.CollegeRanking;
@@ -2204,6 +2206,7 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
+				alert('Unable to load list of colleges..');
 				deferred.reject(err);
 			});
 
@@ -2330,9 +2333,11 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
+                alert('College Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
+                alert('College Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -2347,10 +2352,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
+                alert('Freshman Details Uploaded Successfully');
                 console.log('Freshman save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
+                alert('Freshman Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -2365,10 +2372,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
+                //alert('Geographic Details Uploaded Successfully');
                 console.log('geographics save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
+                //alert('Geographic Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -2400,11 +2409,13 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
+                alert('Calendar Details Uploaded Successfully');
                 console.log('Calendar save data=======>', data)
 
                 deferred.resolve(data);
             })
             .error(function(err) {
+                alert('Calendar Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -2419,10 +2430,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess weather', data);
+                alert('Weather Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Weather Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2437,10 +2450,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess saveProminentAlumniDetail', data);
+                alert('Prominent Alumni Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Prominent Alumni Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2455,10 +2470,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess college ranking', data);
+                alert('College Ranking Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('College Ranking Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2473,10 +2490,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess intended Study', data);
+                alert('Intended Study Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Intended Study Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2490,10 +2509,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addQuickFactsForWeb', data);
+                alert('Quick Facts Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Quick Facts Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2508,10 +2529,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
+                alert('Link And Address Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Link And Address Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -2526,10 +2549,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
+                alert('Fees And Financial Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Fees And Financial Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');

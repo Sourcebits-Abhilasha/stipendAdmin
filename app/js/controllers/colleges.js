@@ -142,9 +142,15 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.college.colgType = $scope.college.collegeTypeId;
 
                         $scope.college.accessTypeID = data['College'].accessTypeID;
-                        $scope.college.colgArea = $scope.college.accessTypeID;
+                        //$scope.college.colgArea = $scope.college.accessTypeID;
+                        $scope.college.accessType = $scope.college.accessTypeID;
 
                         $scope.college.colgAreaID = data['College'].collegeAreaID;
+
+                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
+
+                        $scope.college.colgArea = $scope.college.colgAreaID;
+
 
                         $scope.college.colgLongitude = data['College'].collegeLongitude;
                         $scope.college.colgLatitude = data['College'].collegeLatitude;
@@ -214,10 +220,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                             tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
                         };
 
-                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
-
-                        $scope.college.colgArea = $scope.college.collegeAreaID;
-                        $scope.college.accessType = $scope.college.accessTypeID;
 
                         $scope.test = data.Calender;
                         $scope.collegeRanking = data.CollegeRanking;

@@ -30,9 +30,11 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
+                alert('College Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
+                alert('College Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -47,10 +49,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
+                alert('Freshman Details Uploaded Successfully');
                 console.log('Freshman save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
+                alert('Freshman Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -65,10 +69,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
+                //alert('Geographic Details Uploaded Successfully');
                 console.log('geographics save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
+                //alert('Geographic Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -100,11 +106,13 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
+                alert('Calendar Details Uploaded Successfully');
                 console.log('Calendar save data=======>', data)
 
                 deferred.resolve(data);
             })
             .error(function(err) {
+                alert('Calendar Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -119,10 +127,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess weather', data);
+                alert('Weather Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Weather Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -137,10 +147,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess saveProminentAlumniDetail', data);
+                alert('Prominent Alumni Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Prominent Alumni Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -155,10 +167,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess college ranking', data);
+                alert('College Ranking Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('College Ranking Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -173,10 +187,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess intended Study', data);
+                alert('Intended Study Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Intended Study Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -190,10 +206,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addQuickFactsForWeb', data);
+                alert('Quick Facts Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Quick Facts Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -208,10 +226,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
+                alert('Link And Address Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Link And Address Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -226,10 +246,12 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
+                alert('Fees And Financial Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
+                alert('Fees And Financial Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
