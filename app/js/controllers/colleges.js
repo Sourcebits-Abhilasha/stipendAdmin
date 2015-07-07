@@ -792,7 +792,63 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             tempFees[sysFeesStructureID] = newValue;
             $scope.feesAndFinancial[7].fees = newFees;
         }
+    };
+
+    //create global array of similarSchools
+    $scope.similarSchoolsArray = [];
+    $scope.addSimilarSchools = function(data, event) {
+        console.log('addSimilarSchools======>', data + event);
+        //console.log($scope.similarSchoolsArray.indexOf(data.collegeId));
+        var index = $scope.similarSchoolsArray.indexOf(data.collegeId);
+        if(index == -1){
+            // push to array
+            $scope.similarSchoolsArray.push(data.collegeId);
+            // background color
+            event.target.style.backgroundColor = "blue";
+        }else{
+            // element to remove from array
+            $scope.similarSchoolsArray.splice(index,1);
+            // background color
+            event.target.style.backgroundColor = "transparent";
+        }
     }
+
+    $scope.similarSchoolsSelectedArray = [];
+    //Right Button Clicked
+     $scope.selectedSimilarSchools = function() {
+        var similarSchoolsArray = $scope.similarSchoolsArray;
+        console.log('selectedSimilarSchools ======>', similarSchoolsArray);
+
+        var colgData = $scope.collegedata;
+        for (var i = 0; i < similarSchoolsArray.length; i++) {
+            
+            console.log(similarSchoolsArray[i]);// number
+
+            for (var j = 0; j < colgData.length; j++) {
+                console.log(colgData[j].collegeId);
+                if(colgData[j].collegeId == similarSchoolsArray[i]){
+                    var obj = {};
+                    obj.collegeId = similarSchoolsArray[i];
+                    obj.collegeName = colgData[j].collegeName;
+
+                    $scope.similarSchoolsSelectedArray.push(obj);
+                }
+            };
+        }
+        $scope.similarSchoolsArray  = [];
+    };
+
+    $scope.deleteSelectedSchool = function(item) {
+        alert('delete selected school==>'+ item.collegeId);
+
+        for (var i = 0; i <  $scope.similarSchoolsSelectedArray.length; i++) {
+            if( $scope.similarSchoolsSelectedArray[i].collegeId == item.collegeId ){
+                 $scope.similarSchoolsSelectedArray.splice(i,1);
+            }
+        };
+        
+    };
+
 
 
 }]);

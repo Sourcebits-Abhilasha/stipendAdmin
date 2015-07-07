@@ -378,7 +378,7 @@
                                 </div>
                             </div>
                         </div>
-                         <div style="cursor: pointer;  margin: 9px 2px;" class="col-xs-1" ng-click="deleteCalendar($index)">X</div>
+                        <div style="cursor: pointer;  margin: 9px 2px;" class="col-xs-1" ng-click="deleteCalendar($index)">X</div>
                     </div>
                     <div class="calendar-div">
                     </div>
@@ -420,15 +420,12 @@
             <div>
                 <!-- <p>Fees & Financial Aid...... </p> -->
                 <form class="form-horizontal">
-                    <div class="form-group" ng-repeat = "data in feesAndFinancial">
-                         
-                        <label for="feesAndFinancial" class="col-sm-3 lable-font control-label" ng-model = "data.sysFeesStructureName">{{data.sysFeesStructureName}}</label>
+                    <div class="form-group" ng-repeat="data in feesAndFinancial">
+                        <label for="feesAndFinancial" class="col-sm-3 lable-font control-label" ng-model="data.sysFeesStructureName">{{data.sysFeesStructureName}}</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="feesAndFinancial" ng-model = "data.fees" ng-change="changeAmount(this)">
+                            <input type="text" class="form-control" id="feesAndFinancial" ng-model="data.fees" ng-change="changeAmount(this)">
                         </div>
-                    
                     </div>
-
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="submit" class="btn btn-default" ng-click="saveFeesAndFinancial()">SAVE</button>
@@ -464,7 +461,7 @@
                                 <div class="col-sm-4 " ng-repeat="data in manSportsDiv2">
                                     <div class="form-group ">
                                         <input class="col-sm-2" type="checkbox"> {{data.syssportsName}}
-                                       <!--  <div class="col-sm-11 ">
+                                        <!--  <div class="col-sm-11 ">
                                             <input type="text " class="form-control " id="div1 " ng-model="data.syssportsName " value="syssportsName ">
                                         </div> -->
                                     </div>
@@ -714,18 +711,23 @@
             <h3 class="accordion-h3 ">Similar Schools</h3>
             <div class="row ">
                 <form class="form-horizontal ">
-                    <div class="form-group " style="color :black; " ng-repeat="data in similarSchool ">
-                        <div class="col-xs-10 ">
-                            <input type="text " class="form-control " ng-model="data.collegeName " />
-                        </div>
-                        <div style="cursor: pointer; margin: 9px 2px; " class="col-xs-1 " ng-click="deleteSimilarSchool($index) ">X</div>
+                    <div class="col-md-5 similer-school">
+                        <ul ng-repeat="item in collegedata">
+                            <li ng-click="addSimilarSchools(item,$event)">
+                                {{item.collegeName}}
+                            </li>
+                        </ul>
                     </div>
-                    <div class="similar-school ">
+                    <div class="col-md-2">
+                        <p> <i class="fa fa-caret-square-o-right" ng-click="selectedSimilarSchools()"></i></p>
+                        <p> <i class="fa fa-caret-square-o-left"></i></p>
                     </div>
-                    <div class="form-group ">
-                        <div class="col-xs-10 ">
-                            <button type="button " class="btn btn-primary btn-class-add " add-Similar-School>+</button>
-                        </div>
+                    <div class="col-md-5 similer-school">
+                        <ul ng-repeat="item in similarSchoolsSelectedArray">
+                            <li>
+                                {{item.collegeName}} <span class="pull-right" ng-click = "deleteSelectedSchool(item)">X</span>
+                            </li>
+                        </ul>
                     </div>
                     <div class="form-group ">
                         <div class="col-sm-offset-2 col-sm-10 ">
@@ -747,7 +749,6 @@
                         </div>
                         <div style="cursor: pointer; margin: 9px 2px; " class="col-xs-1 " ng-click="deleteAddress($index) ">X</div>
                     </div>
-
                     <div class="college-address">
                     </div>
                     <div class="form-group ">
@@ -755,7 +756,6 @@
                             <button type="button " class="btn btn-primary btn-class-add " add-Address>+</button>
                         </div>
                     </div>
-        
                     <div class="form-group ">
                         <label for="collegeName " class="col-sm-3 control-label lable-font ">College Name</label>
                         <div class="col-sm-9 ">
