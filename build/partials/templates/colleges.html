@@ -244,7 +244,7 @@
                             <div class="form-group" ng-repeat=" data in clgEthenicity">
                                 <label for="ethenicity" class="col-sm-7 control-label lable-font">{{data.demographicName}}</label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" id="ethenicity" ng-value="data.ethnicityPercentage">
+                                    <input type="text" class="form-control" id="ethenicity" ng-model="data.ethnicityPercentage">
                                 </div>
                             </div>
                         </div>
@@ -261,11 +261,11 @@
             <div class="row">
                 <form class="form-horizontal">
                     <!-- ######## ADMISSION DETAIL START #########-->
-                    <h2 class="h2-size">Admission</h2>
+                    <h2 class="h2-size">Admission {{isChecked}}</h2>
                     <div class="form-group" ng-repeat="data in admission">
                         <label for="mountainPacific" class="col-sm-3 control-label lable-font" ng-model="data.optionName">{{data.optionName}}</label>
                         <div class="col-sm-5">
-                            <select class="form-control" id="Public_private" ng-options="item.optionValueID as item.optionValue for item in admissionVal" ng-model="admissionVal_1">
+                            <select class="form-control" id="Public_private" ng-options="item.optionValueID as item.optionValue for item in admissionVal" ng-model="data.optionValueID">
                                 <option value="">Please Select</option>
                             </select>
                         </div>
@@ -275,15 +275,15 @@
                     </select> -->
                             <div class="form-group">
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios1" value="option1">
+                                    <input type="radio"  ng-model="data.badgeID"  ng-value="2">
                                     <i class="fa fa-check"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios2" value="option2">
+                                    <input type="radio"  ng-model="data.badgeID"  ng-value="1">
                                     <i class="fa fa-times"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios3" value="option3">
+                                    <input type="radio"  ng-model="data.badgeID"  ng-value="3">
                                     <i class="fa fa-minus"></i>
                                 </label>
                             </div>
@@ -295,7 +295,7 @@
                     <div class="form-group" ng-repeat="data in recommendation">
                         <label for="mountainPacific" class="col-sm-3 control-label lable-font" ng-model="data.optionName">{{data.optionName}}</label>
                         <div class="col-sm-5">
-                            <select class="form-control" id="Public_private2" ng-options="item.optionValueID as item.optionValue for item in admissionVal" ng-model="admissionVal2">
+                            <select class="form-control" id="Public_private2" ng-options="item.optionValueID as item.optionValue for item in admissionVal" ng-model="data.optionValueID">
                                 <option value="">Please Select</option>
                             </select>
                         </div>
@@ -305,15 +305,15 @@
                     </select> -->
                             <div class="form-group">
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios1" value="option1">
+                                    <input type="radio" ng-model="data.badgeID"  ng-value="2">
                                     <i class="fa fa-check"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios2" value="option2">
+                                    <input type="radio" ng-model="data.badgeID"  ng-value="1">
                                     <i class="fa fa-times"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios3" value="option3">
+                                    <input type="radio" ng-model="data.badgeID"  ng-value="3">
                                     <i class="fa fa-minus"></i>
                                 </label>
                             </div>
@@ -325,7 +325,7 @@
                     <div class="form-group" ng-repeat="data in interview">
                         <label for="mountainPacific" class="col-sm-3 control-label lable-font" ng-model="data.optionName">{{data.optionName}}</label>
                         <div class="col-sm-5">
-                            <select class="form-control" id="Public_private3" ng-options="item.optionValueID as item.optionValue for item in admissionVal" ng-model="admissionVal3">
+                            <select class="form-control" id="Public_private3" ng-options="item.optionValueID as item.optionValue for item in admissionVal" ng-model="data.optionValueID">
                                 <option value="">Please Select</option>
                             </select>
                         </div>
@@ -335,15 +335,15 @@
                     </select> -->
                             <div class="form-group">
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios1" value="option1">
+                                    <input type="radio" ng-model="data.badgeID"  ng-value="2">
                                     <i class="fa fa-check"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios2" value="option2">
+                                    <input type="radio"ng-model="data.badgeID"  ng-value="1">
                                     <i class="fa fa-times"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="inline_optionsRadios" id="inline_optionsRadios3" value="option3">
+                                    <input type="radio" ng-model="data.badgeID"  ng-value="3">
                                     <i class="fa fa-minus"></i>
                                 </label>
                             </div>
@@ -352,7 +352,7 @@
                     <!-- ######## RECOMMENDATIONS DETAIL END #########-->
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default" ng-click="">SAVE</button>
+                            <button type="submit" class="btn btn-default" ng-click="saveAdmission()">SAVE</button>
                             <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button>
                         </div>
                     </div>

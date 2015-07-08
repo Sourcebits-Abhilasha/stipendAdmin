@@ -39,7 +39,7 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 	this.fgtPwd = function (data) {
 		console.log('data',data);
 		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/forgotPassword/'+data.emailID;
+		var serviceUrl = appConfig.baseURL + '/forgotPassword/'+ data.emailID +'/';
 
 		$http.get(serviceUrl)
 			.success(function (data) {

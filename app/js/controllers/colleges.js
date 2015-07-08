@@ -179,6 +179,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.freshman.avgFinanceAid = data['FreshmanProfile']['--'].averageFinancialAid;
                         $scope.freshman.malePer = data['FreshmanProfile']['--'].malePercentage;
                         $scope.freshman.femalePer = data['FreshmanProfile']['--'].femalePercentage;
+                        $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
 
                         $scope.weatherObj.avgFallLowTemp = data['IntendedStudy']['--'];
                         // $scope.quickFact.qukFact = data['QuickFacts'].quickFactsValue;
@@ -336,7 +337,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
         for (var count = 0; count < $scope.clgEthenicity.length; count++) {
             var finalEthencityObject = {};
-
+            // debugger;
             finalEthencityObject['collegeEthnicityID'] = $scope.clgEthenicity[count].collegeEthnicityID;
             finalEthencityObject['ethnicityPercentage'] = $scope.clgEthenicity[count].ethnicityPercentage;
             finalethEncityData.push(finalEthencityObject);
@@ -554,6 +555,29 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 function(data) {
                     console.log('save detail IntendedStudy====>', data);
                 });
+
+    };
+
+    $scope.saveAdmission = function() {
+        console.log('testData Admission data', $scope.admission);
+        // var finalAdmissionData = [];
+
+        // for (var count = 0; count < $scope.intendedStudy.length; count++) {
+        //     var finalAdmissionObject = {};
+        //     finalAdmissionObject['collegeIntendedStudyID'] = $scope.intendedStudy[count].collegeIntendedStudyID;
+        //     finalAdmissionObject['intendedStudyName'] = $scope.intendedStudy[count].intendedStudyName;
+        //     finalAdmissionObject['intendedStudyType'] = $scope.intendedStudy[count].intendedStudyType;
+        //     finalAdmissionObject['intendedStudyPercentage'] = $scope.intendedStudy[count].intendedStudyPercentage;
+
+        //     finalAdmissionData.push(finalIntendedStudyObject);
+        // }
+        // console.log('final array IntendedStudy', finalAdmissionData);
+
+        // editCollegeAPI.saveIntendedStudyDetail(finalIntendedStudyData)
+        //     .then(
+        //         function(data) {
+        //             console.log('save detail IntendedStudy====>', data);
+        //         });
 
     };
 
@@ -815,7 +839,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.similarSchoolsSelectedArray = [];
     //Right Button Clicked
+
      $scope.selectedSimilarSchools = function() {
+debugger;
         var similarSchoolsArray = $scope.similarSchoolsArray;
         console.log('selectedSimilarSchools ======>', similarSchoolsArray);
 

@@ -257,6 +257,26 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         console.log('promise');
         return deferred.promise;
     };
+
+    this.saveAdmissionlDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/updateAdmissionOptionForWeb';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                console.log('sucess updateAdmissionOptionForWeb', data);
+                alert('Admissions Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                console.log('error');
+                alert('Admissions Details Failed to Upload');
+                deferred.reject(err);
+            });
+        console.log('promise');
+        return deferred.promise;
+    };
     // this.editFacultyList = function (contentdata) {
     // 	console.log('contentdata======>',contentdata);
     // 	var deferred = $q.defer();
