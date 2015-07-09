@@ -113,6 +113,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     console.log('data====>', data);
                     if (data !== null) {
                         $scope.collegedata = data;
+                        $scope.similarSchoolColgData = data;
                         $scope.collegeCount = data.length;
                         //$('body').removeClass('page-loader');
                         // $scope.FacultyName = data.firstName + data.lastName;
@@ -194,8 +195,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.manSportsDiv1 = data['Sports']['Men']['NCAADIVISION1'];
                         $scope.manSportsDiv2 = data['Sports']['Men']['NCAADIVISION2'];
                         $scope.manSportsDiv3 = data['Sports']['Men']['NCAADIVISION3'];
-
-
 
 
                         $scope.weatherObj.weatherId = data['Weather'].weatherId;
@@ -827,6 +826,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         if(index == -1){
             // push to array
             $scope.similarSchoolsArray.push(data.collegeId);
+            console.log('pushing in similarSchoolsArray===> ',data.collegeId);
+            console.log('similarSchoolsArray===> ',$scope.similarSchoolsArray);
             // background color
             event.target.style.backgroundColor = "blue";
         }else{
@@ -834,6 +835,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             $scope.similarSchoolsArray.splice(index,1);
             // background color
             event.target.style.backgroundColor = "transparent";
+
+            console.log('pop in similarSchoolsArray===> ',data.collegeId);
+            console.log('similarSchoolsArray===> ',$scope.similarSchoolsArray);
         }
     }
 
@@ -841,35 +845,40 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     //Right Button Clicked
 
      $scope.selectedSimilarSchools = function() {
-debugger;
+
         var similarSchoolsArray = $scope.similarSchoolsArray;
         console.log('selectedSimilarSchools ======>', similarSchoolsArray);
 
-        var colgData = $scope.collegedata;
+        var similarSchoolColgData = $scope.similarSchoolColgData;
+
         for (var i = 0; i < similarSchoolsArray.length; i++) {
             
-            console.log(similarSchoolsArray[i]);// number
+            console.log('Checking for collegeID ===> ',similarSchoolsArray[i]);// number
 
-            for (var j = 0; j < colgData.length; j++) {
-                console.log(colgData[j].collegeId);
-                if(colgData[j].collegeId == similarSchoolsArray[i]){
-                    var obj = {};
-                    obj.collegeId = similarSchoolsArray[i];
-                    obj.collegeName = colgData[j].collegeName;
+            for (var j = 0; j < similarSchoolColgData.length; j++) {
+                //console.log(similarSchoolColgData[j].collegeId);
+                if(similarSchoolColgData[j].collegeId == similarSchoolsArray[i]){
+                    console.log('Matched ===> ', similarSchoolColgData[j].collegeId+ ' ===== '+similarSchoolsArray[i]);
+                    console.log('Matched ===> ', similarSchoolColgData[j].collegeName+ ' ===== '+similarSchoolsArray[i]);
+                    // var obj = {};
+                    // obj.collegeId = similarSchoolsArray[i];
+                    // obj.collegeName = similarSchoolColgData[j].collegeName;
 
-                    $scope.similarSchoolsSelectedArray.push(obj);
+                    $scope.similarSchoolsSelectedArray.push(similarSchoolColgData[j]);
+                    $scope.similarSchoolColgData.splice(j,1);
                 }
             };
         }
         $scope.similarSchoolsArray  = [];
     };
-
+    // Sed=nd this in APi call -similarSchoolsSelectedArray
     $scope.deleteSelectedSchool = function(item) {
-        alert('delete selected school==>'+ item.collegeId);
+        //alert('delete selected school==>'+ item.collegeId);
 
         for (var i = 0; i <  $scope.similarSchoolsSelectedArray.length; i++) {
             if( $scope.similarSchoolsSelectedArray[i].collegeId == item.collegeId ){
                  $scope.similarSchoolsSelectedArray.splice(i,1);
+                 $scope.similarSchoolColgData.push(item);
             }
         };
         

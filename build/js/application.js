@@ -603,6 +603,120 @@ app.filter('remainingTime', function () {
 
 
 /*-----  End of Filter = remainingTime  ------*/
+/*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2006, 2014 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD (Register as an anonymous module)
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// Node/CommonJS
+		module.exports = factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
+
+	var pluses = /\+/g;
+
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
+
+	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
+
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
+	}
+
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape...
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			// If we can't parse the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+			return config.json ? JSON.parse(s) : s;
+		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// Write
+
+		if (arguments.length > 1 && !$.isFunction(value)) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
+			}
+
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// Read
+
+		var result = key ? undefined : {},
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling $.cookie().
+			cookies = document.cookie ? document.cookie.split('; ') : [],
+			i = 0,
+			l = cookies.length;
+
+		for (; i < l; i++) {
+			var parts = cookies[i].split('='),
+				name = decode(parts.shift()),
+				cookie = parts.join('=');
+
+			if (key === name) {
+				// If second argument (value) is a function it's a converter...
+				result = read(cookie, value);
+				break;
+			}
+
+			// Prevent storing a cookie that we couldn't decode.
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		// Must not alter options, thus extending a fresh object...
+		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+		return !$.cookie(key);
+	};
+
+}));
 /*================================================================
 Controller = AdminCtrl
 ==================================================================*/
@@ -814,6 +928,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     console.log('data====>', data);
                     if (data !== null) {
                         $scope.collegedata = data;
+                        $scope.similarSchoolColgData = data;
                         $scope.collegeCount = data.length;
                         //$('body').removeClass('page-loader');
                         // $scope.FacultyName = data.firstName + data.lastName;
@@ -895,8 +1010,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.manSportsDiv1 = data['Sports']['Men']['NCAADIVISION1'];
                         $scope.manSportsDiv2 = data['Sports']['Men']['NCAADIVISION2'];
                         $scope.manSportsDiv3 = data['Sports']['Men']['NCAADIVISION3'];
-
-
 
 
                         $scope.weatherObj.weatherId = data['Weather'].weatherId;
@@ -1528,6 +1641,8 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         if(index == -1){
             // push to array
             $scope.similarSchoolsArray.push(data.collegeId);
+            console.log('pushing in similarSchoolsArray===> ',data.collegeId);
+            console.log('similarSchoolsArray===> ',$scope.similarSchoolsArray);
             // background color
             event.target.style.backgroundColor = "blue";
         }else{
@@ -1535,6 +1650,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             $scope.similarSchoolsArray.splice(index,1);
             // background color
             event.target.style.backgroundColor = "transparent";
+
+            console.log('pop in similarSchoolsArray===> ',data.collegeId);
+            console.log('similarSchoolsArray===> ',$scope.similarSchoolsArray);
         }
     }
 
@@ -1542,35 +1660,40 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     //Right Button Clicked
 
      $scope.selectedSimilarSchools = function() {
-debugger;
+
         var similarSchoolsArray = $scope.similarSchoolsArray;
         console.log('selectedSimilarSchools ======>', similarSchoolsArray);
 
-        var colgData = $scope.collegedata;
+        var similarSchoolColgData = $scope.similarSchoolColgData;
+
         for (var i = 0; i < similarSchoolsArray.length; i++) {
             
-            console.log(similarSchoolsArray[i]);// number
+            console.log('Checking for collegeID ===> ',similarSchoolsArray[i]);// number
 
-            for (var j = 0; j < colgData.length; j++) {
-                console.log(colgData[j].collegeId);
-                if(colgData[j].collegeId == similarSchoolsArray[i]){
-                    var obj = {};
-                    obj.collegeId = similarSchoolsArray[i];
-                    obj.collegeName = colgData[j].collegeName;
+            for (var j = 0; j < similarSchoolColgData.length; j++) {
+                //console.log(similarSchoolColgData[j].collegeId);
+                if(similarSchoolColgData[j].collegeId == similarSchoolsArray[i]){
+                    console.log('Matched ===> ', similarSchoolColgData[j].collegeId+ ' ===== '+similarSchoolsArray[i]);
+                    console.log('Matched ===> ', similarSchoolColgData[j].collegeName+ ' ===== '+similarSchoolsArray[i]);
+                    // var obj = {};
+                    // obj.collegeId = similarSchoolsArray[i];
+                    // obj.collegeName = similarSchoolColgData[j].collegeName;
 
-                    $scope.similarSchoolsSelectedArray.push(obj);
+                    $scope.similarSchoolsSelectedArray.push(similarSchoolColgData[j]);
+                    $scope.similarSchoolColgData.splice(j,1);
                 }
             };
         }
         $scope.similarSchoolsArray  = [];
     };
-
+    // Sed=nd this in APi call -similarSchoolsSelectedArray
     $scope.deleteSelectedSchool = function(item) {
-        alert('delete selected school==>'+ item.collegeId);
+        //alert('delete selected school==>'+ item.collegeId);
 
         for (var i = 0; i <  $scope.similarSchoolsSelectedArray.length; i++) {
             if( $scope.similarSchoolsSelectedArray[i].collegeId == item.collegeId ){
                  $scope.similarSchoolsSelectedArray.splice(i,1);
+                 $scope.similarSchoolColgData.push(item);
             }
         };
         
@@ -2110,120 +2233,6 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
 
 
 
-/*!
- * jQuery Cookie Plugin v1.4.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2006, 2014 Klaus Hartl
- * Released under the MIT license
- */
-(function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD (Register as an anonymous module)
-		define(['jquery'], factory);
-	} else if (typeof exports === 'object') {
-		// Node/CommonJS
-		module.exports = factory(require('jquery'));
-	} else {
-		// Browser globals
-		factory(jQuery);
-	}
-}(function ($) {
-
-	var pluses = /\+/g;
-
-	function encode(s) {
-		return config.raw ? s : encodeURIComponent(s);
-	}
-
-	function decode(s) {
-		return config.raw ? s : decodeURIComponent(s);
-	}
-
-	function stringifyCookieValue(value) {
-		return encode(config.json ? JSON.stringify(value) : String(value));
-	}
-
-	function parseCookieValue(s) {
-		if (s.indexOf('"') === 0) {
-			// This is a quoted cookie as according to RFC2068, unescape...
-			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-		}
-
-		try {
-			// Replace server-side written pluses with spaces.
-			// If we can't decode the cookie, ignore it, it's unusable.
-			// If we can't parse the cookie, ignore it, it's unusable.
-			s = decodeURIComponent(s.replace(pluses, ' '));
-			return config.json ? JSON.parse(s) : s;
-		} catch(e) {}
-	}
-
-	function read(s, converter) {
-		var value = config.raw ? s : parseCookieValue(s);
-		return $.isFunction(converter) ? converter(value) : value;
-	}
-
-	var config = $.cookie = function (key, value, options) {
-
-		// Write
-
-		if (arguments.length > 1 && !$.isFunction(value)) {
-			options = $.extend({}, config.defaults, options);
-
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
-			}
-
-			return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
-		}
-
-		// Read
-
-		var result = key ? undefined : {},
-			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all. Also prevents odd result when
-			// calling $.cookie().
-			cookies = document.cookie ? document.cookie.split('; ') : [],
-			i = 0,
-			l = cookies.length;
-
-		for (; i < l; i++) {
-			var parts = cookies[i].split('='),
-				name = decode(parts.shift()),
-				cookie = parts.join('=');
-
-			if (key === name) {
-				// If second argument (value) is a function it's a converter...
-				result = read(cookie, value);
-				break;
-			}
-
-			// Prevent storing a cookie that we couldn't decode.
-			if (!key && (cookie = read(cookie)) !== undefined) {
-				result[name] = cookie;
-			}
-		}
-
-		return result;
-	};
-
-	config.defaults = {};
-
-	$.removeCookie = function (key, options) {
-		// Must not alter options, thus extending a fresh object...
-		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
-		return !$.cookie(key);
-	};
-
-}));
 /*================================================================
 Service = adminViewApi
 ==================================================================*/
@@ -2685,6 +2694,26 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
     };
 
     this.saveAdmissionlDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/updateAdmissionOptionForWeb';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                console.log('sucess updateAdmissionOptionForWeb', data);
+                alert('Admissions Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                console.log('error');
+                alert('Admissions Details Failed to Upload');
+                deferred.reject(err);
+            });
+        console.log('promise');
+        return deferred.promise;
+    };
+
+    this.saveTestandScoreDetail = function(data) {
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/updateAdmissionOptionForWeb';
