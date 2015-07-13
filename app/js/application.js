@@ -112,6 +112,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
             //requiredLogin: true,                     
             templateUrl: 'partials/templates/forgot-password.html'   
             //controller: 'ItemsCrtl'     
+        })
+        .state('resetPassword',  {
+            url: '/resetPassword',
+            //requiredLogin: true,                     
+            templateUrl: 'partials/templates/resetPassword.html'   
+            //controller: 'ItemsCrtl'     
         });
         $urlRouterProvider.otherwise('/');
 

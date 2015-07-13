@@ -60,7 +60,7 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function ($
                         console.log('success',data);
                         //console.log('success',data.statusMsg); not passing status message only passing string
                     //$location.url('/dashboard/home');
-                    if(data == "Email doesn't Exixts") {
+                    if(data.ErrorCode) {
                         $scope.statusMsg = 'Email Address That you Entered is invalid';
                     } else {
                     	$scope.statusMsg = 'Reset Password Link Sent to your Email Address';

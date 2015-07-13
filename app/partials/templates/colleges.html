@@ -712,8 +712,8 @@
             <div class="row ">
                 <form class="form-horizontal ">
                     <div class="col-md-5 similer-school">
-                        <ul ng-repeat="item in similarSchoolColgData">
-                            <li ng-click="addSimilarSchools(item,$event)">
+                        <ul>
+                            <li ng-click="addSimilarSchools(item,$event)" ng-repeat="item in similarSchoolColgData">
                                 {{item.collegeName}}
                             </li>
                         </ul>
@@ -723,13 +723,13 @@
                         <p> <i class="fa fa-caret-square-o-left"></i></p>
                     </div>
                     <div class="col-md-5 similer-school">
-                        <ul ng-repeat="item in similarSchoolsSelectedArray">
-                            <li>
+                        <ul>
+                            <li ng-repeat="item in similarSchoolsSelectedArray">
                                 {{item.collegeName}} <span class="pull-right" ng-click = "deleteSelectedSchool(item)">X</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="form-group ">
+                    <div class="row">
                         <div class="col-sm-offset-2 col-sm-10 ">
                             <button type="submit " class="btn btn-default " ng-click="saveSimilarSchool() ">SAVE</button>
                             <button type="submit " class="btn btn-default " ng-click="backCollegeList() ">Cancel</button>
