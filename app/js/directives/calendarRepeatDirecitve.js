@@ -11,7 +11,11 @@ app.directive('myPostRepeatDirective', ['$rootScope', '$compile', function($root
     console.log(scope.data);
     var ele = element.find('input')[1];
     ele.id = ele.id +''+counter;
-    $('#'+ele.id).datetimepicker();
+    $('#'+ele.id).datepicker({
+			      changeMonth: true,
+			      changeYear: true,
+			      dateFormat: 'yy-mm-dd'
+			    });
   };
 }]);
 

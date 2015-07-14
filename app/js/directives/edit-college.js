@@ -17,7 +17,7 @@ app.directive('editcollege', ['$rootScope', function($rootScope) {
                     autoHeight: false,
                     navigation: false,
                     beforeActivate: function( event, ui ) {
-                    	debugger;
+                    	//debugger;
                     }
                 });
             })();

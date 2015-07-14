@@ -26,7 +26,9 @@ app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $co
                 $('.calendar-div').append(test);
                 $('#eventCalendar-' + counter).focus();
                 var ele = $('#calendarEventDate-'+counter);
-                ele.datetimepicker();
+                ele.datetimepicker({changeMonth: true,
+                  changeYear: true,
+                  dateFormat: 'yy-mm-dd'});
                 //scope.ans.push(scope.ans+counter);
             });
 
