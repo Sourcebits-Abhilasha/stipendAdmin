@@ -9,6 +9,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     var tempFees = {};
 
     $scope.colgList = false;
+    $scope.displayColgAdd = false
     $scope.editList = true;
 
     $scope.fallWeather = false;
@@ -937,6 +938,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.showAddCollegeModal = function() {
         console.log('saveSimilarSchool ==> ');
+        // if($scope.displayColgAdd){
+        //     $scope.displayColgAdd = false;
+        // }else{
+        //     $scope.displayColgAdd = true;
+        // }
+        $scope.displayColgAdd = $scope.displayColgAdd ? false : true;
+        
     }
 
 
