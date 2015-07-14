@@ -167,19 +167,19 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.college.colgTelephoneNumber = data['College'].telephoneNumber;
                         $scope.college.colgOfficeEmailAddress = data['College'].officeEmailAddress;
 
-                        $scope.freshman.enrollmentID = data['FreshmanProfile']['--'].enrollmentStatusId;
-                        $scope.freshman.totApplicants = data['FreshmanProfile']['--'].totalApplicants;
-                        $scope.freshman.totAccepted = data['FreshmanProfile']['--'].totalAccepted;
-                        $scope.freshman.xptanceRate = data['FreshmanProfile']['--'].acceptanceRate;
-                        $scope.freshman.totEnrolled = data['FreshmanProfile']['--'].totalEnrolled;
-                        $scope.freshman.earlyDecision = data['FreshmanProfile']['--'].percentageEnrolledEarlyDecision;
-                        $scope.freshman.waitingList = data['FreshmanProfile']['--'].percentageEnrolledFromWaitList;
-                        $scope.freshman.outFState = data['FreshmanProfile']['--'].percentageEnrolledOutofState;
-                        $scope.freshman.ernPiblicHS = data['FreshmanProfile']['--'].percentageEnrolledPublicHs;
-                        $scope.freshman.rcvFinanceAid = data['FreshmanProfile']['--'].percentageReceivingFinancialAid;
-                        $scope.freshman.avgFinanceAid = data['FreshmanProfile']['--'].averageFinancialAid;
-                        $scope.freshman.malePer = data['FreshmanProfile']['--'].malePercentage;
-                        $scope.freshman.femalePer = data['FreshmanProfile']['--'].femalePercentage;
+                        $scope.freshman.enrollmentID = data['FreshmanProfile']['FreshManProfile'].enrollmentStatusId;
+                        $scope.freshman.totApplicants = data['FreshmanProfile']['FreshManProfile'].totalApplicants;
+                        $scope.freshman.totAccepted = data['FreshmanProfile']['FreshManProfile'].totalAccepted;
+                        $scope.freshman.xptanceRate = data['FreshmanProfile']['FreshManProfile'].acceptanceRate;
+                        $scope.freshman.totEnrolled = data['FreshmanProfile']['FreshManProfile'].totalEnrolled;
+                        $scope.freshman.earlyDecision = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledEarlyDecision;
+                        $scope.freshman.waitingList = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledFromWaitList;
+                        $scope.freshman.outFState = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledOutofState;
+                        $scope.freshman.ernPiblicHS = data['FreshmanProfile']['FreshManProfile'].percentageEnrolledPublicHs;
+                        $scope.freshman.rcvFinanceAid = data['FreshmanProfile']['FreshManProfile'].percentageReceivingFinancialAid;
+                        $scope.freshman.avgFinanceAid = data['FreshmanProfile']['FreshManProfile'].averageFinancialAid;
+                        $scope.freshman.malePer = data['FreshmanProfile']['FreshManProfile'].malePercentage;
+                        $scope.freshman.femalePer = data['FreshmanProfile']['FreshManProfile'].femalePercentage;
                         $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
 
                         $scope.weatherObj.avgFallLowTemp = data['IntendedStudy']['--'];
@@ -235,20 +235,20 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         //$scope.uniqueSimilarList = $scope.similarSchoolColgData.concat($scope.similarSchoolsSelectedArray);
                         //$scope.similarSchoolColgData = $scope.uniqueSchool($scope.similarSchoolsSelectedArray, $scope.collegedata);
 
-                        var Array1 = $scope.collegedata, Array2 = $scope.similarSchoolsSelectedArray, Array3 = [];
+                        /* Commented */
+                        // var Array1 = $scope.collegedata, Array2 = $scope.similarSchoolsSelectedArray, Array3 = [];
+                        // for (var i = 0; i<Array1.length-1; i++) {
+                        //     //console.log(Array1[i]);
+                        //     for (var j = 0; j<Array2.length-1; j++) {
+                        //         console.log('===> '+Array2[j].collegeID);
+                        //         if (Array2[i].collegeID !== Array1[j].collegeId) {
+                        //             Array3.push(Array1[i]);
+                        //         }
+                        //     }
+                        // }
+                        // $scope.similarSchoolColgData = Array3;
                         
-
-                        for (var i = 0; i<Array1.length-1; i++) {
-                            //console.log(Array1[i]);
-                            for (var j = 0; j<Array2.length-1; j++) {
-                                console.log('===> '+Array2[j].collegeID);
-                                if (Array2[i].collegeID !== Array1[j].collegeId) {
-                                    Array3.push(Array1[i]);
-                                }
-                            }
-                        }
-                        
-                        $scope.similarSchoolColgData = Array3;
+                        // 
                         //$scope.webDetailID = data['LinksAndAddresses'][0].websiteDetailsId;
                         //$scope.websiteName = data['websiteName'].websiteName;
                         //console.log(' $scope.webDetailID', $scope.webDetailID);
