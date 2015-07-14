@@ -935,6 +935,10 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     }
 
 
+    $scope.showAddCollegeModal = function() {
+        console.log('saveSimilarSchool ==> ');
+    }
+
 
 }]);
 

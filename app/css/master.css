@@ -180,6 +180,16 @@ footer {
     footer a:hover {
       color: #ced9e0; }
 
+/* Modal */
+.modal-body .form-horizontal .col-sm-2, .modal-body .form-horizontal .col-sm-10 {
+  width: 100%; }
+
+.modal-body .form-horizontal .control-label {
+  text-align: left; }
+
+.modal-body .form-horizontal .col-sm-offset-2 {
+  margin-left: 15px; }
+
 /*Common header for all pages*/
 /*.admin-header {
 	height: 60px;

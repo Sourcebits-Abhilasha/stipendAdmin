@@ -8,6 +8,7 @@
                 <!-- <div  ng-click="getForm();" class="btn-position"></div> -->
             </div>
             <div class="col-xs-4">
+                <button type="button" class="btn btn-primary btn-class-add " data-toggle="modal" data-target="#myModalHorizontal" >+</button>
                 <input type="search" placeholder="Search For Colleges" class="form-control search-bar-student " ng-disabled="true">
             </div>
         </div>
@@ -15,10 +16,14 @@
             <table class="table table-striped">
                 <thead>
                     <tr class="success">
-                        <th class="table-th"><a href="" ng-click="predicate = 'collegeId'; reverse=!reverse" class="heading-white">ID</a></th>
-                        <th class="table-th"><a href="" ng-click="predicate = 'collegeName'; reverse=!reverse" class="heading-white">College Name</a></th>
-                        <th class="table-th"><a href="" ng-click="predicate = 'city'; reverse=!reverse" class="heading-white">City</a></th>
-                        <th class="table-th"><a class="heading-white">Action</a></th>
+                        <th class="table-th"><a href="" ng-click="predicate = 'collegeId'; reverse=!reverse" class="heading-white">ID</a>
+                        </th>
+                        <th class="table-th"><a href="" ng-click="predicate = 'collegeName'; reverse=!reverse" class="heading-white">College Name</a>
+                        </th>
+                        <th class="table-th"><a href="" ng-click="predicate = 'city'; reverse=!reverse" class="heading-white">City</a>
+                        </th>
+                        <th class="table-th"><a class="heading-white">Action</a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,6 +56,49 @@
                 </tbody>
             </table>
         </div>
+        <!-- Modal-->
+            <div class="modal fade" id="myModalHorizontal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel"> Add College Detail</h4>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body">
+
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="collegeName">College Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="collegeName" placeholder="College Name" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="collegeArea">College Area</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="collegeArea" placeholder="College Area" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
     <!-- accordion section start-->
     <div ng-hide="editList">
@@ -218,7 +266,8 @@
                                     <input type="text" class="form-control" ng-model="freshman.malePer" id="maleGender">
                                 </div>
                             </div>
-                            <!-- Male <span class="label label-success">{{freshman.malePer}}</span> --></div>
+                            <!-- Male <span class="label label-success">{{freshman.malePer}}</span> -->
+                        </div>
                         <!-- ng-bind="freshman.rcvFinanceAid"-->
                         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
                             <div class="form-group">
@@ -227,7 +276,8 @@
                                     <input type="text" class="form-control" ng-model="freshman.femalePer" id="femaleGender">
                                 </div>
                             </div>
-                            <!-- Female <span class="label label-success">{{freshman.femalePer}}</span> --></div>
+                            <!-- Female <span class="label label-success">{{freshman.femalePer}}</span> -->
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
@@ -275,15 +325,15 @@
                     </select> -->
                             <div class="form-group">
                                 <label class="radio-inline">
-                                    <input type="radio"  ng-model="data.badgeID"  ng-value="2">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="2">
                                     <i class="fa fa-check"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"  ng-model="data.badgeID"  ng-value="1">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="1">
                                     <i class="fa fa-times"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"  ng-model="data.badgeID"  ng-value="3">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="3">
                                     <i class="fa fa-minus"></i>
                                 </label>
                             </div>
@@ -305,15 +355,15 @@
                     </select> -->
                             <div class="form-group">
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="data.badgeID"  ng-value="2">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="2">
                                     <i class="fa fa-check"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="data.badgeID"  ng-value="1">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="1">
                                     <i class="fa fa-times"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="data.badgeID"  ng-value="3">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="3">
                                     <i class="fa fa-minus"></i>
                                 </label>
                             </div>
@@ -335,15 +385,15 @@
                     </select> -->
                             <div class="form-group">
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="data.badgeID"  ng-value="2">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="2">
                                     <i class="fa fa-check"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio"ng-model="data.badgeID"  ng-value="1">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="1">
                                     <i class="fa fa-times"></i>
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" ng-model="data.badgeID"  ng-value="3">
+                                    <input type="radio" ng-model="data.badgeID" ng-value="3">
                                     <i class="fa fa-minus"></i>
                                 </label>
                             </div>
@@ -719,13 +769,15 @@
                         </ul>
                     </div>
                     <div class="col-md-2">
-                        <p> <i class="fa fa-caret-square-o-right" ng-click="selectedSimilarSchools()"></i></p>
-                        <p> <i class="fa fa-caret-square-o-left"></i></p>
+                        <p> <i class="fa fa-caret-square-o-right" ng-click="selectedSimilarSchools()"></i>
+                        </p>
+                        <p> <i class="fa fa-caret-square-o-left"></i>
+                        </p>
                     </div>
                     <div class="col-md-5 similer-school">
                         <ul>
                             <li ng-repeat="item in similarSchoolsSelectedArray">
-                                {{item.collegeName}} <span class="pull-right" ng-click = "deleteSelectedSchool(item)">X</span>
+                                {{item.collegeName}} <span class="pull-right" ng-click="deleteSelectedSchool(item)">X</span>
                             </li>
                         </ul>
                     </div>
