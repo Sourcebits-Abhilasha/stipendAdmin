@@ -361,7 +361,7 @@
             <h3 class="accordion-h3">Calendar</h3>
             <div class="row">
                 <form class="form-horizontal">
-                    <div class="form-group" ng-repeat="data in test">
+                    <div class="form-group" ng-repeat="data in test" my-post-repeat-directive>
                         <div class="col-sm-5">
                             <div class="form-group">
                                 <label for="eventName" class="col-sm-5 control-label lable-font">Event Name</label>
@@ -374,7 +374,7 @@
                             <div class="form-group">
                                 <label for="datepicker" class="col-sm-5 control-label lable-font">Event Date</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="datepicker" ng-model="data.eventDate" value="evtDate">
+                                    <input type="text" class="form-control" id="eventdatepicker" ng-model="data.eventDate" value="evtDate">
                                 </div>
                             </div>
                         </div>
