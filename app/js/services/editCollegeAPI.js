@@ -41,6 +41,24 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         return deferred.promise;
     };
 
+    this.addCollegeDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/registerCollege';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                alert('College Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                alert('College Details Failed to Upload');
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
     this.saveFreshmanDetail = function(data) {
 
         var deferred = $q.defer();
@@ -258,7 +276,7 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         return deferred.promise;
     };
 
-    this.saveAdmissionlDetail = function(data) {
+    this.saveAdmissionDetail = function(data) {
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/updateAdmissionOptionForWeb';
@@ -278,14 +296,14 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         return deferred.promise;
     };
 
-    this.saveTestandScoreDetail = function(data) {
+     this.saveSimilarSchoolDetail = function(data) {
 
         var deferred = $q.defer();
-        var serviceUrl = appConfig.baseURL + '/updateAdmissionOptionForWeb';
+        var serviceUrl = appConfig.baseURL + '/addSimilarSchools';
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                console.log('sucess updateAdmissionOptionForWeb', data);
+                console.log('sucess addSimilarSchools', data);
                 alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
             })
@@ -297,6 +315,90 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         console.log('promise');
         return deferred.promise;
     };
+
+     this.saveTestScoreDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/addCollegeScore';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                console.log('sucess addCollegeScore', data);
+                alert('Test Score Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                console.log('error');
+                alert('Test Score Details Failed to Upload');
+                deferred.reject(err);
+            });
+        console.log('promise');
+        return deferred.promise;
+    };
+    this.saveSportsDetail = function(data) {
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/addCollegeSportsForWeb';
+
+        $http.post(serviceUrl, data)
+            .success(function(data) {
+                console.log('sucess addCollegeSportsForWeb', data);
+                alert('Sports Details Uploaded Successfully');
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                console.log('error');
+                alert('Sports Details Failed to Upload');
+                deferred.reject(err);
+            });
+        console.log('promise');
+        return deferred.promise;
+    };
+    this.uploadFileToUrl = function(file, uploadFile){
+        
+        var deferred = $q.defer();
+        var fd = new FormData();
+        fd.append('file', file);
+
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
+        console.log('uploadFile',uploadFile);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function (data){
+            console.log('success data',data);
+
+            alert(data.statusMsg);
+            deferred.resolve(data);
+        })
+        .error(function (err){
+            deferred.reject(err);
+        });
+    }
+
+     this.uploadFileUrl = function(file, uploadFile){
+        
+        var deferred = $q.defer();
+        var fd = new FormData();
+        fd.append('file', file);
+
+        var uploadUrl = appConfig.baseURL + '/' +uploadFile;
+        console.log('uploadFile',uploadFile);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function (data){
+            console.log('success data',data);
+
+            alert(data.statusMsg);
+            deferred.resolve(data);
+        })
+        .error(function (err){
+            deferred.reject(err);
+        });
+    }
     // this.editFacultyList = function (contentdata) {
     // 	console.log('contentdata======>',contentdata);
     // 	var deferred = $q.defer();

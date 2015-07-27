@@ -19,16 +19,12 @@ app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $co
                     '</div></div></div>'+
 
                     '<div class="col-sm-5"><div class="form-group"><label for="calendarEventDate" class="col-sm-5 control-label lable-font">Event Date</label>'+
-                        '<div class="col-sm-7"><input type="text" class="form-control" placeholder="Enter Here" ng-model="calendarEventDateArray[' + counter + ']" id="calendarEventDate-' + counter + '"/>'+
+                                '<div class="col-sm-7"><input type="text" class="form-control" placeholder="Enter Here" ng-model="calendarEventDateArray[' + counter + ']" id="calendarEventDate-' + counter + '"/>'+
                     '</div></div></div>'+
                     '<div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedCalendar(' + counter + ')">X</div>'+
                     '</div>')(scope);
                 $('.calendar-div').append(test);
                 $('#eventCalendar-' + counter).focus();
-                var ele = $('#calendarEventDate-'+counter);
-                ele.datetimepicker({changeMonth: true,
-                  changeYear: true,
-                  dateFormat: 'yy-mm-dd'});
                 //scope.ans.push(scope.ans+counter);
             });
 

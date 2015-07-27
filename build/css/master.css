@@ -157,6 +157,27 @@ SMACSS: LAYOUT - HEADER
       font-size: 14px;
     }
 }*/
+.weather-save {
+  padding: 2em 0em 0em 0em; }
+
+.accordion .h3-size {
+  background-color: #757373 !important;
+  margin-bottom: .5em !important; }
+
+.h3-size {
+  background-color: #757373 !important;
+  margin-bottom: .3em !important; }
+
+.college-name {
+  color: #ed4e4e !important; }
+
+.active {
+  background-color: red; }
+
+.disabled {
+  opacity: 0.3;
+  pointer-events: none; }
+
 /*-------------------------------------------------
 SMACSS: LAYOUT - SECTION
 -------------------------------------------------*/
@@ -1395,10 +1416,25 @@ header {
 }*/
 .similer-school {
   border: 1px solid #ccc;
-  padding: .5em; }
-  .similer-school ul {
+  padding: .5em;
+  height: 500px;
+  overflow-y: auto; }
+  .similer-school li {
     border-bottom: 1px solid #ccc;
-    padding: .5em; }
+    padding: .5em;
+    margin: 0px 0px 10px 0px;
+    cursor: pointer !important; }
+
+.calendar-label {
+  display: inline-block;
+  margin-bottom: 5px !important;
+  font-weight: bold;
+  font-size: 14px !important; }
+
+.icon-middle {
+  height: 500px;
+  line-height: 500px;
+  text-align: center; }
 
 .login-ahref {
   color: #000 !important; }
@@ -2304,8 +2340,8 @@ input[type="radio"], input[type="checkbox"] {
   font-size: 15px; }
 
 .content-container {
-  position: relative;
-  z-index: 101; }
+  /*position: relative;*/
+  /*z-index: 101;*/ }
 
 .content-header {
   padding-bottom: .5em;
