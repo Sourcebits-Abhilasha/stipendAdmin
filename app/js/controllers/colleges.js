@@ -334,14 +334,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.intendedStudy = data['IntendedStudy']['Study'];
                         $scope.studentFacultyRatio = data['IntendedStudy'];
                         $scope.intendedStudyOption = data['IntendedStudy']['IntendedStudyOption'];
-                        // // intendedStudyOptions
-                        // var objIntendedStudyOption = $scope.intendedStudyOption;
-                        // for(var i=0; i<objIntendedStudyOption.length; i++){
-                        //     var obj = objIntendedStudyOption[i];
-                        //     console.log(obj.sysIntendedStudyOptionName);
-                        //      //$('#'+obj.sysIntendedStudyOptionName).bootstrapToggle();
-                        //      document.getElementById(obj.sysIntendedStudyOptionName).bootstrapToggle();
-                        // }
                         $scope.admission = data['Admissions']['Admission'];
                         $scope.interview = data['Admissions']['Interviews'];
                         $scope.recommendation = data['Admissions']['Recommendations'];
