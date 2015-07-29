@@ -95,12 +95,12 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
         //     templateUrl: 'partials/templates/polls.html'   
         //     //controller: 'ItemsCrtl'     
         // })
-        // .state('dashboard.import',  {
-        //     url: '/import',
-        //     requiredLogin: true,                     
-        //     templateUrl: 'partials/templates/import.html'   
-        //     //controller: 'ItemsCrtl'     
-        // })
+        .state('resetPassword',  {
+            url: '/resetPassword',
+             //equiredLogin: true,                     
+            templateUrl: 'partials/templates/resetPassword.html'   
+            //controller: 'ItemsCrtl'     
+        })
         .state('dashboard.admin',  {
             url: '/admin',
             requiredLogin: true,                     
@@ -283,6 +283,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     var inStateData = [1, 3, 4, 5, 6];
     var outStateData = [1, 2, 4, 5, 6];
     var tempFees = {};
+    var k = 0;
 
     $scope.colgList = false;
     $scope.editList = true;
@@ -317,9 +318,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         evtName: '',
         evtDate: ''
     };
-    $scope.quickFact = {
 
-    };
     $scope.weatherObj = {
 
     };
@@ -382,7 +381,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     };
 
     console.log($.cookie());
- 
+
 
     $scope.getcollege = function(state) {
         //$('body').addClass('page-loader');
@@ -499,32 +498,37 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     // })
 
 
-   $scope.getSimilarCollege = function() {
-        console.log('getSimilarCollege------>',$scope.collegeCount);
-        var page = {'off':0,'size':$scope.collegeCount}
-        //$('body').addClass('page-loader');
+    $scope.getSimilarCollege = function() {
+        console.log('getSimilarCollege------>', $scope.collegeCount);
+        var page = {
+                'off': 0,
+                'size': $scope.collegeCount
+            }
+            //$('body').addClass('page-loader');
         CollegeAPI.getSimilarSchoollist(page)
             .then(
                 function(data) {
                     console.log('data====>', data);
                     if (data !== null) {
                         $scope.similarCollegeData = data.Colleges;
+                        $scope.similarCollegeData = _.sortByOrder($scope.similarCollegeData, ['collegeName'], ['asc']);
                         $scope.similarSchoolColgData = data;
-                        
+
                         //$('body').removeClass('page-loader');
                         // $scope.FacultyName = data.firstName + data.lastName;
-                        console.log('similar school data---->',$scope.similarCollegeData)
+                        console.log('similar school data---->', $scope.similarCollegeData)
                     }
 
                 }
             );
     };
-   
+
 
 
     $scope.editCollege = function(data) {
         //$('body').addClass('page-loader');
-         $scope.getSimilarCollege();
+        $scope.getSimilarCollege();
+
         console.log('data is in ====>', data);
         $rootScope.colgData = data;
         editCollegeAPI.editcollegelist(data.collegeId)
@@ -587,7 +591,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
 
                         $scope.mostRepresentedState = data.FreshmanProfile.MostRepresentedStates;
-                        
+
 
                         // $scope.mostRepresentedState['stateArray'] = [];
                         // for(var key in $scope.mostRepresentedState) {
@@ -599,14 +603,26 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         // };
 
                         $scope.weatherObj.avgFallLowTemp = data['Weather'];
-                        // $scope.quickFact.qukFact = data['QuickFacts'].quickFactsValue;
+                        $scope.quickfact = data.QuickFacts;
 
                         $scope.geoData = data['FreshmanProfile']['Geographics'];
                         $scope.clgEthenicity = data['FreshmanProfile']['CollegeEthnicity'];
                         $scope.intendedStudy = data['IntendedStudy']['Study'];
+                        $scope.studentFacultyRatio = data['IntendedStudy'];
+                        $scope.intendedStudyOption = data['IntendedStudy']['IntendedStudyOption'];
+                        // // intendedStudyOptions
+                        // var objIntendedStudyOption = $scope.intendedStudyOption;
+                        // for(var i=0; i<objIntendedStudyOption.length; i++){
+                        //     var obj = objIntendedStudyOption[i];
+                        //     console.log(obj.sysIntendedStudyOptionName);
+                        //      //$('#'+obj.sysIntendedStudyOptionName).bootstrapToggle();
+                        //      document.getElementById(obj.sysIntendedStudyOptionName).bootstrapToggle();
+                        // }
                         $scope.admission = data['Admissions']['Admission'];
                         $scope.interview = data['Admissions']['Interviews'];
                         $scope.recommendation = data['Admissions']['Recommendations'];
+
+                        $scope.admissionCode = data.Admissions.AdmissionCodes;
 
                         $scope.SatData = data.TestScoresAndGrades.SAT;
                         $scope.ActData = data.TestScoresAndGrades.ACT;
@@ -614,7 +630,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
                         $scope.testScoreAvg = data.TestScoresAndGrades.Averages;
 
-                        
+
                         $scope.sports = data.Sports;
 
                         $scope.actScore = data['TestScoresAndGrades']['ACTSCORES'];
@@ -637,13 +653,10 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.weatherObj.avgSpringHighTemp = data['Weather'].averageSpringHighTemp;
                         $scope.weatherObj.avgSpringPrecipitation = data['Weather'].averageSpringPrecipitation;
 
-                        // $scope.quickFact.quickFactsVal = data['QuickFacts'].quickFactsValue;
-                        // $scope.quickFact.quickFactsID = data['QuickFacts'].quickFactsID;
-
                         $scope.feesAndFinancial = data.FeesAndFinancialAids.Fees;
 
                         $scope.AvgFees = data.FeesAndFinancialAids;
-                    
+
 
                         var dataFees = data.FeesAndFinancialAids;
 
@@ -653,39 +666,18 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
                         $scope.test = data.Calender;
-
+                        $scope.similarArray = [];
                         $scope.collegeRanking = data.CollegeRanking;
                         $scope.prominentAlumni = data.ProminentAlumini;
                         $scope.similerSchool = data.SimilarSchools;
+                        $scope.similerSchool.forEach(function(item) {
+                            $scope.similarArray.push(item.similarSchoolsID);
+                            // console.log('$scope.similarArray',$scope.similarArray);
+                        })
+
+
+                        console.log('scope.similarCollegeDatasimilarCollegeDatasimilarCollegeDatasimilarCollegeData', $scope.similarCollegeData);
                         $scope.linkAndAddress = data.LinksAndAddresses;
-                        //$scope.webDetailID = data['LinksAndAddresses'][0].websiteDetailsId;
-                        //$scope.websiteName = data['websiteName'].websiteName;
-                        //console.log(' $scope.webDetailID', $scope.webDetailID);
-                        // $scope.data.quickFactsValue = data.QuickFacts[0].quickFactsValue;
-
-                        //----------- Fees and financial Aid
-                        // var feesAndFinancialAids = data['FeesAndFinancialAids'];
-                        // feesAndFinancialAids.push({
-                        //     percentangeInState: 81,
-                        //     percentangeOutState: 90,
-                        //     avgInState: 200,
-                        //     avgOutState: 41555
-                        // });
-                        // var feesAndFinancialAidsLength = feesAndFinancialAids.length;
-
-
-                        // for (var i = 0; i < feesAndFinancialAidsLength; i++) {
-                        //     var obj = feesAndFinancialAids[i];
-                        //     if (obj.inState == true) {
-                        //         $scope.inStateData.push(obj);
-                        //         $scope.inStateTotal = $scope.inStateTotal + obj.fees;
-                        //     } else if (obj.inState == false) {
-                        //         $scope.outStateData.push(obj);
-                        //         $scope.outStateTotal = $scope.outStateTotal + obj.fees;
-                        //     } else {
-                        //         $scope.financialAid = obj;
-                        //     }
-                        // }
 
                         $scope.sports.Divisions.Men.NCAADIVISION1.forEach(function(item) {
                             $scope.selectedSportsDiv1.push(item.syssportsId);
@@ -776,14 +768,43 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                                 }
                             })
                         });
-
-
                         console.log('$scope.selectedSportsDiv1', $scope.selectedSportsDiv1);
 
                     }
 
                 }
             );
+    }
+
+    $scope.$watch('similarCollegeData', function(newValue) {
+        if (newValue && k == 0) {
+            k = 1;
+            $scope.similarCollegeData = _.filter($scope.similarCollegeData, function(i) {
+                return $scope.similarArray.indexOf(i.schoolID) == -1;
+            });
+        }
+    }, true);
+
+
+    $scope.testing = function() {
+        //alert('test');
+        var objIntendedStudyOption = $scope.intendedStudyOption;
+        for (var i = 0; i < objIntendedStudyOption.length; i++) {
+            var obj = objIntendedStudyOption[i],
+                ele = obj.sysIntendedStudyOptionName.slice(0, -1).split(' ').join(''),
+                value = obj.optionValue;
+            if (value === 'YES') {
+                $('#' + ele).bootstrapToggle('on');
+            } else {
+                $('#' + ele).bootstrapToggle('off');
+            }
+            (function(i) {
+                $('#' + ele).change(function() {
+                    $scope.intendedStudyOption[i].optionValue = $(this).prop('checked') ? 'YES' : 'NO';
+                    console.log('Value Changed ', $scope.intendedStudyOption[i].optionValue);
+                })
+            })(i);
+        }
     }
 
     // $scope.$watch('college',function (newValue) {
@@ -838,19 +859,19 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 'accessTypeID': $scope.addCollegeAccessTypeID ? $scope.addCollegeAccessTypeID : null,
                 'collegeAreaID': $scope.addCollegeAreaID ? $scope.addCollegeAreaID : null
             }
-        }else {
+        } else {
             data = {
-            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
-            'collegeName': $scope.college.colgName ? $scope.college.colgName : null,
-            'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
-            'city': $scope.college.colgCity ? $scope.college.colgCity : null,
-            'collegeLatitude': $scope.college.colgLatitude ? $scope.college.colgLatitude : null,
-            'collegeLongitude': $scope.college.colgLongitude ? $scope.college.colgLongitude : null,
-            'accessTypeID': $scope.college.colgAccessTypeID ? $scope.college.colgAccessTypeID : null,
-            'collegeAreaID': $scope.college.colgAreaID ? $scope.college.colgAreaID : null
-        }; 
+                'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+                'collegeName': $scope.college.colgName ? $scope.college.colgName : null,
+                'collegeTypeId': $rootScope.colgData['collegeTypeId'] ? $rootScope.colgData['collegeTypeId'] : null,
+                'city': $scope.college.colgCity ? $scope.college.colgCity : null,
+                'collegeLatitude': $scope.college.colgLatitude ? $scope.college.colgLatitude : null,
+                'collegeLongitude': $scope.college.colgLongitude ? $scope.college.colgLongitude : null,
+                'accessTypeID': $scope.college.colgAccessTypeID ? $scope.college.colgAccessTypeID : null,
+                'collegeAreaID': $scope.college.colgAreaID ? $scope.college.colgAreaID : null
+            };
         }
-        
+
 
         console.log('data finally data', data);
         editCollegeAPI.addCollegeDetail(data)
@@ -866,9 +887,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         //debugger
         console.log('save saveQuickFact====>', $rootScope.colgData);
         var qukFact = {
-
-            'quickFactsValue': $scope.quickFact.quickFactsVal ? $scope.quickFact.quickFactsVal : null,
-            'quickFactsID': $scope.quickFact.quickFactsID ? $scope.quickFact.quickFactsID : null
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'quickFactsValue': $scope.quickfact.quickFactsVal ? $scope.quickfact.quickFactsVal : null,
+            'quickFactsID': $scope.quickfact.quickFactsID ? $scope.quickfact.quickFactsID : null
 
         };
 
@@ -942,10 +963,6 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             'malePercentage': $scope.freshman.malePer ? $scope.freshman.malePer : null,
             'femalePercentage': $scope.freshman.femalePer ? $scope.freshman.femalePer : null
         };
-
-        //console.log('enrollmentStatusId============>', enrollmentStatusId)
-        //console.log('freshmanData========>', freshmanData);
-
         console.log('data finally Freshman Common data', freshmanData);
         editCollegeAPI.saveFreshmanDetail(freshmanData)
             .then(
@@ -953,29 +970,24 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     console.log('save detail====>', data);
                 });
 
+        var mostRepresentedStt = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'mostRepresentedStateID': $scope.mostRepresentedState.mostRepresentedStateID ? $scope.mostRepresentedState.mostRepresentedStateID : null,
+            'stateId1': $scope.mostRepresentedState.stateId1 ? $scope.mostRepresentedState.stateId1 : null,
+            'stateId2': $scope.mostRepresentedState.stateId2 ? $scope.mostRepresentedState.stateId2 : null,
+            'stateId3': $scope.mostRepresentedState.stateId3 ? $scope.mostRepresentedState.stateId3 : null,
+            'stateId4': $scope.mostRepresentedState.stateId4 ? $scope.mostRepresentedState.stateId4 : null,
+            'stateId5': $scope.mostRepresentedState.stateId5 ? $scope.mostRepresentedState.stateId5 : null,
+
+        }
+
+        console.log('data finally mostRepresentedStt Common data', mostRepresentedStt);
+        editCollegeAPI.saveMostRepStateDetail(mostRepresentedStt)
+            .then(
+                function(data) {
+                    console.log('save detail====>', data);
+                });
     };
-
-    // $scope.saveCalendar = function() {
-    //     //console.log('testData Calendar data',$scope.test);
-    //     var finalCalendarData = [];
-
-    //     for (var count = 0; count < $scope.test.length; count++) {
-    //         var finalCalendarObject = {};
-    //         finalCalendarObject['collegeCalendarId'] = $scope.test[count].collegeCalendarId;
-    //         finalCalendarObject['eventName'] = $scope.test[count].eventName;
-    //         finalCalendarObject['eventDate'] = $scope.test[count].eventDate;
-    //         finalCalendarData.push(finalCalendarObject);
-    //     }
-
-    //     console.log('final array for calendar', finalCalendarData);
-
-    //     editCollegeAPI.saveCalendarDetail(finalCalendarData)
-    //         .then(
-    //             function(data) {
-    //                 // console.log('save detail====>', data);
-    //             });
-
-    // };
 
     $scope.saveCollegeRanking = function() {
         console.log('testData College ranking data', $scope.collegeRanking);
@@ -985,6 +997,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         for (var count = 0; count < $scope.collegeRanking.length; count++) {
             var finalColegeRankingObject = {};
             // finalColegeRankingObject['collegeId'] = collegeId;
+            finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalColegeRankingObject['collegeRankingId'] = $scope.collegeRanking[count].collegeRankingId;
             finalColegeRankingObject['ranking'] = $scope.collegeRanking[count].ranking;
             finalColegeRankingObject['rankingPoints'] = $scope.collegeRanking[count].rankingPoints;
@@ -997,7 +1010,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         for (var i = 1; i < clgRankingArray.length; i++) {
             if (clgRankingArray[i] != undefined) {
                 var finalColegeRankingObject = {};
-                finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId']
+                finalColegeRankingObject['collegeId'] = $rootScope.colgData['collegeId'];
                 finalColegeRankingObject['ranking'] = clgRankingArray[i];
                 finalColegeRankingObject['rankingPoints'] = clgRankingPointsArray[i];
                 finalColegeRankingData.push(finalColegeRankingObject);
@@ -1021,6 +1034,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         /* Scope Data */
         for (var count = 0; count < $scope.prominentAlumni.length; count++) {
             var finalProminentAlumniObject = {};
+            finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId']
             finalProminentAlumniObject['alumniId'] = $scope.prominentAlumni[count].alumniId;
             finalProminentAlumniObject['alumniName'] = $scope.prominentAlumni[count].alumniName;
             // finalProminentAlumniObject['collegeId'] = collegeId;
@@ -1034,7 +1048,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         for (var i = 1; i < prominentArray.length; i++) {
             if (prominentArray[i] != undefined) {
                 var finalProminentAlumniObject = {};
-                finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId']
+                finalProminentAlumniObject['collegeId'] = $rootScope.colgData['collegeId'];
                 finalProminentAlumniObject['alumniName'] = prominentArray[i];
 
                 finalProminentAlumniData.push(finalProminentAlumniObject);
@@ -1059,6 +1073,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         /* Scope Data */
         for (var count = 0; count < $scope.linkAndAddress.length; count++) {
             var finalLinkAndAddressObject = {};
+            finalLinkAndAddressObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalLinkAndAddressObject['websiteName'] = $scope.linkAndAddress[count].websiteName;
             finalLinkAndAddressObject['websiteUrl'] = $scope.linkAndAddress[count].websiteUrl;
             finalLinkAndAddressObject['websiteDetailsId'] = $scope.linkAndAddress[count].websiteDetailsId;
@@ -1115,6 +1130,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
         for (var count = 0; count < $scope.intendedStudy.length; count++) {
             var finalIntendedStudyObject = {};
+            finalIntendedStudyObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalIntendedStudyObject['collegeIntendedStudyID'] = $scope.intendedStudy[count].collegeIntendedStudyID;
             finalIntendedStudyObject['intendedStudyName'] = $scope.intendedStudy[count].intendedStudyName;
             finalIntendedStudyObject['intendedStudyType'] = $scope.intendedStudy[count].intendedStudyType;
@@ -1188,16 +1204,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         });
 
         console.log('finalSportsData -- >', finalSportsData);
-        // for (var count = 0; count < $scope.intendedStudy.length; count++) {
-        //     var finalIntendedStudyObject = {};
-        //     finalIntendedStudyObject['collegeIntendedStudyID'] = $scope.intendedStudy[count].collegeIntendedStudyID;
-        //     finalIntendedStudyObject['intendedStudyName'] = $scope.intendedStudy[count].intendedStudyName;
-        //     finalIntendedStudyObject['intendedStudyType'] = $scope.intendedStudy[count].intendedStudyType;
-        //     finalIntendedStudyObject['intendedStudyPercentage'] = $scope.intendedStudy[count].intendedStudyPercentage;
 
-        //     finalIntendedStudyData.push(finalIntendedStudyObject);
-        // }
-        // console.log('final array IntendedStudy', finalIntendedStudyData);
 
         editCollegeAPI.saveSportsDetail(finalSportsData)
             .then(
@@ -1264,7 +1271,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             'averageSAT': parseInt($scope.testScoreAvg.averageSAT, 10) ? parseInt($scope.testScoreAvg.averageSAT, 10) : 0,
             'averageACT': parseInt($scope.testScoreAvg.averageACT, 10) ? parseInt($scope.testScoreAvg.averageACT, 10) : 0
         }
-console.log("testScoreAverage====>", testScoreAverage);
+        console.log("testScoreAverage====>", testScoreAverage);
         var finalTestScoreData = [];
         finalTestScoreData.push(testScoreSatAvg);
         finalTestScoreData.push(testScoreActAvg);
@@ -1308,7 +1315,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.admission.length; count++) {
             var finalAdmissionObject = {};
-
+            finalAdmissionObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalAdmissionObject['admissionsOptionID'] = $scope.admission[count].admissionsOptionID;
             finalAdmissionObject['optionNameID'] = $scope.admission[count].optionNameID;
             finalAdmissionObject['optionValueID'] = $scope.admission[count].optionValueID;
@@ -1322,6 +1329,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.interview.length; count++) {
             var finalInterviewObject = {};
+            finalInterviewObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalInterviewObject['admissionsOptionID'] = $scope.interview[count].admissionsOptionID;
             finalInterviewObject['optionNameID'] = $scope.interview[count].optionNameID;
             finalInterviewObject['optionValueID'] = $scope.interview[count].optionValueID;
@@ -1337,6 +1345,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.interview.length; count++) {
             var finalRecommendationObject = {};
+            finalRecommendationObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalRecommendationObject['admissionsOptionID'] = $scope.recommendation[count].admissionsOptionID;
             finalRecommendationObject['optionNameID'] = $scope.recommendation[count].optionNameID;
             finalRecommendationObject['optionValueID'] = $scope.recommendation[count].optionValueID;
@@ -1346,12 +1355,19 @@ console.log("testScoreAverage====>", testScoreAverage);
             finalAdmissionData.push(finalRecommendationObject);
         }
 
+        var admCode = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'admissionsOptionID': $scope.admission[0].admissionsOptionID,
+            'SETCODE': parseInt($scope.admissionCode.SETCODE, 10) ? parseInt($scope.admissionCode.SETCODE, 10) : 0,
+            'ACTCODE': parseInt($scope.admissionCode.ACTCODE, 10) ? parseInt($scope.admissionCode.ACTCODE, 10) : 0
+        }
+        finalAdmissionData.push(admCode);
         console.log('final array recommendation', finalAdmissionData);
-        editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
-            .then(
-                function(data) {
-                    console.log('save detail finalAdmissionData====>', data);
-                });
+        // editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
+        //     .then(
+        //         function(data) {
+        //             console.log('save detail finalAdmissionData====>', data);
+        //         });
 
     };
 
@@ -1361,6 +1377,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         for (var count = 0; count < $scope.feesAndFinancial.length; count++) {
             var finalFeesAndFinancialObject = {};
+            finalFeesAndFinancialObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalFeesAndFinancialObject['collegeFeesID'] = $scope.feesAndFinancial[count].collegeFeesID;
             finalFeesAndFinancialObject['fees'] = $scope.feesAndFinancial[count].fees;
 
@@ -1378,11 +1395,12 @@ console.log("testScoreAverage====>", testScoreAverage);
     };
 
     $scope.saveCalendar = function() {
-        console.log('testData Calendar data',$scope.test);
+        console.log('testData Calendar data', $scope.test);
         var finalCalendarData = [];
 
         for (var count = 0; count < $scope.test.length; count++) {
             var finalCalendarObject = {};
+            finalCalendarObject['collegeId'] = $rootScope.colgData['collegeId'];
             finalCalendarObject['collegeCalendarId'] = $scope.test[count].collegeCalendarId;
             finalCalendarObject['eventName'] = $scope.test[count].eventName;
             finalCalendarObject['eventDate'] = $scope.test[count].eventDate;
@@ -1417,6 +1435,7 @@ console.log("testScoreAverage====>", testScoreAverage);
     $scope.saveWeather = function() {
 
         var finalWeatherData = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'weatherId': $scope.weatherObj.weatherId ? $scope.weatherObj.weatherId : null,
             'averageFallLowTemp': $scope.weatherObj.avgFallLowTemp ? $scope.weatherObj.avgFallLowTemp : null,
             'averageFallHighTemp': $scope.weatherObj.avgFallHighTemp ? $scope.weatherObj.avgFallHighTemp : null,
@@ -1480,7 +1499,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         $scope.menSports = false;
         $scope.womenSports = true;
-         event.target.style.backgroundColor = "#ccc";
+        event.target.style.backgroundColor = "#ccc";
 
     }
 
@@ -1488,7 +1507,7 @@ console.log("testScoreAverage====>", testScoreAverage);
 
         $scope.menSports = true;
         $scope.womenSports = false;
-         event.target.style.backgroundColor = "#ccc";
+        event.target.style.backgroundColor = "#ccc";
     }
 
     $scope.outStates = function() {
@@ -1597,90 +1616,90 @@ console.log("testScoreAverage====>", testScoreAverage);
 
     //create global array of similarSchools
     $scope.similarSchoolsArray = [];
+    $scope.schoolArrayId = [];
     $scope.addSimilarSchools = function(data, event) {
-        console.log('addSimilarSchools======>', data + event);
-        //console.log($scope.similarSchoolsArray.indexOf(data.collegeId));
-        var index = $scope.similarSchoolsArray.indexOf(data.collegeId);
+        console.log('addSimilarSchools======>', data);
+
+        if ($scope.similarSchoolsArray) {
+            $scope.similarSchoolsArray.forEach(function(item) {
+                if (item.schoolID == data.schoolID) {
+                    var nIndex = $scope.similarSchoolsArray.indexOf(item);
+                    console.log('------true---->', nIndex);
+                    $scope.similarSchoolsArray.splice(nIndex, 1);
+                }
+            });
+        }
+
+        var index = $scope.schoolArrayId.indexOf(data.schoolID);
+
         if (index == -1) {
-            // push to array
-            $scope.similarSchoolsArray.push(data.collegeId);
-            console.log('pushing in similarSchoolsArray===> ', data.collegeId);
-            console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
-            // background color
+            $scope.schoolArrayId.push(data.schoolID);
+            $scope.similarSchoolsArray.push({
+                'collegeName': data.collegeName,
+                'college': $rootScope.colgData.collegeId,
+                'schoolID': data.schoolID
+            });
             event.target.style.backgroundColor = "#ccc";
         } else {
-            // element to remove from array
+            $scope.schoolArrayId.splice(index, 1);
             $scope.similarSchoolsArray.splice(index, 1);
-            // background color
             event.target.style.backgroundColor = "transparent";
-
-            console.log('pop in similarSchoolsArray===> ', data.collegeId);
-            console.log('similarSchoolsArray===> ', $scope.similarSchoolsArray);
         }
+
     }
 
     $scope.similarSchoolsSelectedArray = [];
     //Right Button Clicked
 
     $scope.selectedSimilarSchools = function() {
+        console.log('$scope.schoolArrayId = [];', $scope.schoolArrayId);
 
-        var similarSchoolsArray = $scope.similarSchoolsArray;
-        console.log('selectedSimilarSchools ======>', similarSchoolsArray);
-
-        var similarSchoolColgData = $scope.similarSchoolColgData;
-
-        for (var i = 0; i < similarSchoolsArray.length; i++) {
-
-            console.log('Checking for collegeID ===> ', similarSchoolsArray[i]); // number
-                debugger;
-
-            for (var j = 0; j < similarSchoolColgData.Colleges.length; j++) {
-                //console.log(similarSchoolColgData[j].collegeId);
-                if (similarSchoolColgData.Colleges[j].collegeId == similarSchoolsArray[i]) {
-                    console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeId + ' ===== ' + similarSchoolsArray[i]);
-                    console.log('Matched ===> ', similarSchoolColgData.Colleges[j].collegeName + ' ===== ' + similarSchoolsArray[i]);
-                    // var obj = {};
-                    // obj.collegeId = similarSchoolsArray[i];
-                    // obj.collegeName = similarSchoolColgData[j].collegeName;
-
-                    $scope.similarSchoolsSelectedArray.push(similarSchoolColgData.Colleges[j]);
-                    $scope.similarSchoolColgData.Colleges.splice(j, 1);
-                }
-            };
+        var ind;
+        if ($scope.similarSchoolsArray) {
+            $scope.similarSchoolsArray.forEach(function(item1) {
+                $scope.similerSchool.push(item1);
+                $scope.similarCollegeData = _.filter($scope.similarCollegeData, function(i) {
+                    return i.schoolID != item1.schoolID;
+                })
+            })
+            $scope.similarSchoolsArray = [];
+            $scope.schoolArrayId = [];
+            console.log('similarSchoolsArray', $scope.similarSchoolsArray);
         }
+        console.log('origninal', $scope.similarCollegeData);
 
-        $scope.similarSchoolsArray = [];
     };
 
     $scope.saveSimilarSchool = function() {
-        console.log('1',$scope.similerSchool);
-        console.log('2',$scope.similarSchoolsSelectedArray);
+            console.log('1', $scope.similerSchool);
 
-        // editCollegeAPI.saveSimilarSchoolDetail($scope.similarSchoolsSelectedArray)
-        //     .then(
-        //         function(data) {
-        //             console.log('save detail weather====>', data);
-        //         });
+            $scope.similerSchool = _.each($scope.similerSchool, function(item, key) {
 
-    }
-    // Sed=nd this in APi call -similarSchoolsSelectedArray
+                if (item.similarSchoolsID) {
+                    item['schoolID'] = item.similarSchoolsID;
+                    delete item.similarSchoolsID;
+                }
+
+            });
+
+            console.log('new 1', $scope.similerSchool);
+
+            editCollegeAPI.saveSimilarSchoolDetail($scope.similerSchool)
+                .then(
+                    function(data) {
+                        console.log('save detail similarschool====>', data);
+                    });
+
+        }
+        // Sed=nd this in APi call -similarSchoolsSelectedArray
     $scope.deleteSelectedSchool = function(item) {
         //alert('delete selected school==>'+ item.collegeId);
+        console.log('collegeid', item);
 
-        for (var i = 0; i < $scope.similarSchoolsSelectedArray.length; i++) {
-            if ($scope.similarSchoolsSelectedArray[i].collegeId == item.collegeId) {
-                $scope.similarSchoolsSelectedArray.splice(i, 1);
-                $scope.similarSchoolColgData.Colleges.push(item);
-                event.target.style.backgroundColor = "#ccc";
-            }else {
-            // element to remove from array
-            // $scope.similarSchoolsArray.splice(index, 1);
-            // background color
-            event.target.style.backgroundColor = "transparent";
-
-            
-        }
-        };
+        $scope.similarCollegeData.push(item);
+        $scope.similarCollegeData = _.sortByOrder($scope.similarCollegeData, ['collegeName'], ['asc']);
+        var index = $scope.similerSchool.indexOf(item);
+        $scope.similerSchool.splice(index, 1);
 
     };
 
@@ -2245,6 +2264,120 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
 
 
 
+/*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2006, 2014 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD (Register as an anonymous module)
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// Node/CommonJS
+		module.exports = factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
+
+	var pluses = /\+/g;
+
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
+
+	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
+
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
+	}
+
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape...
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			// If we can't parse the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+			return config.json ? JSON.parse(s) : s;
+		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// Write
+
+		if (arguments.length > 1 && !$.isFunction(value)) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
+			}
+
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// Read
+
+		var result = key ? undefined : {},
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling $.cookie().
+			cookies = document.cookie ? document.cookie.split('; ') : [],
+			i = 0,
+			l = cookies.length;
+
+		for (; i < l; i++) {
+			var parts = cookies[i].split('='),
+				name = decode(parts.shift()),
+				cookie = parts.join('=');
+
+			if (key === name) {
+				// If second argument (value) is a function it's a converter...
+				result = read(cookie, value);
+				break;
+			}
+
+			// Prevent storing a cookie that we couldn't decode.
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		// Must not alter options, thus extending a fresh object...
+		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+		return !$.cookie(key);
+	};
+
+}));
 /*================================================================
 Directive = activeMenu
 ==================================================================*/
@@ -2514,6 +2647,31 @@ app.directive('addProminent', ['$rootScope', '$compile', function($rootScope, $c
 
 /*-----  End of Directive = addProminent  ------*/
 
+app.directive('afterRepeatDirective', ['$rootScope', function($rootScope) {
+    'use strict';
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            if (scope.$last) {
+                // iteration is complete, do whatever post-processing is necessary
+                //element.parent().css('border', '1px solid black');
+                // var objIntendedStudyOption = scope.$parent.intendedStudyOption;
+                // for (var i = 0; i < objIntendedStudyOption.length; i++) {
+                //     var obj = objIntendedStudyOption[i];
+                //     var ele = obj.sysIntendedStudyOptionName.slice(0,-1).split(' ').join('');
+                //     debugger;
+                //     //console.log(obj.sysIntendedStudyOptionName);
+                //     $('#'+ele).bootstrapToggle();
+                //     console.log(document.getElementById(ele));//.bootstrapToggle();
+                // }
+                //element.bootstrapToggle();
+                scope.$evalAsync(attrs.afterRepeatDirective);
+                //scope.$parent.intendedStudyOption[0].sysIntendedStudyOptionName
+            }
+        }
+    };
+}]);
+
 /*================================================================
 Directive = calendarRepeatDirecitve
 ==================================================================*/
@@ -2619,7 +2777,9 @@ app.directive('editcollege', ['$rootScope', function ($rootScope) {
 			console.log('Directive === edit_college');
 			$(function() {
 			    $( "#tabs" ).tabs();
-			  });
+			    $( "#tabs_sports" ).tabs();
+			});
+			
 		}
 
 
@@ -2644,131 +2804,6 @@ app.directive('fileModel', ['$parse', function ($parse) {
         }
     };
 }]);
-/*================================================================
-Filter = convertMiliSecondsIntoDate
-==================================================================*/
-
-app.filter('convertMiliSecondsIntoDate', function () {
-	'use strict';
-
-	return function (input) {
-
-		var mydate = new Date(input);
-			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
-			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
-			//$scope.timesData.push(finalDate);
-			var month = mydate.getMonth();
-			//month = month.parseInt();
-			month = month +1;
-			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
-			console.log('mydate',mydate);	
-			return mydate;
-		console.log('Filter == convertMiliSecondsIntoDate');
-
-		
-	};
-});
-
-app.filter('convertMiliSecondsIntoDate1', function () {
-	'use strict';
-
-	return function (input) {
-
-		var mydate = new Date(input);
-			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
-			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
-			//$scope.timesData.push(finalDate);
-			var month = mydate.getMonth();
-			//month = month.parseInt();
-			month = month +1;
-			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
-			console.log('mydate',mydate);	
-			return mydate;
-		console.log('Filter == convertMiliSecondsIntoDate');
-
-		
-	};
-});
-
-/*-----  End of Filter = convertMiliSecondsIntoDate  ------*/
-
-/*================================================================
-=>                   Filter = genderFilter
-==================================================================*/
-/*global app*/
-
-app.filter('genderFilter', function () {
-	
-	'use strict';
-
-	return function (data) {
-		//var dateDiff = 0;
-		console.log('data',data);
-		if (data == 1) {
-			return 'male';
-		}else if (data == 2) {
-			return 'female';
-		} else {
-			return data;
-		}
-	};
-});
-
-
-/*-----  End of Filter = genderFilter  ------*/
-/*================================================================
-=>                   Filter = remainingTime
-==================================================================*/
-/*global app*/
-
-app.filter('remainingTime', function () {
-	
-	'use strict';
-
-	return function (data) {
-		//var dateDiff = 0;
-		var finalDate = 0;
-		//for(var count = 0; count < data.length; count++) {
-			//dateDiff = data[count].endDate - data[count].startDate;
-			//console.log(dateDiff);
-			var mydate = new Date(data);
-			console.log('mydate',mydate);
-			finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
-			console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
-			//$scope.timesData.push(finalDate);
-			console.log('finalDate',finalDate);
-			return finalDate;
-		//console.log('in filter ',data);
-		
-	};
-});
-
-
-/*-----  End of Filter = remainingTime  ------*/
-/*================================================================
-=>                   Filter = userType
-==================================================================*/
-/*global app*/
-
-app.filter('userType', function () {
-	
-	'use strict';
-
-	return function (data) {
-		//var dateDiff = 0;
-		console.log('data',data);
-		if (data == 1) {
-			return 'male';
-		}else if (data == 2) {
-			return 'female';
-		} else {
-			return data;
-		}
-	};
-});
-
-
-/*-----  End of Filter = userType  ------*/
 /*================================================================
 Service = adminViewApi
 ==================================================================*/
@@ -3105,7 +3140,7 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         return deferred.promise;
     };
 
-    this.saveEthenicityDetail = function(data) {
+    this.saveEthenicityDetail = function(data) { 
 
         var deferred = $q.defer();
         var serviceUrl = appConfig.baseURL + '/addCollegeEthnicityForWeb';
@@ -3114,6 +3149,24 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         .success(function(data) {
                 console.log('Ethenicity save data=======>', data)
+                deferred.resolve(data);
+            })
+            .error(function(err) {
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
+    };
+
+    this.saveMostRepStateDetail = function(data) { 
+
+        var deferred = $q.defer();
+        var serviceUrl = appConfig.baseURL + '/saveOrUpdateStates';
+
+        $http.post(serviceUrl, data)
+
+        .success(function(data) {
+                console.log('Most Represented States save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
@@ -3879,117 +3932,128 @@ app.service('univViewApi', ['$rootScope', '$q', 'appConfig', '$http', function (
 
 
 /*-----  End of Service = univViewApi  ------*/
-/*!
- * jQuery Cookie Plugin v1.4.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2006, 2014 Klaus Hartl
- * Released under the MIT license
- */
-(function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD (Register as an anonymous module)
-		define(['jquery'], factory);
-	} else if (typeof exports === 'object') {
-		// Node/CommonJS
-		module.exports = factory(require('jquery'));
-	} else {
-		// Browser globals
-		factory(jQuery);
-	}
-}(function ($) {
+/*================================================================
+Filter = convertMiliSecondsIntoDate
+==================================================================*/
 
-	var pluses = /\+/g;
+app.filter('convertMiliSecondsIntoDate', function () {
+	'use strict';
 
-	function encode(s) {
-		return config.raw ? s : encodeURIComponent(s);
-	}
+	return function (input) {
 
-	function decode(s) {
-		return config.raw ? s : decodeURIComponent(s);
-	}
+		var mydate = new Date(input);
+			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
+			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
+			//$scope.timesData.push(finalDate);
+			var month = mydate.getMonth();
+			//month = month.parseInt();
+			month = month +1;
+			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
+			console.log('mydate',mydate);	
+			return mydate;
+		console.log('Filter == convertMiliSecondsIntoDate');
 
-	function stringifyCookieValue(value) {
-		return encode(config.json ? JSON.stringify(value) : String(value));
-	}
-
-	function parseCookieValue(s) {
-		if (s.indexOf('"') === 0) {
-			// This is a quoted cookie as according to RFC2068, unescape...
-			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-		}
-
-		try {
-			// Replace server-side written pluses with spaces.
-			// If we can't decode the cookie, ignore it, it's unusable.
-			// If we can't parse the cookie, ignore it, it's unusable.
-			s = decodeURIComponent(s.replace(pluses, ' '));
-			return config.json ? JSON.parse(s) : s;
-		} catch(e) {}
-	}
-
-	function read(s, converter) {
-		var value = config.raw ? s : parseCookieValue(s);
-		return $.isFunction(converter) ? converter(value) : value;
-	}
-
-	var config = $.cookie = function (key, value, options) {
-
-		// Write
-
-		if (arguments.length > 1 && !$.isFunction(value)) {
-			options = $.extend({}, config.defaults, options);
-
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
-			}
-
-			return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
-		}
-
-		// Read
-
-		var result = key ? undefined : {},
-			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all. Also prevents odd result when
-			// calling $.cookie().
-			cookies = document.cookie ? document.cookie.split('; ') : [],
-			i = 0,
-			l = cookies.length;
-
-		for (; i < l; i++) {
-			var parts = cookies[i].split('='),
-				name = decode(parts.shift()),
-				cookie = parts.join('=');
-
-			if (key === name) {
-				// If second argument (value) is a function it's a converter...
-				result = read(cookie, value);
-				break;
-			}
-
-			// Prevent storing a cookie that we couldn't decode.
-			if (!key && (cookie = read(cookie)) !== undefined) {
-				result[name] = cookie;
-			}
-		}
-
-		return result;
+		
 	};
+});
 
-	config.defaults = {};
+app.filter('convertMiliSecondsIntoDate1', function () {
+	'use strict';
 
-	$.removeCookie = function (key, options) {
-		// Must not alter options, thus extending a fresh object...
-		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
-		return !$.cookie(key);
+	return function (input) {
+
+		var mydate = new Date(input);
+			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
+			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
+			//$scope.timesData.push(finalDate);
+			var month = mydate.getMonth();
+			//month = month.parseInt();
+			month = month +1;
+			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
+			console.log('mydate',mydate);	
+			return mydate;
+		console.log('Filter == convertMiliSecondsIntoDate');
+
+		
 	};
+});
 
-}));
+/*-----  End of Filter = convertMiliSecondsIntoDate  ------*/
+
+/*================================================================
+=>                   Filter = genderFilter
+==================================================================*/
+/*global app*/
+
+app.filter('genderFilter', function () {
+	
+	'use strict';
+
+	return function (data) {
+		//var dateDiff = 0;
+		console.log('data',data);
+		if (data == 1) {
+			return 'male';
+		}else if (data == 2) {
+			return 'female';
+		} else {
+			return data;
+		}
+	};
+});
+
+
+/*-----  End of Filter = genderFilter  ------*/
+/*================================================================
+=>                   Filter = remainingTime
+==================================================================*/
+/*global app*/
+
+app.filter('remainingTime', function () {
+	
+	'use strict';
+
+	return function (data) {
+		//var dateDiff = 0;
+		var finalDate = 0;
+		//for(var count = 0; count < data.length; count++) {
+			//dateDiff = data[count].endDate - data[count].startDate;
+			//console.log(dateDiff);
+			var mydate = new Date(data);
+			console.log('mydate',mydate);
+			finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
+			console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
+			//$scope.timesData.push(finalDate);
+			console.log('finalDate',finalDate);
+			return finalDate;
+		//console.log('in filter ',data);
+		
+	};
+});
+
+
+/*-----  End of Filter = remainingTime  ------*/
+/*================================================================
+=>                   Filter = userType
+==================================================================*/
+/*global app*/
+
+app.filter('userType', function () {
+	
+	'use strict';
+
+	return function (data) {
+		//var dateDiff = 0;
+		console.log('data',data);
+		if (data == 1) {
+			return 'male';
+		}else if (data == 2) {
+			return 'female';
+		} else {
+			return data;
+		}
+	};
+});
+
+
+/*-----  End of Filter = userType  ------*/
