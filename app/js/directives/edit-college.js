@@ -22,8 +22,7 @@ app.directive('editcollege', ['$rootScope', function ($rootScope) {
 			$(function() {
 			    $( "#tabs" ).tabs();
 			    $( "#tabs_sports" ).tabs();
-			});
-			
+			  });
 		}
 
 

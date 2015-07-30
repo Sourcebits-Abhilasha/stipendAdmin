@@ -5,7 +5,7 @@ App stipend
 ==================================================================*/
 'use strict';
 
-var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload']);
+var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload', 'ngDialog', 'angularSpinner']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     
@@ -113,6 +113,14 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
             templateUrl: 'partials/templates/forgot-password.html'   
             //controller: 'ItemsCrtl'     
         });
+
+        // .state('emailFormat',  {
+        //     url: '/emailFormat',
+        //     //requiredLogin: true,                     
+        //     templateUrl: 'partials/templates/emailFormat.html'   
+        //     //controller: 'ItemsCrtl'     
+        // });
+
         $urlRouterProvider.otherwise('/');
 
         // This is required for Browser Sync to work poperly

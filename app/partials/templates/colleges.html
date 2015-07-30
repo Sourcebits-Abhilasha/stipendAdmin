@@ -1,99 +1,102 @@
+
 <!--Edit faculty Profile View-->
 <div ng-controller="CollegeCtrl">
+
     <!-- Faculty List Page View-->
     <div ng-hide="colgList">
         <div class="row list-header">
             <div class="col-xs-8">
                 <h2>COLLEGE ({{collegeCount}})</h2>
                 <!-- <div  ng-click="getForm();" class="btn-position"></div> -->
+                
                 <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">ADD NEW COLLEGE</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form class="form-horizontal">
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                        <!-- <label for="collegeName" class="col-sm-3 control-label lable-font">College Name</label> -->
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="collegeName" placeholder="college name" ng-model="addCollegeName">
-                                        </div>
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                        <!-- <label for="collegetype" class="col-sm-3 lable-font control-label">College Type</label> -->
-                                        <div class="col-sm-8">
-                                            <select class="form-control" id="collegetype" ng-options="item.collegeTypeId as item.collegeTypeName for item in colgType" ng-model="addCollegeTypeId">
-                                                <option value="">Please Select</option>
-                                            </select>
-                                            <!-- <input type="text" class="form-control" id="collegetype" placeholder="college type"> -->
-                                        </div>
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                        <!-- <label for="Public_private" class="col-sm-3 lable-font control-label">Public/Private</label> -->
-                                        <div class="col-sm-8">
-                                            <select class="form-control" id="Public_private" ng-options="item.accessTypeID as item.accessTypeName for item in accessType" ng-model="addCollegeAccessTypeID">
-                                                <option value="">Please Select</option>
-                                            </select>
-                                            <!-- <input type="text" class="form-control" id="collegetype" placeholder="college type"> -->
-                                        </div>
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                        <!-- <label for="city" class="col-sm-3 lable-font control-label">College Area</label> -->
-                                        <div class="col-sm-8">
-                                            <select class="form-control" id="city" ng-options="item.collegeAreaID as item.collegeAreaName for item in colgArea" ng-model="addCollegeAreaID">
-                                                <option value="">Please Select</option>
-                                            </select>
-                                            <!-- <input type="text" class="form-control" id="city" placeholder="city"> -->
-                                        </div>
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                        <!-- <label for="collegeCity" class="col-sm-3 control-label lable-font">City</label> -->
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="collegeCity" placeholder="college city" ng-model="addCollegeCity">
-                                        </div>
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                        <!-- <label for="longitude" class="col-sm-3 lable-font control-label">Longitude</label> -->
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="longitude" placeholder="longitude" ng-model="addCollegeLongitude">
-                                        </div>
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label lable-font"></label>
-                                        <!-- <label for="latitude" class="col-sm-3 lable-font control-label">Latitude</label> -->
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="latitude" placeholder="latitude" ng-model="addCollegeLatitude">
-                                        </div>
-                                    </div>
-                                    <label class="col-sm-2 control-label lable-font"></label>
-                                    <div class="row text-center">
-                                        <button type="submit" class="btn btn-danger" ng-click="addCollege('new')">SAVE</button>
-                                        <!-- <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button> -->
-                                    </div>
-                                </form>
-                            </div>
-                            <!--  <div class="modal-footer">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">ADD NEW COLLEGE</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label lable-font"></label>
+                        <!-- <label for="collegeName" class="col-sm-3 control-label lable-font">College Name</label> -->
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="collegeName" placeholder="college name" ng-model="addCollegeName">
+                        </div>
+                        <label class="col-sm-2 control-label lable-font"></label>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label lable-font"></label>
+                        <!-- <label for="collegetype" class="col-sm-3 lable-font control-label">College Type</label> -->
+                        <div class="col-sm-8">
+                            <select class="form-control" id="collegetype" ng-options="item.collegeTypeId as item.collegeTypeName for item in colgType" ng-model="addCollegeTypeId">
+                                <option value="">Please Select</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="collegetype" placeholder="college type"> -->
+                        </div>
+                        <label class="col-sm-2 control-label lable-font"></label>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label lable-font"></label>
+                        <!-- <label for="Public_private" class="col-sm-3 lable-font control-label">Public/Private</label> -->
+                        <div class="col-sm-8">
+                            <select class="form-control" id="Public_private" ng-options="item.accessTypeID as item.accessTypeName for item in accessType" ng-model="addCollegeAccessTypeID">
+                                <option value="">Please Select</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="collegetype" placeholder="college type"> -->
+                        </div>
+                        <label class="col-sm-2 control-label lable-font"></label>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label lable-font"></label>
+                        <!-- <label for="city" class="col-sm-3 lable-font control-label">College Area</label> -->
+                        <div class="col-sm-8">
+                            <select class="form-control" id="city" ng-options="item.collegeAreaID as item.collegeAreaName for item in colgArea" ng-model="addCollegeAreaID">
+                                <option value="">Please Select</option>
+                            </select>
+                            <!-- <input type="text" class="form-control" id="city" placeholder="city"> -->
+                        </div>
+                        <label class="col-sm-2 control-label lable-font"></label>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label lable-font"></label>
+                        <!-- <label for="collegeCity" class="col-sm-3 control-label lable-font">City</label> -->
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="collegeCity" placeholder="college city" ng-model="addCollegeCity">
+                        </div>
+                        <label class="col-sm-2 control-label lable-font"></label>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label lable-font"></label>
+                        <!-- <label for="longitude" class="col-sm-3 lable-font control-label">Longitude</label> -->
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="longitude" placeholder="longitude" ng-model="addCollegeLongitude">
+                        </div>
+                        <label class="col-sm-2 control-label lable-font"></label>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label lable-font"></label>
+                        <!-- <label for="latitude" class="col-sm-3 lable-font control-label">Latitude</label> -->
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="latitude" placeholder="latitude" ng-model="addCollegeLatitude">
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label lable-font"></label>
+                    <div class="row text-center">
+                        <button type="submit" class="btn btn-danger" ng-click="addCollege('new')">SAVE</button>
+                        <!-- <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button> -->
+                    </div>
+                </form>
+            </div>
+           <!--  <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
             </div> -->
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+</div>
             </div>
             <!-- <div class="col-xs-4">
                 <!-- <input type="search" placeholder="Search For Colleges" class="form-control search-bar-student "> --
@@ -251,7 +254,7 @@
                             <div class="form-group">
                                 <label for="avgACT" class="col-sm-7 control-label lable-font">Average ACT</label>
                                 <div class="col-sm-5">
-                                    <input type="text" id="avgACT" class="form-control" ng-model="testScoreAvg.averageGPA">
+                                    <input type="text" id = "avgACT" class="form-control" ng-model="testScoreAvg.averageGPA">
                                 </div>
                             </div>
                         </div>
@@ -265,92 +268,92 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <h2 class="h2-size">SAT</h2>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label lable-font"></label>
-                                <div class="col-sm-4 text-center">
-                                    <strong>MIN</strong>
-                                </div>
-                                <div class="col-sm-4 text-center">
-                                    <strong>MAX</strong>
-                                </div>
+                    <div class="col-md-6">
+                        <h2 class="h2-size">SAT</h2>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label lable-font"></label>
+                            <div class="col-sm-4 text-center">
+                                <strong>MIN</strong>
                             </div>
-                            <div class="form-group">
-                                <label for="criticalLowReading" class="col-sm-4 control-label lable-font">CRITICAL READING</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreLowerLimit">
-                                </div>
-                                <div class="col-sm-4" for="criticalHighReading">
-                                    <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreHigherLimit">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="satMath" class="col-sm-4 control-label lable-font">MATH</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="SatData.math.scoreLowerLimit">
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="SatData.math.scoreHigherLimit">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="writing" class="col-sm-4 control-label lable-font">WRITING</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="SatData.Writing.scoreLowerLimit">
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="SatData.Writing.scoreHigherLimit">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="writing" class="col-sm-4 control-label lable-font">Total</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="SatData.TotalLow" readonly="">
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="SatData.TotalHigh" readonly="">
-                                </div>
+                            <div class="col-sm-4 text-center" >
+                                <strong>MAX</strong>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="criticalLowReading" class="col-sm-4 control-label lable-font">CRITICAL READING</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreLowerLimit">
+                            </div>
+                            <div class="col-sm-4" for="criticalHighReading">
+                                <input type="text" class="form-control" ng-model="SatData.CriticalReading.scoreHigherLimit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="satMath" class="col-sm-4 control-label lable-font">MATH</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.math.scoreLowerLimit">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.math.scoreHigherLimit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="writing" class="col-sm-4 control-label lable-font">WRITING</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.Writing.scoreLowerLimit">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.Writing.scoreHigherLimit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="writing" class="col-sm-4 control-label lable-font">Total</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.TotalLow" readonly="">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="SatData.TotalHigh" readonly="">
+                            </div>
+                        </div>
+                        </div>
                         <div class="col-md-6">
-                            <h2 class="h2-size">ACT</h2>
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label lable-font"></label>
-                                <div class="col-sm-4 text-center">
-                                    <strong>MIN</strong>
-                                </div>
-                                <div class="col-sm-4 text-center">
-                                    <strong>MAX</strong>
-                                </div>
+                             <h2 class="h2-size">ACT</h2>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label lable-font"></label>
+                            <div class="col-sm-4 text-center">
+                                <strong>MIN</strong>
                             </div>
-                            <div class="form-group">
-                                <label for="actEnglish" class="col-sm-4 control-label lable-font">ENGLISH</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="ActData.English.scoreLowerLimit">
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="ActData.English.scoreHigherLimit">
-                                </div>
+                            <div class="col-sm-4 text-center" >
+                                <strong>MAX</strong>
                             </div>
-                            <div class="form-group">
-                                <label for="actMath" class="col-sm-4 control-label lable-font">MATH</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="ActData.math.scoreLowerLimit">
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="ActData.math.scoreHigherLimit">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="actEnglish" class="col-sm-4 control-label lable-font">ENGLISH</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="ActData.English.scoreLowerLimit">
                             </div>
-                            <div class="form-group">
-                                <label for="actMath" class="col-sm-4 control-label lable-font">Composite</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="ActData.CompositeLow" readonly="">
-                                </div>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" ng-model="ActData.CompositeHigh" readonly="">
-                                </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="ActData.English.scoreHigherLimit">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="actMath" class="col-sm-4 control-label lable-font">MATH</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="ActData.math.scoreLowerLimit">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="ActData.math.scoreHigherLimit">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="actMath" class="col-sm-4 control-label lable-font">Composite</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="ActData.CompositeLow" readonly="">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" ng-model="ActData.CompositeHigh" readonly="">
+                            </div>
+                        </div>
                         </div>
                         <!-- <div class="col-md-6">
                             Graph
@@ -363,10 +366,11 @@
                         </div>
                     </div> -->
                     <div class="row">
+                    
                         <h2 class="h2-size">GPA SCORE</h2>
                         <div class="form-group">
-                            <span class="col-sm-1"></span> <span class="col-sm-1"></span><span class="col-sm-1"></span>
-                            <div class="col-sm-4 text-center">
+                            <span class="col-sm-1" ></span> <span class="col-sm-1"></span><span class="col-sm-1" ></span>
+                            <div class="col-sm-4 text-center" >
                                 <strong>Percentage</strong>
                             </div>
                         </div>
@@ -385,8 +389,8 @@
                     <div class="row">
                         <h2 class="h2-size">SAT SCORE</h2>
                         <div class="form-group">
-                            <span class="col-sm-1"></span> <span class="col-sm-1"></span><span class="col-sm-1"></span>
-                            <div class="col-sm-4 text-center">
+                            <span class="col-sm-1" ></span> <span class="col-sm-1"></span><span class="col-sm-1" ></span>
+                            <div class="col-sm-4 text-center" >
                                 <strong>Percentage</strong>
                             </div>
                         </div>
@@ -405,8 +409,8 @@
                     <div class="row">
                         <h2 class="h2-size">ACT SCORE</h2>
                         <div class="form-group">
-                            <span class="col-sm-1"></span> <span class="col-sm-1"></span><span class="col-sm-1"></span>
-                            <div class="col-sm-4 text-center">
+                            <span class="col-sm-1" ></span> <span class="col-sm-1"></span><span class="col-sm-1" ></span>
+                            <div class="col-sm-4 text-center" >
                                 <strong>Percentage</strong>
                             </div>
                         </div>
@@ -516,23 +520,24 @@
                     </div>
                     <h2 class="h2-size">MOST REPRESENTED STATES</h2>
                     <div class="row">
-                        <div class="col-md-1"></div>
+                    <div class="col-md-1"></div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" ng-model="mostRepresentedState.stateId1">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId1">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" ng-model="mostRepresentedState.stateId2">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId2">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" ng-model="mostRepresentedState.stateId3">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId3">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" ng-model="mostRepresentedState.stateId4">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId4">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" class="form-control" ng-model="mostRepresentedState.stateId5">
+                             <input type="text" class="form-control" ng-model="mostRepresentedState.stateId5">
                         </div>
-                        <div class="col-md-1"></div>
+                        <div class="col-md-1"></div>    
+                       
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12">
@@ -563,24 +568,25 @@
             <h3 class="accordion-h3 h3-size">Admissions</h3>
             <div class="row">
                 <form class="form-horizontal">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
+                <div class="row">
+                 <div class="col-md-6">
+                        <div class="form-group">
                                 <label for="actcode" class="col-sm-7 control-label lable-font">ACTCODE</label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control" id="actcode" ng-model="admissionCode.ACTCODE">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                                 <label for="satcode" class="col-sm-7 control-label lable-font">SETCODE</label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control" id="setcode" ng-model="admissionCode.SATCODE">
                                 </div>
                             </div>
-                        </div>
                     </div>
+                   
+                </div>
                     <!-- ######## ADMISSION DETAIL START #########-->
                     <h2 class="h2-size">Admission {{isChecked}}</h2>
                     <div class="form-group" ng-repeat="data in admission">
@@ -679,18 +685,18 @@
             </div>
             <h3 class="accordion-h3 h3-size">Calendar</h3>
             <div class="row">
-                <form>
-                    <div class="form-group" ng-repeat="data in test">
+                <form >
+                    <div class="form-group" ng-repeat="data in test" >
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="eventName" class="calendar-label">Event Name</label>
-                                <input type="text" class="form-control" id="eventName" ng-model="data.eventName" value="evtName">
+                                <label for="eventName" class="calendar-label">Event Name</label>                                
+                                    <input type="text" class="form-control" id="eventName" ng-model="data.eventName" value="evtName">                               
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="datepicker" class="calendar-label">Event Date</label>
-                                <input type="date" class="form-control" id="datepicker" ng-model="data.eventDate" value="data.eventDate">
+                                <label for="datepicker" class="calendar-label">Event Date</label> 
+                                    <input type="date" class="form-control" id="datepicker" ng-model="data.eventDate" value="data.eventDate">
                             </div>
                         </div>
                         <!-- <div style="cursor: pointer;  margin: 9px 2px;" class="col-xs-1" ng-click="deleteCalendar($index)">X</div> -->
@@ -719,20 +725,20 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-sm-5 lable-font control-label">STUDENT:FACULTY RATIO</label>
-                                <div class="col-sm-7">
-                                    <input type="text" class="form-control" ng-model="studentFacultyRatio.studentFacultyRatio">
-                                </div>
-                            </div>
+                            <div class="form-group" >
+                        <label class="col-sm-5 lable-font control-label" >STUDENT:FACULTY RATIO</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" ng-model = "studentFacultyRatio.studentFacultyRatio">
+                        </div>
+                    </div> 
                         </div>
                         <div class="col-md-6">
                             <div class="form-group" ng-repeat="obj in intendedStudyOption" after-repeat-directive="testing()">
                                 <label class="col-sm-5 lable-font control-label" >{{obj.sysIntendedStudyOptionName}}</label>
-                                <div class="col-sm-7">
+                        <div class="col-sm-7">
                                     <input type="checkbox" class="form-control" id="{{(obj.sysIntendedStudyOptionName).slice(0,-1).split(' ').join('')}}" data-on="YES" data-off="NO">
-                                </div>
-                            </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                     <div class="row text-center">
@@ -752,22 +758,22 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="feesAndFinancial" class="col-sm-7 lable-font control-label">AVERAGE FINANCIAL AID</label>
-                                <div class="col-sm-5">
-                                    <input type="text" class="form-control" ng-model="AvgFees.AverageFinancialAid">
-                                </div>
-                            </div>
+                    <div class="col-md-6">
+                         <div class="form-group">
+                        <label for="feesAndFinancial" class="col-sm-7 lable-font control-label" >AVERAGE FINANCIAL AID</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" ng-model="AvgFees.AverageFinancialAid" >
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="feesAndFinancial" class="col-sm-7 lable-font control-label">RECEIVING FINANCIAL AID</label>
-                                <div class="col-sm-5">
-                                    <input type="text" class="form-control" ng-model="AvgFees.ReceivingFinancialAid">
-                                </div>
-                            </div>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="feesAndFinancial" class="col-sm-7 lable-font control-label">RECEIVING FINANCIAL AID</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" ng-model="AvgFees.ReceivingFinancialAid">
                         </div>
+                    </div>
+                    </div>
                     </div>
                     <div class="row text-center">
                         <button type="submit" class="btn btn-danger" ng-click="saveFeesAndFinancial()">SAVE</button>
@@ -776,7 +782,9 @@
                 </form>
             </div>
             <h3 class="accordion-h3 h3-size">Sports</h3>
+                <!--  <p>Sports...... </p> -->
             <div class="row ">
+
                 <div id="tabs_sports">
                     <ul>
                         <li class="col-md-3 tabs-margin"><a href="#tabs_sports-1">Men</a></li>
@@ -785,41 +793,41 @@
                     <div id="tabs_sports-1">
                         <div class="moveBelow" style="margin-top:25px; ">
                             <div class="row ">
-                                <div class="form-group ">
-                                    <h2 class="h2-size">NCAA DIVISION I</h2>
-                                    <div class="col-sm-4 " ng-repeat="data in sysSports">
-                                        <div class="form-group ">
-                                            <input class="col-sm-2" type="checkbox" ng-model="data.isChecked"> {{data.syssportsName}}
-                                            <!-- <div class="col-sm-11 ">
-                                                    <input type="text " class="form-control " id="div1 " ng-model="data.syssportsName " value="syssportsName ">
-                                                </div> -->
+                            <div class="form-group ">
+                                <h2 class="h2-size">NCAA DIVISION I</h2>
+                                <div class="col-sm-4 " ng-repeat="data in sysSports">
+                                    <div class="form-group ">
+                                        <input class="col-sm-2" type="checkbox" ng-model="data.isChecked"> {{data.syssportsName}}
+                                        <!-- <div class="col-sm-11 ">
+                                            <input type="text " class="form-control " id="div1 " ng-model="data.syssportsName " value="syssportsName ">
+                                        </div> -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row ">
-                                <div class="form-group ">
-                                    <h2 class="h2-size">NCAA DIVISION II</h2>
-                                    <div class="col-sm-4 " ng-repeat="data in sysSports2">
-                                        <div class="form-group ">
-                                            <input class="col-sm-2" type="checkbox" ng-model="data.isChecked"> {{data.syssportsName}}
+                            <div class="form-group ">
+                                <h2 class="h2-size">NCAA DIVISION II</h2>
+                                <div class="col-sm-4 " ng-repeat="data in sysSports2">
+                                    <div class="form-group ">
+                                        <input class="col-sm-2" type="checkbox" ng-model="data.isChecked"> {{data.syssportsName}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row ">
-                                <div class="form-group ">
-                                    <h2 class="h2-size">NCAA DIVISION III</h2>
-                                    <div class="col-sm-4 " ng-repeat="data in sysSports3">
-                                        <div class="form-group ">
-                                            <input class="col-sm-2" type="checkbox" ng-model="data.isChecked"> {{data.syssportsName}}
+                            <div class="form-group ">
+                                <h2 class="h2-size">NCAA DIVISION III</h2>
+                                <div class="col-sm-4 " ng-repeat="data in sysSports3">
+                                    <div class="form-group ">
+                                        <input class="col-sm-2" type="checkbox" ng-model="data.isChecked"> {{data.syssportsName}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row ">
-                                <div class="row text-center">
-                                    <button type="submit" class="btn btn-danger" ng-click="saveSports()">SAVE</button>
+                            <div class="row text-center">
+                                <button type="submit" class="btn btn-danger" ng-click="saveSports()">SAVE</button>
                                     <button type="submit" class="btn btn-default" ng-click="backCollegeList()">Cancel</button>
                                 </div>
                             </div>
@@ -859,6 +867,9 @@
                                 <div class="col-sm-4 " ng-repeat="data in sysSports6">
                                     <div class="form-group ">
                                         <input class="col-sm-2" type="checkbox" ng-model="data.isChecked"> {{data.syssportsName}}
+                                        <!-- <div class="col-sm-11 ">
+                                            <input type="text " class="form-control " id="div1 " ng-model="data.syssportsName " value="syssportsName ">
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -1196,4 +1207,5 @@
             </div>
         </div>
     </div>
+
 </div>

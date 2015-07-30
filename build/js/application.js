@@ -5,7 +5,7 @@ App stipend
 ==================================================================*/
 'use strict';
 
-var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload']);
+var app = angular.module('stipend', ['ngRoute', 'chart.js', 'ui.router', 'ngProgress', 'angularFileUpload', 'ngDialog', 'angularSpinner']);
 
 app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     
@@ -113,6 +113,14 @@ app.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationP
             templateUrl: 'partials/templates/forgot-password.html'   
             //controller: 'ItemsCrtl'     
         });
+
+        // .state('emailFormat',  {
+        //     url: '/emailFormat',
+        //     //requiredLogin: true,                     
+        //     templateUrl: 'partials/templates/emailFormat.html'   
+        //     //controller: 'ItemsCrtl'     
+        // });
+
         $urlRouterProvider.otherwise('/');
 
         // This is required for Browser Sync to work poperly
@@ -178,6 +186,460 @@ app.constant('appConfig', {
     
 });
 
+/*================================================================
+Directive = activeMenu
+==================================================================*/
+
+app.directive('activeMenu', ['$rootScope', function ($rootScope) {
+'use strict';
+
+	return {
+		restrict: 'A',
+		link: function (scope, element, attrs) {
+			$(element).on('click', function () {
+				//debugger;
+				// $(element).siblings().removeClass('active_menu');
+				// $(element).addClass('active_menu');
+				var prevClassName = $(element).siblings().find('li.active_menu>div').attr('class');
+				//$(element).siblings().find('li.active_menu>div').removeClass(prevClassName+'-active').addClass(currentClass);
+				$(element).siblings().find('li').removeClass('active_menu');
+				$(element).find('li').addClass('active_menu');
+				//var prevClassName = $(element).find('li>div').attr('class');
+				console.log('currentClassName -->', currentClassName);
+				var checkImageStatus = currentClassName.search("-active");
+				
+				console.log('prevClassName',prevClassName);
+				//$(element).siblings().find('li>div').
+				//debugger;
+				if(checkImageStatus == -1) {
+					$(element).find('div').removeClass(currentClassName).addClass(currentClassName+'-active');
+				} else {
+					var currentClass = currentClassName.substr(0,checkImageStatus);
+					
+				}
+				
+
+			});
+		}
+	};
+
+}]);
+
+/*-----  End of Directive = activeMenu  ------*/
+/*================================================================
+Directive = addAddress
+==================================================================*/
+/*global app,$*/
+app.directive('addAddress', ['$rootScope', '$compile', function($rootScope, $compile) {
+    'use strict';
+
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var counter = 0;
+            scope.websiteNameArray = [];
+            scope.websiteURLArray = [];
+            $(element).on('click', function() {
+                counter++;
+                var address = $compile('<div class="form-group college-address-div-' + counter + '">'+
+                    '<div class="col-xs-5">'+
+                        '<input type="text" class="form-control" placeholder="Enter Here" ng-model="websiteNameArray[' + counter + ']" id="collegeAddress-' + counter + '"/>'+
+                    '</div>'+
+                    '<div class="col-xs-5">'+
+                        '<input type="text" class="form-control" placeholder="Enter Here" ng-model="websiteURLArray[' + counter + ']" id="collegeAddress-' + counter + '"/>'+
+                    '</div>'+
+                    '<div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedLinkAndAddress(' + counter + ')">X</div></div>')(scope);
+                $('.college-address').append(address);
+                $('#collegeAddress-' + counter).focus();
+                //scope.ans.push(scope.ans+counter);
+            });
+
+            $('div').on('click', '.test', function($event) {
+                console.log('$event', $event);
+                // $event.preventDefault();
+                //  $(this).parent().prev().prev().remove();
+                //  $(this).parent().prev().remove();
+                // $(this).parent().remove();
+            });
+
+
+
+            console.log('Directive === addAddress');
+        }
+    };
+
+}]);
+
+/*-----  End of Directive = addAddress  ------*/
+
+/*================================================================
+Directive = addAnswer
+==================================================================*/
+/*global app,$*/
+app.directive('addAnswer', ['$rootScope', '$compile', function($rootScope, $compile) {
+    'use strict';
+
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var counter = 0;
+            scope.ans = [];
+            $(element).on('click', function() {
+                counter++;
+                var inputEle = $compile('<div class="form-group answer-div-' + counter + '"><div class="col-xs-10"><input type="text" class="form-control" placeholder="Enter Here" ng-model="ans[' + counter + ']" id="answer-' + counter + '"/></div><div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedAns(' + counter + ')">X</div></div>')(scope);
+                $('.answer-container').append(inputEle);
+                $('#answer-' + counter).focus();
+                //scope.ans.push(scope.ans+counter);
+            });
+
+            //<div class="form-group answer-div-'+counter+'"><div class="col-xs-1"><input type="checkbox" name="ans-'+counter+'" id="ans--'+counter+'"></div><div class="col-xs-8"><input type="text" class="form-control" placeholder="Enter Answer Here" ng-model="ans['+counter+']" id="answer-'+counter+'"/></div><div style="cursor: pointer;  margin: 9px 2px;" class="col-xs-1 closeLang'+counter+'" ng-click="delSelectedAns('+counter+')">X</div></div>
+            /*$('div').on('click', '.closeLang', function ($event) {
+				console.log('$event',$event);
+		        $event.preventDefault();
+		         $(this).parent().prev().prev().remove();
+		         $(this).parent().prev().remove();
+		        $(this).parent().remove();
+    		});*/
+
+            $('div').on('click', '.test', function($event) {
+                console.log('$event', $event);
+                // $event.preventDefault();
+                //  $(this).parent().prev().prev().remove();
+                //  $(this).parent().prev().remove();
+                // $(this).parent().remove();
+            });
+
+
+
+            console.log('Directive === addAnswer');
+        }
+    };
+
+}]);
+
+/*-----  End of Directive = addAnswer  ------*/
+
+/*================================================================
+Directive = addCalendar
+==================================================================*/
+/*global app,$*/
+app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $compile) {
+    'use strict';
+
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var counter = 0;
+            scope.calendarEventNameArray = [];
+            scope.calendarEventDateArray = [];
+            $(element).on('click', function() {
+                counter++;
+                var test = $compile('<div class="form-group calendar-div-' + counter + '">'+
+                   '<div class="col-sm-5"> <div class="form-group"><label for="calendarEventName" class="col-sm-5 control-label lable-font">Event Name</label>'+
+                    '<div class="col-sm-7"><input type="text" class="form-control" placeholder="Enter Here" ng-model="calendarEventNameArray[' + counter + ']" id="calendarEventName-' + counter + '"/>'+
+                    '</div></div></div>'+
+
+                    '<div class="col-sm-5"><div class="form-group"><label for="calendarEventDate" class="col-sm-5 control-label lable-font">Event Date</label>'+
+                                '<div class="col-sm-7"><input type="text" class="form-control" placeholder="Enter Here" ng-model="calendarEventDateArray[' + counter + ']" id="calendarEventDate-' + counter + '"/>'+
+                    '</div></div></div>'+
+                    '<div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedCalendar(' + counter + ')">X</div>'+
+                    '</div>')(scope);
+                $('.calendar-div').append(test);
+                $('#eventCalendar-' + counter).focus();
+                //scope.ans.push(scope.ans+counter);
+            });
+
+
+                
+
+
+            $('div').on('click', '.test', function($event) {
+                console.log('$event', $event);
+                // $event.preventDefault();
+                //  $(this).parent().prev().prev().remove();
+                //  $(this).parent().prev().remove();
+                // $(this).parent().remove();
+            });
+
+
+
+            console.log('Directive === addCalendar');
+        }
+    };
+
+}]);
+
+/*-----  End of Directive = addCalendar  ------*/
+
+/*================================================================
+Directive = addCollegeRanking
+==================================================================*/
+/*global app,$*/
+app.directive('addCollegeRanking', ['$rootScope', '$compile', function($rootScope, $compile) {
+    'use strict';
+
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var counter = 0;
+            scope.clgRankingArray = [];
+            scope.clgRankingPointsArray = [];
+            $(element).on('click', function() {
+                counter++;
+                var clgRank = $compile('<div class="form-group college-ranking-' + counter + '">' +
+                    '<div class="col-xs-5">' +
+                    '<input type="text" class="form-control" placeholder="Enter Here" ng-model="clgRankingArray[' + counter + ']" id="rank-' + counter + '"/>' +
+                    '</div>' +
+                    '<div class="col-xs-5">' +
+                    '<input type="text" class="form-control" placeholder="Enter Here" ng-model="clgRankingPointsArray[' + counter + ']" id="rank-' + counter + '"/>' +
+                    '</div>' +
+                    '<div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedCollegeRanking(' + counter + ')">X</div></div>')(scope);
+                $('.college-ranking').append(clgRank);
+                $('#rank-' + counter).focus();
+                //scope.ans.push(scope.ans+counter);
+            });
+
+            $('div').on('click', '.test', function($event) {
+                console.log('$event', $event);
+                // $event.preventDefault();
+                //  $(this).parent().prev().prev().remove();
+                //  $(this).parent().prev().remove();
+                // $(this).parent().remove();
+            });
+
+
+
+            console.log('Directive === addCollegeRanking');
+        }
+    };
+
+}]);
+
+/*-----  End of Directive = addCollegeRanking  ------*/
+
+/*================================================================
+Directive = addProminent
+==================================================================*/
+/*global app,$*/
+app.directive('addProminent', ['$rootScope', '$compile', function($rootScope, $compile) {
+    'use strict';
+
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var counter = 0;
+            scope.prominentArray = [];
+            $(element).on('click', function() {
+                counter++;
+                var prominentAlumni = $compile('<div class="form-group prominent-alumni-div-' + counter + '"><div class="col-xs-10"><input type="text" class="form-control" placeholder="Enter Here" ng-model="prominentArray[' + counter + ']" id="promp-' + counter + '"/></div><div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedProminent(' + counter + ')">X</div></div>')(scope);
+                $('.prominent-alumni').append(prominentAlumni);
+                $('#promp-' + counter).focus();
+                //scope.ans.push(scope.ans+counter);
+            });
+
+            $('div').on('click', '.test', function($event) {
+                console.log('$event', $event);
+                // $event.preventDefault();
+                //  $(this).parent().prev().prev().remove();
+                //  $(this).parent().prev().remove();
+                // $(this).parent().remove();
+            });
+
+
+
+            console.log('Directive === addProminent');
+        }
+    };
+
+}]);
+
+/*-----  End of Directive = addProminent  ------*/
+
+app.directive('afterRepeatDirective', ['$rootScope', function($rootScope) {
+    'use strict';
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            if (scope.$last) {
+                // iteration is complete, do whatever post-processing is necessary
+                //element.parent().css('border', '1px solid black');
+                // var objIntendedStudyOption = scope.$parent.intendedStudyOption;
+                // for (var i = 0; i < objIntendedStudyOption.length; i++) {
+                //     var obj = objIntendedStudyOption[i];
+                //     var ele = obj.sysIntendedStudyOptionName.slice(0,-1).split(' ').join('');
+                //     debugger;
+                //     //console.log(obj.sysIntendedStudyOptionName);
+                //     $('#'+ele).bootstrapToggle();
+                //     console.log(document.getElementById(ele));//.bootstrapToggle();
+                // }
+                //element.bootstrapToggle();
+                scope.$evalAsync(attrs.afterRepeatDirective);
+                //scope.$parent.intendedStudyOption[0].sysIntendedStudyOptionName
+            }
+        }
+    };
+}]);
+
+/*================================================================
+Directive = calendarRepeatDirecitve
+==================================================================*/
+/*global app,$*/
+app.directive('myPostRepeatDirective', ['$rootScope', '$compile', function($rootScope, $compile) {
+    'use strict';
+    var counter = 0;
+  return function(scope, element, attrs) {
+    
+    ++counter;
+    console.log(scope.data);
+    var ele = element.find('input')[1];
+    ele.id = ele.id +''+counter;
+    $('#'+ele.id).datepicker({
+			      changeMonth: true,
+			      changeYear: true,
+			      dateFormat: 'yy-mm-dd'
+			    });
+  };
+}]);
+
+/*-----  End of Directive = calendarRepeatDirecitve  ------*/
+// /*================================================================
+// Directive = datepicker
+// ==================================================================*/
+// /*global app,$*/
+
+// app.directive('dateTimePicker', ['$rootScope', function ($rootScope) {
+// 'use strict';
+
+// 	return {
+// 		restrict: 'A',
+// 		link: function (scope, element, attrs) {
+// 			    $( "#datepicker" ).datepicker({
+// 			      changeMonth: true,
+// 			      changeYear: true
+// 			    });
+			 
+// 			// $(element).on('click', function() {
+// 			// 	console.log('m in date picker');
+// 			// 	// var ngModel = $(this).attr('ng-model'); //getting ng-model name
+// 			// 	// console.log(event.target.value)
+// 			// 	// scope[ngModel] = event.target.value; //update the new value to ng-model
+// 			// 	// scope.$apply();
+// 			// 	$(element).datepicker( );
+// 			// });
+			
+// 			console.log('Directive === datepicker');
+// 		}
+
+// 	};
+
+// }]);
+
+
+// /*-----  End of Directive = datepicker  ------*/
+
+
+
+/*================================================================
+Directive = calendarRepeatDirecitve
+==================================================================*/
+/*global app,$*/
+app.directive('myPostRepeatDirective', ['$rootScope', '$compile', function($rootScope, $compile) {
+    'use strict';
+    var counter = 0;
+  return function(scope, element, attrs) {
+    
+    ++counter;
+    // console.log(scope.data);
+    var ele = element.find('input')[1];
+    ele.id = ele.id +''+counter;
+    $('#'+ele.id).datepicker({
+			      changeMonth: true,
+			      changeYear: true,
+			      dateFormat: 'yy-mm-dd'
+			    });
+  };
+}]);
+
+/*-----  End of Directive = calendarRepeatDirecitve  ------*/
+
+/*================================================================
+Directive = editcollege
+==================================================================*/
+/*global app,$*/
+app.directive('editcollege', ['$rootScope', function ($rootScope) {
+'use strict';	
+
+	return {
+		restrict: 'A',
+		link: function (scope, element, attrs) {
+			
+			(function() {
+			    $( "#accordion" ).accordion({
+			      collapsible: true,
+			      heightStyle: "content",
+			      autoHeight: false,
+    			  navigation: true
+			    });
+			  })();
+			
+			console.log('Directive === edit_college');
+			$(function() {
+			    $( "#tabs" ).tabs();
+			    $( "#tabs_sports" ).tabs();
+			  });
+		}
+
+
+	};
+
+}]);
+
+
+/*-----  End of Directive = editcollege  ------*/
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+/*================================================================
+Directive = afterRepeatDirective
+==================================================================*/
+/*global app,$*/
+app.directive('afterRepeatDirective', ['$rootScope', function($rootScope) {
+    'use strict';
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            if (scope.$last) {
+                // iteration is complete, do whatever post-processing is necessary
+                //element.parent().css('border', '1px solid black');
+                // var objIntendedStudyOption = scope.$parent.intendedStudyOption;
+                // for (var i = 0; i < objIntendedStudyOption.length; i++) {
+                // var obj = objIntendedStudyOption[i];
+                // var ele = obj.sysIntendedStudyOptionName.slice(0,-1).split(' ').join('');
+                // debugger;
+                // //console.log(obj.sysIntendedStudyOptionName);
+                // $('#'+ele).bootstrapToggle();
+                // console.log(document.getElementById(ele));//.bootstrapToggle();
+                // }
+                //element.bootstrapToggle();
+                scope.$evalAsync(attrs.afterRepeatDirective);
+                //scope.$parent.intendedStudyOption[0].sysIntendedStudyOptionName
+            }
+        }
+    };
+}]);
+/*-----  End of Directive = afterRepeatDirective  ------*/
 /*================================================================
 Controller = AdminCtrl
 ==================================================================*/
@@ -278,7 +740,7 @@ app.controller('ClassesCtrl', ['$scope', 'classviewAPI', function ($scope, class
 Controller = CollegeCtrl
 ==================================================================*/
 
-app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootScope', function($scope, CollegeAPI, editCollegeAPI, $rootScope) {
+app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootScope', 'usSpinnerService', function($scope, CollegeAPI, editCollegeAPI, $rootScope, usSpinnerService) {
     'use strict';
     var inStateData = [1, 3, 4, 5, 6];
     var outStateData = [1, 2, 4, 5, 6];
@@ -385,6 +847,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.getcollege = function(state) {
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
         var page;
         if (!isNaN(state)) {
             $scope.collegeState = state;
@@ -433,14 +896,16 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         // $scope.collegeCount = data.length;
 
                     }
-
+                    usSpinnerService.stop('spinner-1');
                 }
+
             );
     };
     $scope.getcollege('initial');
 
     $scope.getUsers = function(state) {
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
         var page;
         if (!isNaN(state)) {
             $scope.pageState = state;
@@ -488,7 +953,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         $scope.userdata = data.Users;
 
                     }
-
+                    usSpinnerService.stop('spinner-1');
                 }
             );
     };
@@ -499,6 +964,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
     $scope.getSimilarCollege = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('getSimilarCollege------>', $scope.collegeCount);
         var page = {
                 'off': 0,
@@ -518,7 +984,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                         // $scope.FacultyName = data.firstName + data.lastName;
                         console.log('similar school data---->', $scope.similarCollegeData)
                     }
-
+                    usSpinnerService.stop('spinner-1');
                 }
             );
     };
@@ -527,6 +993,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
     $scope.editCollege = function(data) {
         //$('body').addClass('page-loader');
+
+        usSpinnerService.spin('spinner-1');
+
         $scope.getSimilarCollege();
 
         console.log('data is in ====>', data);
@@ -536,236 +1005,239 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                 function(data) {
                     console.log('data Edit College====>', data);
                     if (data !== null) {
-                        $scope.selectedSportsDiv1 = [];
-                        $scope.selectedSportsDiv2 = [];
-                        $scope.selectedSportsDiv3 = [];
-                        $scope.selectedSportsDiv11 = [];
-                        $scope.selectedSportsDiv22 = [];
-                        $scope.selectedSportsDiv33 = [];
-                        $scope.colgList = true;
-                        $scope.editList = false;
-                        // console.log('get college details',data['College'].collegeName);
-                        $scope.college.colgName = data['College'].collegeName;
-                        //Store Collge Type Id
-                        $scope.college.collegeTypeId = data['College'].collegeTypeId;
-                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
-                        $scope.college.colgType = $scope.college.collegeTypeId;
+                        try {
+                            $scope.selectedSportsDiv1 = [];
+                            $scope.selectedSportsDiv2 = [];
+                            $scope.selectedSportsDiv3 = [];
+                            $scope.selectedSportsDiv11 = [];
+                            $scope.selectedSportsDiv22 = [];
+                            $scope.selectedSportsDiv33 = [];
+                            $scope.colgList = true;
+                            $scope.editList = false;
+                            // console.log('get college details',data['College'].collegeName);
+                            $scope.college.colgName = data['College'].collegeName;
+                            //Store Collge Type Id
+                            $scope.college.collegeTypeId = data['College'].collegeTypeId;
+                            //Drop-Down -> Model Name from HTML = (college_id from data you getting)
+                            $scope.college.colgType = $scope.college.collegeTypeId;
 
-                        $scope.college.accessTypeID = data['College'].accessTypeID;
-                        //$scope.college.colgArea = $scope.college.accessTypeID;
-                        $scope.college.accessType = $scope.college.accessTypeID;
+                            $scope.college.accessTypeID = data['College'].accessTypeID;
+                            //$scope.college.colgArea = $scope.college.accessTypeID;
+                            $scope.college.accessType = $scope.college.accessTypeID;
 
-                        $scope.college.colgAreaID = data['College'].collegeAreaID;
+                            $scope.college.colgAreaID = data['College'].collegeAreaID;
 
-                        //Drop-Down -> Model Name from HTML = (college_id from data you getting)
+                            //Drop-Down -> Model Name from HTML = (college_id from data you getting)
 
-                        $scope.college.colgArea = $scope.college.colgAreaID;
+                            $scope.college.colgArea = $scope.college.colgAreaID;
 
+                            $scope.college.colgLongitude = data['College'].collegeLongitude;
+                            $scope.college.colgLatitude = data['College'].collegeLatitude;
+                            $scope.college.colgStreet = data['College'].streetName;
+                            $scope.college.colgCity = data['College'].city;
+                            $scope.college.colgState = data['College'].state;
+                            $scope.college.colgPhn = data['College'].telephoneNumber;
+                            $scope.college.colgEmail = data['College'].officeEmailAddress;
+                            $scope.college.colgZip = data['College'].zip;
+                            $scope.college.colgStreet = data['College'].streetName;
+                            $scope.college.colgState = data['College'].state;
+                            $scope.college.colgTelephoneNumber = data['College'].telephoneNumber;
+                            $scope.college.colgOfficeEmailAddress = data['College'].officeEmailAddress;
 
-                        $scope.college.colgLongitude = data['College'].collegeLongitude;
-                        $scope.college.colgLatitude = data['College'].collegeLatitude;
-                        $scope.college.colgStreet = data['College'].streetName;
-                        $scope.college.colgCity = data['College'].city;
-                        $scope.college.colgState = data['College'].state;
-                        $scope.college.colgPhn = data['College'].telephoneNumber;
-                        $scope.college.colgEmail = data['College'].officeEmailAddress;
-                        $scope.college.colgZip = data['College'].zip;
-                        $scope.college.colgStreet = data['College'].streetName;
-                        $scope.college.colgState = data['College'].state;
-                        $scope.college.colgTelephoneNumber = data['College'].telephoneNumber;
-                        $scope.college.colgOfficeEmailAddress = data['College'].officeEmailAddress;
+                            $scope.freshman.enrollmentID = data['FreshmanProfile']['Profile'].enrollmentStatusId;
+                            $scope.freshman.totApplicants = data['FreshmanProfile']['Profile'].totalApplicants;
+                            $scope.freshman.totAccepted = data['FreshmanProfile']['Profile'].totalAccepted;
+                            $scope.freshman.xptanceRate = data['FreshmanProfile']['Profile'].acceptanceRate;
+                            $scope.freshman.totEnrolled = data['FreshmanProfile']['Profile'].totalEnrolled;
+                            $scope.freshman.earlyDecision = data['FreshmanProfile']['Profile'].percentageEnrolledEarlyDecision;
+                            $scope.freshman.waitingList = data['FreshmanProfile']['Profile'].percentageEnrolledFromWaitList;
+                            $scope.freshman.outFState = data['FreshmanProfile']['Profile'].percentageEnrolledOutofState;
+                            $scope.freshman.ernPiblicHS = data['FreshmanProfile']['Profile'].percentageEnrolledPublicHs;
+                            $scope.freshman.rcvFinanceAid = data['FreshmanProfile']['Profile'].percentageReceivingFinancialAid;
+                            $scope.freshman.avgFinanceAid = data['FreshmanProfile']['Profile'].averageFinancialAid;
+                            $scope.freshman.malePer = data['FreshmanProfile']['Profile'].malePercentage;
+                            $scope.freshman.femalePer = data['FreshmanProfile']['Profile'].femalePercentage;
+                            $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
 
-                        $scope.freshman.enrollmentID = data['FreshmanProfile']['Profile'].enrollmentStatusId;
-                        $scope.freshman.totApplicants = data['FreshmanProfile']['Profile'].totalApplicants;
-                        $scope.freshman.totAccepted = data['FreshmanProfile']['Profile'].totalAccepted;
-                        $scope.freshman.xptanceRate = data['FreshmanProfile']['Profile'].acceptanceRate;
-                        $scope.freshman.totEnrolled = data['FreshmanProfile']['Profile'].totalEnrolled;
-                        $scope.freshman.earlyDecision = data['FreshmanProfile']['Profile'].percentageEnrolledEarlyDecision;
-                        $scope.freshman.waitingList = data['FreshmanProfile']['Profile'].percentageEnrolledFromWaitList;
-                        $scope.freshman.outFState = data['FreshmanProfile']['Profile'].percentageEnrolledOutofState;
-                        $scope.freshman.ernPiblicHS = data['FreshmanProfile']['Profile'].percentageEnrolledPublicHs;
-                        $scope.freshman.rcvFinanceAid = data['FreshmanProfile']['Profile'].percentageReceivingFinancialAid;
-                        $scope.freshman.avgFinanceAid = data['FreshmanProfile']['Profile'].averageFinancialAid;
-                        $scope.freshman.malePer = data['FreshmanProfile']['Profile'].malePercentage;
-                        $scope.freshman.femalePer = data['FreshmanProfile']['Profile'].femalePercentage;
-                        $scope.freshman.collegeEthnicityID = data['FreshmanProfile']['CollegeEthnicity'].collegeEthnicityID;
-
-                        $scope.mostRepresentedState = data.FreshmanProfile.MostRepresentedStates;
-
-
-                        // $scope.mostRepresentedState['stateArray'] = [];
-                        // for(var key in $scope.mostRepresentedState) {
-                        //     console.log('key',key);
-                        //     if (key.match('stateId')) {
-                        //         var obj = {'id':key,'value':$scope.mostRepresentedState[key]};
-                        //         $scope.mostRepresentedState.stateArray.push(obj);
-                        //     }
-                        // };
-
-                        $scope.weatherObj.avgFallLowTemp = data['Weather'];
-                        $scope.quickfact = data.QuickFacts;
-
-                        $scope.geoData = data['FreshmanProfile']['Geographics'];
-                        $scope.clgEthenicity = data['FreshmanProfile']['CollegeEthnicity'];
-                        $scope.intendedStudy = data['IntendedStudy']['Study'];
-                        $scope.studentFacultyRatio = data['IntendedStudy'];
-                        $scope.intendedStudyOption = data['IntendedStudy']['IntendedStudyOption'];
-                        $scope.admission = data['Admissions']['Admission'];
-                        $scope.interview = data['Admissions']['Interviews'];
-                        $scope.recommendation = data['Admissions']['Recommendations'];
-
-                        $scope.admissionCode = data.Admissions.AdmissionCodes;
-
-                        $scope.SatData = data.TestScoresAndGrades.SAT;
-                        $scope.ActData = data.TestScoresAndGrades.ACT;
-                        // $scope.averageScore =  data.TestScoresAndGrades.TestScoresAndGrades;
-
-                        $scope.testScoreAvg = data.TestScoresAndGrades.Averages;
+                            $scope.mostRepresentedState = data.FreshmanProfile.MostRepresentedStates;
 
 
-                        $scope.sports = data.Sports;
+                            // $scope.mostRepresentedState['stateArray'] = [];
+                            // for(var key in $scope.mostRepresentedState) {
+                            //     console.log('key',key);
+                            //     if (key.match('stateId')) {
+                            //         var obj = {'id':key,'value':$scope.mostRepresentedState[key]};
+                            //         $scope.mostRepresentedState.stateArray.push(obj);
+                            //     }
+                            // };
 
-                        $scope.actScore = data['TestScoresAndGrades']['ACTSCORES'];
+                            $scope.weatherObj.avgFallLowTemp = data['Weather'];
+                            $scope.quickfact = data.QuickFacts;
 
-                        $scope.satScore = data['TestScoresAndGrades']['SATSCORES'];
+                            $scope.geoData = data['FreshmanProfile']['Geographics'];
+                            $scope.clgEthenicity = data['FreshmanProfile']['CollegeEthnicity'];
+                            $scope.intendedStudy = data['IntendedStudy']['Study'];
+                            $scope.studentFacultyRatio = data['IntendedStudy'];
+                            $scope.intendedStudyOption = data['IntendedStudy']['IntendedStudyOption'];
+                            $scope.admission = data['Admissions']['Admission'];
+                            $scope.interview = data['Admissions']['Interviews'];
+                            $scope.recommendation = data['Admissions']['Recommendations'];
 
-                        $scope.gpaScore = data['TestScoresAndGrades']['GPASCORES'];
+                            $scope.admissionCode = data.Admissions.AdmissionCodes;
 
-                        $scope.weatherObj.weatherId = data['Weather'].weatherId;
-                        $scope.weatherObj.avgFallLowTemp = data['Weather'].averageFallLowTemp;
-                        $scope.weatherObj.avgFallHighTemp = data['Weather'].averageFallHighTemp;
-                        $scope.weatherObj.avgFallPrecipitation = data['Weather'].averageFallPrecipitation;
-                        $scope.weatherObj.avgWinterLowTemp = data['Weather'].averageWinterLowTemp;
-                        $scope.weatherObj.avgWinterHighTemp = data['Weather'].averageWinterHighTemp;
-                        $scope.weatherObj.avgWinterPrecipitation = data['Weather'].averageWinterPrecipitation;
-                        $scope.weatherObj.avgSummerLowTemp = data['Weather'].averageSummerLowTemp;
-                        $scope.weatherObj.avgSummerHighTemp = data['Weather'].averageSummerHighTemp;
-                        $scope.weatherObj.avgSummerPrecipitation = data['Weather'].averageSummerPrecipitation;
-                        $scope.weatherObj.avgSpringLowTemp = data['Weather'].averageSpringLowTemp;
-                        $scope.weatherObj.avgSpringHighTemp = data['Weather'].averageSpringHighTemp;
-                        $scope.weatherObj.avgSpringPrecipitation = data['Weather'].averageSpringPrecipitation;
+                            $scope.SatData = data.TestScoresAndGrades.SAT;
+                            $scope.ActData = data.TestScoresAndGrades.ACT;
+                            // $scope.averageScore =  data.TestScoresAndGrades.TestScoresAndGrades;
 
-                        $scope.feesAndFinancial = data.FeesAndFinancialAids.Fees;
-
-                        $scope.AvgFees = data.FeesAndFinancialAids;
-
-
-                        var dataFees = data.FeesAndFinancialAids;
-
-                        for (var i = 0; i < dataFees.length; i++) {
-                            tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
-                        };
+                            $scope.testScoreAvg = data.TestScoresAndGrades.Averages;
 
 
-                        $scope.test = data.Calender;
-                        $scope.similarArray = [];
-                        $scope.collegeRanking = data.CollegeRanking;
-                        $scope.prominentAlumni = data.ProminentAlumini;
-                        $scope.similerSchool = data.SimilarSchools;
-                        $scope.similerSchool.forEach(function(item) {
-                            $scope.similarArray.push(item.similarSchoolsID);
-                            // console.log('$scope.similarArray',$scope.similarArray);
-                        })
+                            $scope.sports = data.Sports;
+
+                            $scope.actScore = data['TestScoresAndGrades']['ACTSCORES'];
+
+                            $scope.satScore = data['TestScoresAndGrades']['SATSCORES'];
+
+                            $scope.gpaScore = data['TestScoresAndGrades']['GPASCORES'];
+
+                            $scope.weatherObj.weatherId = data['Weather'].weatherId;
+                            $scope.weatherObj.avgFallLowTemp = data['Weather'].averageFallLowTemp;
+                            $scope.weatherObj.avgFallHighTemp = data['Weather'].averageFallHighTemp;
+                            $scope.weatherObj.avgFallPrecipitation = data['Weather'].averageFallPrecipitation;
+                            $scope.weatherObj.avgWinterLowTemp = data['Weather'].averageWinterLowTemp;
+                            $scope.weatherObj.avgWinterHighTemp = data['Weather'].averageWinterHighTemp;
+                            $scope.weatherObj.avgWinterPrecipitation = data['Weather'].averageWinterPrecipitation;
+                            $scope.weatherObj.avgSummerLowTemp = data['Weather'].averageSummerLowTemp;
+                            $scope.weatherObj.avgSummerHighTemp = data['Weather'].averageSummerHighTemp;
+                            $scope.weatherObj.avgSummerPrecipitation = data['Weather'].averageSummerPrecipitation;
+                            $scope.weatherObj.avgSpringLowTemp = data['Weather'].averageSpringLowTemp;
+                            $scope.weatherObj.avgSpringHighTemp = data['Weather'].averageSpringHighTemp;
+                            $scope.weatherObj.avgSpringPrecipitation = data['Weather'].averageSpringPrecipitation;
+
+                            $scope.feesAndFinancial = data.FeesAndFinancialAids.Fees;
+
+                            $scope.AvgFees = data.FeesAndFinancialAids;
 
 
-                        console.log('scope.similarCollegeDatasimilarCollegeDatasimilarCollegeDatasimilarCollegeData', $scope.similarCollegeData);
-                        $scope.linkAndAddress = data.LinksAndAddresses;
+                            var dataFees = data.FeesAndFinancialAids;
 
-                        $scope.sports.Divisions.Men.NCAADIVISION1.forEach(function(item) {
-                            $scope.selectedSportsDiv1.push(item.syssportsId);
-                        });
-                        $scope.sports.Divisions.Men.NCAADIVISION2.forEach(function(item) {
-                            $scope.selectedSportsDiv2.push(item.syssportsId);
-                        });
-                        $scope.sports.Divisions.Men.NCAADIVISION3.forEach(function(item) {
-                            $scope.selectedSportsDiv3.push(item.syssportsId);
-                        });
+                            for (var i = 0; i < dataFees.length; i++) {
+                                tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
+                            };
 
-                        $scope.sports.Divisions.Women.NCAADIVISION1.forEach(function(item) {
-                            $scope.selectedSportsDiv11.push(item.syssportsId);
-                        });
-                        $scope.sports.Divisions.Women.NCAADIVISION2.forEach(function(item) {
-                            $scope.selectedSportsDiv22.push(item.syssportsId);
-                        });
-                        $scope.sports.Divisions.Women.NCAADIVISION3.forEach(function(item) {
-                            $scope.selectedSportsDiv33.push(item.syssportsId);
-                        });
 
-                        $rootScope.sysSports.forEach(function(item) {
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 1;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 1;
-                            $scope.selectedSportsDiv1.forEach(function(i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
+                            $scope.test = data.Calender;
+                            $scope.similarArray = [];
+                            $scope.collegeRanking = data.CollegeRanking;
+                            $scope.prominentAlumni = data.ProminentAlumini;
+                            $scope.similerSchool = data.SimilarSchools;
+                            $scope.similerSchool.forEach(function(item) {
+                                $scope.similarArray.push(item.similarSchoolsID);
+                                // console.log('$scope.similarArray',$scope.similarArray);
                             })
-                        });
-                        $rootScope.sysSports2.forEach(function(item) {
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 2;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 1;
-                            $scope.selectedSportsDiv2.forEach(function(i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                            })
-                        });
-                        $rootScope.sysSports3.forEach(function(item) {
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 3;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 1;
-                            $scope.selectedSportsDiv3.forEach(function(i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                            })
-                        });
 
-                        $rootScope.sysSports4.forEach(function(item) {
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 1;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 2;
-                            $scope.selectedSportsDiv11.forEach(function(i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                            })
-                        });
 
-                        $rootScope.sysSports5.forEach(function(item) {
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 2;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 2;
-                            $scope.selectedSportsDiv22.forEach(function(i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                            })
-                        });
+                            console.log('scope.similarCollegeDatasimilarCollegeDatasimilarCollegeDatasimilarCollegeData', $scope.similarCollegeData);
+                            $scope.linkAndAddress = data.LinksAndAddresses;
 
-                        $rootScope.sysSports6.forEach(function(item) {
-                            item['isChecked'] = false;
-                            item['sysSportsDivisionID'] = 3;
-                            item['collegeId'] = $rootScope.colgData.collegeId;
-                            item['genderId'] = 2;
-                            $scope.selectedSportsDiv33.forEach(function(i) {
-                                if (item.syssportsId == i) {
-                                    item.isChecked = true;
-                                }
-                            })
-                        });
-                        console.log('$scope.selectedSportsDiv1', $scope.selectedSportsDiv1);
+                            $scope.sports.Divisions.Men.NCAADIVISION1.forEach(function(item) {
+                                $scope.selectedSportsDiv1.push(item.syssportsId);
+                            });
+                            $scope.sports.Divisions.Men.NCAADIVISION2.forEach(function(item) {
+                                $scope.selectedSportsDiv2.push(item.syssportsId);
+                            });
+                            $scope.sports.Divisions.Men.NCAADIVISION3.forEach(function(item) {
+                                $scope.selectedSportsDiv3.push(item.syssportsId);
+                            });
+
+                            $scope.sports.Divisions.Women.NCAADIVISION1.forEach(function(item) {
+                                $scope.selectedSportsDiv11.push(item.syssportsId);
+                            });
+                            $scope.sports.Divisions.Women.NCAADIVISION2.forEach(function(item) {
+                                $scope.selectedSportsDiv22.push(item.syssportsId);
+                            });
+                            $scope.sports.Divisions.Women.NCAADIVISION3.forEach(function(item) {
+                                $scope.selectedSportsDiv33.push(item.syssportsId);
+                            });
+
+                            $rootScope.sysSports.forEach(function(item) {
+                                item['isChecked'] = false;
+                                item['sysSportsDivisionID'] = 1;
+                                item['collegeId'] = $rootScope.colgData.collegeId;
+                                item['genderId'] = 1;
+                                $scope.selectedSportsDiv1.forEach(function(i) {
+                                    if (item.syssportsId == i) {
+                                        item.isChecked = true;
+                                    }
+                                })
+                            });
+                            $rootScope.sysSports2.forEach(function(item) {
+                                item['isChecked'] = false;
+                                item['sysSportsDivisionID'] = 2;
+                                item['collegeId'] = $rootScope.colgData.collegeId;
+                                item['genderId'] = 1;
+                                $scope.selectedSportsDiv2.forEach(function(i) {
+                                    if (item.syssportsId == i) {
+                                        item.isChecked = true;
+                                    }
+                                })
+                            });
+                            $rootScope.sysSports3.forEach(function(item) {
+                                item['isChecked'] = false;
+                                item['sysSportsDivisionID'] = 3;
+                                item['collegeId'] = $rootScope.colgData.collegeId;
+                                item['genderId'] = 1;
+                                $scope.selectedSportsDiv3.forEach(function(i) {
+                                    if (item.syssportsId == i) {
+                                        item.isChecked = true;
+                                    }
+                                })
+                            });
+
+                            $rootScope.sysSports4.forEach(function(item) {
+                                item['isChecked'] = false;
+                                item['sysSportsDivisionID'] = 1;
+                                item['collegeId'] = $rootScope.colgData.collegeId;
+                                item['genderId'] = 2;
+                                $scope.selectedSportsDiv11.forEach(function(i) {
+                                    if (item.syssportsId == i) {
+                                        item.isChecked = true;
+                                    }
+                                })
+                            });
+
+                            $rootScope.sysSports5.forEach(function(item) {
+                                item['isChecked'] = false;
+                                item['sysSportsDivisionID'] = 2;
+                                item['collegeId'] = $rootScope.colgData.collegeId;
+                                item['genderId'] = 2;
+                                $scope.selectedSportsDiv22.forEach(function(i) {
+                                    if (item.syssportsId == i) {
+                                        item.isChecked = true;
+                                    }
+                                })
+                            });
+
+                            $rootScope.sysSports6.forEach(function(item) {
+                                item['isChecked'] = false;
+                                item['sysSportsDivisionID'] = 3;
+                                item['collegeId'] = $rootScope.colgData.collegeId;
+                                item['genderId'] = 2;
+                                $scope.selectedSportsDiv33.forEach(function(i) {
+                                    if (item.syssportsId == i) {
+                                        item.isChecked = true;
+                                    }
+                                })
+                            });
+                            console.log('$scope.selectedSportsDiv1', $scope.selectedSportsDiv1);
+                        } catch (e) {
+                            console.log('exception ', e);
+                        }
 
                     }
+                    usSpinnerService.stop('spinner-1');
+                });
 
-                }
-            );
     }
 
     $scope.$watch('similarCollegeData', function(newValue) {
@@ -777,8 +1249,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         }
     }, true);
 
-
-    $scope.testing = function() {
+    $scope.toggalBtn = function() {
         //alert('test');
         var objIntendedStudyOption = $scope.intendedStudyOption;
         for (var i = 0; i < objIntendedStudyOption.length; i++) {
@@ -806,7 +1277,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         //debugger
         //$('body').addClass('page-loader');
         // console.log('save detail====>', $scope.saveCollegeForm.$valid);
-
+usSpinnerService.spin('spinner-1');
         if (!$scope.saveCollegeForm.$valid) {
             return false;
         }
@@ -829,7 +1300,9 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
+            
         //$('body').removeClass('page-loader');
 
     }
@@ -837,6 +1310,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     $scope.addCollege = function(addNew) {
         //debugger
         //$('body').addClass('page-loader');
+        usSpinnerService.spin('spinner-1');
         console.log('save detail====>', $rootScope.colgData);
         var data;
 
@@ -872,11 +1346,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                     console.log('save detail====>', data);
                 });
         //$('body').removeClass('page-loader');
+        usSpinnerService.sptop('spinner-1');
 
     }
 
     $scope.saveQuickFact = function() {
         //debugger
+        usSpinnerService.spin('spinner-1');
         console.log('save saveQuickFact====>', $rootScope.colgData);
         var qukFact = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
@@ -890,12 +1366,15 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save saveQuickFact====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
+            
     }
 
 
 
     $scope.saveFreshman = function() {
+        usSpinnerService.spin('spinner-1');
         // $scope.enrollmentID = $scope.enrollmentStatusId
         console.log('testData', $scope.geoData);
         console.log('testData for ethecity', $scope.clgEthenicity);
@@ -978,10 +1457,15 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
+
+
+
     };
 
     $scope.saveCollegeRanking = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData College ranking data', $scope.collegeRanking);
         var finalColegeRankingData = [],
             collegeId = $scope.collegeRanking[0].collegeId;
@@ -1015,11 +1499,14 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail saveCollegeRankingDetail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
+            
 
     };
 
     $scope.saveProminentAlumni = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData Prominent Alumni data', $scope.prominentAlumni);
         var finalProminentAlumniData = [],
             collegeId = $scope.prominentAlumni[0].collegeId;
@@ -1053,11 +1540,14 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail Prominent Alumni====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
+            
 
     };
 
     $scope.saveAddress = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('Save Address data', $scope.linkAndAddress);
         var finalLinkAndAddressData = [],
             collegeId = $scope.linkAndAddress[0].collegeId;
@@ -1112,11 +1602,14 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
+            
 
     };
 
     $scope.saveIntendedStudy = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData saveIntendedStudy data', $scope.intendedStudy);
         var finalIntendedStudyData = [];
 
@@ -1130,17 +1623,22 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
             finalIntendedStudyData.push(finalIntendedStudyObject);
         }
+
+
         console.log('final array IntendedStudy', finalIntendedStudyData);
 
         editCollegeAPI.saveIntendedStudyDetail(finalIntendedStudyData)
             .then(
                 function(data) {
                     console.log('save detail IntendedStudy====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
+            
 
     };
 
     $scope.uploadSportsfileupload = function(event) {
+
         var file = $scope.myFile;
         $scope.selectedUploadFile = 'sportsfileupload';
         console.log('file is ' + $scope.selectedUploadFile);
@@ -1158,6 +1656,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     // },true);
 
     $scope.saveSports = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('Sports $scope.menSports', $scope.menSports);
         // console.log('Sports data2', $rootScope.sysSports2);
         // console.log('Sports data3', $rootScope.sysSports3);
@@ -1202,6 +1701,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail IntendedStudy====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
@@ -1212,6 +1712,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
 
 
     $scope.saveTestScore = function() {
+        usSpinnerService.spin('spinner-1');
         var testScoreSatCriticalReading = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'collegeScoreId': $scope.SatData.CriticalReading.collegeScoreId ? $scope.SatData.CriticalReading.collegeScoreId : null,
@@ -1297,11 +1798,13 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail Test And Score====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveAdmission = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData Admission data', $scope.admission);
         var finalAdmissionData = [];
 
@@ -1355,15 +1858,18 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         }
         finalAdmissionData.push(admCode);
         console.log('final array recommendation', finalAdmissionData);
-        // editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
-        //     .then(
-        //         function(data) {
-        //             console.log('save detail finalAdmissionData====>', data);
-        //         });
+        editCollegeAPI.saveAdmissionDetail(finalAdmissionData)
+            .then(
+                function(data) {
+                    console.log('save detail finalAdmissionData====>', data);
+                     usSpinnerService.stop('spinner-1');
+                });
+           
 
     };
 
     $scope.saveFeesAndFinancial = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData saveFeesAndFinancial data', $scope.feesAndFinancial);
         var finalFeesAndFinancialData = [];
 
@@ -1378,15 +1884,24 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
         }
         console.log('final array FeesAndFinancial', finalFeesAndFinancialData);
 
+        var averageFees = {
+            'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
+            'collegeFeesID': parseInt($scope.feesAndFinancial.collegeFeesID, 10) ? parseInt($scope.feesAndFinancial.collegeFeesID, 10) : 0,
+            'AverageFinancialAid': parseInt($scope.AvgFees.AverageFinancialAid, 10) ? parseInt($scope.AvgFees.AverageFinancialAid, 10) : 0,
+            'ReceivingFinancialAid': parseInt($scope.AvgFees.ReceivingFinancialAid, 10) ? parseInt($scope.AvgFees.ReceivingFinancialAid, 10) : 0
+        }
+        finalFeesAndFinancialData.push(averageFees);
         editCollegeAPI.saveFeesAndFinancialDetail(finalFeesAndFinancialData)
             .then(
                 function(data) {
                     console.log('save detail FeesAndFinancial====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
     $scope.saveCalendar = function() {
+        usSpinnerService.spin('spinner-1');
         console.log('testData Calendar data', $scope.test);
         var finalCalendarData = [];
 
@@ -1419,13 +1934,14 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     // console.log('save detail====>', data);
+                    usSpinnerService.stop('spinner-1');
                 });
 
     };
 
 
     $scope.saveWeather = function() {
-
+usSpinnerService.spin('spinner-1');
         var finalWeatherData = {
             'collegeId': $rootScope.colgData['collegeId'] ? $rootScope.colgData['collegeId'] : null,
             'weatherId': $scope.weatherObj.weatherId ? $scope.weatherObj.weatherId : null,
@@ -1447,15 +1963,18 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
             .then(
                 function(data) {
                     console.log('save detail weather====>', data);
+                     usSpinnerService.stop('spinner-1');
                 });
+           
     }
 
 
 
     $scope.backCollegeList = function() {
-
+usSpinnerService.spin('spinner-1');
         $scope.colgList = false;
         $scope.editList = true;
+        usSpinnerService.stop('spinner-1');
 
     };
     $scope.winter = function() {
@@ -1509,7 +2028,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
     }
 
     $scope.inStates = function() {
-        alert("im in instate");
+        
         $scope.outState = true;
         $scope.inState = false;
     }
@@ -1954,19 +2473,20 @@ app.controller('editCollege', ['$scope', 'editCollegeAPI', function ($scope, edi
 }]);
 
 /*-----  End of controller = activeMenu  ------*/
-
 /*================================================================
 =>                  Controller = Forgotpwd
 ==================================================================*/
 /*global app*/
 
-app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function ($scope, loginAPI, ngProgress) {
-	'use strict';
-    $scope.resetPassword = { visible: false };
-	$scope.statusMsg = '';
+app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog','usSpinnerService', function($scope, loginAPI, ngProgress, ngDialog, usSpinnerService) {
+    'use strict';
+    $scope.resetPassword = {
+        visible: false
+    };
+    $scope.statusMsg = '';
 
-    $scope.email = { 
-        emailId : ''
+    $scope.email = {
+        emailId: ''
     }
     $scope.email = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
 
@@ -1974,15 +2494,19 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function ($
     $scope.newAccessPasswordModel = '';
     $scope.newPasswordModel = '';
     $scope.newConfirmPasswordModel = '';
-    $scope.passwordMatch = ($scope.newConfirmPasswordModel == $scope.newPasswordModel)? true : false;
-    
+    $scope.passwordMatch = ($scope.newConfirmPasswordModel == $scope.newPasswordModel) ? true : false;
 
-    $scope.$watch(function () { return $scope.newPasswordModel }, changePassword);
-    $scope.$watch(function () { return $scope.newConfirmPasswordModel }, changePassword);
+
+    $scope.$watch(function() {
+        return $scope.newPasswordModel
+    }, changePassword);
+    $scope.$watch(function() {
+        return $scope.newConfirmPasswordModel
+    }, changePassword);
 
     function changePassword(newVal, oldVal) {
         if (newVal != '') {
-          $scope.passwordMatch = ($scope.newConfirmPasswordModel == $scope.newPasswordModel)? true : false;
+            $scope.passwordMatch = ($scope.newConfirmPasswordModel == $scope.newPasswordModel) ? true : false;
         }
     }
 
@@ -1990,55 +2514,88 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', function ($
     // $scope.newAccessPasswordModel = '';
     // $scope.newPasswordModel = '';
     // $scope.newConfirmPasswordModel = '';
-    $scope.setNewPassword = function(){
+    $scope.setNewPassword = function(userData) {
+
+        //debugger;
+        var flag = (userData.newPassword === userData.confirmPassword);
+        if(flag){
+            //ngProgress.start();
+            usSpinnerService.spin('spinner-1');
+            var data = {
+                'emailID': 'asd@asd.com',
+                'password': $scope.password
+            }
+            loginAPI.changePassword(data).then(
+                function(data) {
+                    if (data) {
+                        console.log('success', data);
+                        //console.log('success',data.statusMsg); not passing status message only passing string
+                        //$location.url('/dashboard/home');
+                        if (data == "Email doesn't Exixts") {
+                            $scope.statusMsg = 'Email Address That you Entered is invalid';
+                        } else {
+                            $scope.statusMsg = 'Reset Password Link Sent to your Email Address';
+                            $scope.resetPassword.visible = true;
+                        }
+                        //ngProgress.complete();
+                         usSpinnerService.stop('spinner-1');
+                    };
+
+                },
+                function(err) {
+                    console.log('err', err);
+                });
+           
+        }else{
+            ngDialog.open({
+                template: '<p>Password and Confirm password does not match</p>',
+                plain: true
+            });
+        }
 
     }
 
 
-	 $scope.getPassword = function(isValid) {
+    $scope.getPassword = function(isValid) {
 
         if (!isValid) { //not valid
             //$scope.formValidations1 = true;
             //$scope.statusMsg = '';
             alert('Enter Correct Credentials !!');
-        }
-        else {
-            console.log('$scope.email.emailId',$scope.email.emailId);
-            
+        } else {
+            console.log('$scope.email.emailId', $scope.email.emailId);
+
             ngProgress.start();
             var data = {
-                            "emailID" : $scope.email.emailId
-                        }
+                "emailID": $scope.email.emailId
+            }
 
             loginAPI.fgtPwd(data).then(
-                function (data) {
+                function(data) {
                     if (data) {
-                        console.log('success',data);
+                        console.log('success', data);
                         //console.log('success',data.statusMsg); not passing status message only passing string
-                    //$location.url('/dashboard/home');
-                    if(data == "Email doesn't Exixts") {
-                        $scope.statusMsg = 'Email Address That you Entered is invalid';
-                    } else {
-                    	$scope.statusMsg = 'Reset Password Link Sent to your Email Address';
-                        $scope.resetPassword.visible   = true; 
-                    }
-                    ngProgress.complete();
-                    };             
+                        //$location.url('/dashboard/home');
+                        if (data == "Email doesn't Exixts") {
+                            $scope.statusMsg = 'Email Address That you Entered is invalid';
+                        } else {
+                            $scope.statusMsg = 'Reset Password Link Sent to your Email Address';
+                            $scope.resetPassword.visible = true;
+                        }
+                        ngProgress.complete();
+                    };
                 },
-	            function (err) {
-					console.log('err',err);
-				});
+                function(err) {
+                    console.log('err', err);
+                });
         }
     };
-	console.log('Controller ===  ForgotpwdCtrl');
-   
+    console.log('Controller ===  ForgotpwdCtrl');
+
 }]);
 
 
 /*-----  End of Controller = Forgotpwd  ------*/
-
-
-
 
 /*================================================================
 Controller = HomeCtrl
@@ -2134,7 +2691,7 @@ app.controller('LcCtrl', ['$scope', 'LearninglistAPI', function ($scope, Learnin
 Controller = LoginCtrl
 ==================================================================*/
 
-app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'MasterAPI', 'ngProgress', function ($scope, $rootScope, $location, loginAPI, MasterAPI, ngProgress) {
+app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'MasterAPI', 'ngProgress', 'usSpinnerService', function ($scope, $rootScope, $location, loginAPI, MasterAPI, ngProgress, usSpinnerService) {
     'use strict';
     console.log('Controller ===  LoginCtrl');
     $scope.class_status = 0;
@@ -2151,7 +2708,9 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
             $scope.formValidations = true;
         }
         else {
-            ngProgress.start();
+            // ngProgress.start();
+            debugger;
+            usSpinnerService.spin('spinner-1');
             loginAPI.adminlogin($scope.user)
             .then(function (data) {
                // console.log('stipend login data====>',data);
@@ -2179,6 +2738,7 @@ app.controller('LoginCtrl', ['$scope', '$rootScope', '$location', 'loginAPI', 'M
                 //$scope.loginFailed = 'Server is Down';     
                 console.log('error');
             });
+        usSpinnerService.stop('spinner-1');
         }
     };
 
@@ -2226,6 +2786,7 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
                     $rootScope.sysSports4 = angular.copy(data['SysSports']);
                     $rootScope.sysSports5 = angular.copy(data['SysSports']);
                     $rootScope.sysSports6 = angular.copy(data['SysSports']);
+                    $rootScope.sportsDivisions = data.SysSportsDivision;
 
                     console.log('$rootScope.sysSports',$rootScope.sysSports);
 
@@ -2256,671 +2817,6 @@ app.controller('MainCtrl', ['$scope', '$location', 'MasterAPI', '$rootScope', fu
 
 
 
-/*================================================================
-Directive = activeMenu
-==================================================================*/
-
-app.directive('activeMenu', ['$rootScope', function ($rootScope) {
-'use strict';
-
-	return {
-		restrict: 'A',
-		link: function (scope, element, attrs) {
-			$(element).on('click', function () {
-				//debugger;
-				// $(element).siblings().removeClass('active_menu');
-				// $(element).addClass('active_menu');
-				var prevClassName = $(element).siblings().find('li.active_menu>div').attr('class');
-				//$(element).siblings().find('li.active_menu>div').removeClass(prevClassName+'-active').addClass(currentClass);
-				$(element).siblings().find('li').removeClass('active_menu');
-				$(element).find('li').addClass('active_menu');
-				//var prevClassName = $(element).find('li>div').attr('class');
-				console.log('currentClassName -->', currentClassName);
-				var checkImageStatus = currentClassName.search("-active");
-				
-				console.log('prevClassName',prevClassName);
-				//$(element).siblings().find('li>div').
-				//debugger;
-				if(checkImageStatus == -1) {
-					$(element).find('div').removeClass(currentClassName).addClass(currentClassName+'-active');
-				} else {
-					var currentClass = currentClassName.substr(0,checkImageStatus);
-					
-				}
-				
-
-			});
-		}
-	};
-
-}]);
-
-/*-----  End of Directive = activeMenu  ------*/
-/*================================================================
-Directive = addAddress
-==================================================================*/
-/*global app,$*/
-app.directive('addAddress', ['$rootScope', '$compile', function($rootScope, $compile) {
-    'use strict';
-
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var counter = 0;
-            scope.websiteNameArray = [];
-            scope.websiteURLArray = [];
-            $(element).on('click', function() {
-                counter++;
-                var address = $compile('<div class="form-group college-address-div-' + counter + '">'+
-                    '<div class="col-xs-5">'+
-                        '<input type="text" class="form-control" placeholder="Enter Here" ng-model="websiteNameArray[' + counter + ']" id="collegeAddress-' + counter + '"/>'+
-                    '</div>'+
-                    '<div class="col-xs-5">'+
-                        '<input type="text" class="form-control" placeholder="Enter Here" ng-model="websiteURLArray[' + counter + ']" id="collegeAddress-' + counter + '"/>'+
-                    '</div>'+
-                    '<div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedLinkAndAddress(' + counter + ')">X</div></div>')(scope);
-                $('.college-address').append(address);
-                $('#collegeAddress-' + counter).focus();
-                //scope.ans.push(scope.ans+counter);
-            });
-
-            $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
-                // $event.preventDefault();
-                //  $(this).parent().prev().prev().remove();
-                //  $(this).parent().prev().remove();
-                // $(this).parent().remove();
-            });
-
-
-
-            console.log('Directive === addAddress');
-        }
-    };
-
-}]);
-
-/*-----  End of Directive = addAddress  ------*/
-
-/*================================================================
-Directive = addAnswer
-==================================================================*/
-/*global app,$*/
-app.directive('addAnswer', ['$rootScope', '$compile', function($rootScope, $compile) {
-    'use strict';
-
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var counter = 0;
-            scope.ans = [];
-            $(element).on('click', function() {
-                counter++;
-                var inputEle = $compile('<div class="form-group answer-div-' + counter + '"><div class="col-xs-10"><input type="text" class="form-control" placeholder="Enter Here" ng-model="ans[' + counter + ']" id="answer-' + counter + '"/></div><div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedAns(' + counter + ')">X</div></div>')(scope);
-                $('.answer-container').append(inputEle);
-                $('#answer-' + counter).focus();
-                //scope.ans.push(scope.ans+counter);
-            });
-
-            //<div class="form-group answer-div-'+counter+'"><div class="col-xs-1"><input type="checkbox" name="ans-'+counter+'" id="ans--'+counter+'"></div><div class="col-xs-8"><input type="text" class="form-control" placeholder="Enter Answer Here" ng-model="ans['+counter+']" id="answer-'+counter+'"/></div><div style="cursor: pointer;  margin: 9px 2px;" class="col-xs-1 closeLang'+counter+'" ng-click="delSelectedAns('+counter+')">X</div></div>
-            /*$('div').on('click', '.closeLang', function ($event) {
-				console.log('$event',$event);
-		        $event.preventDefault();
-		         $(this).parent().prev().prev().remove();
-		         $(this).parent().prev().remove();
-		        $(this).parent().remove();
-    		});*/
-
-            $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
-                // $event.preventDefault();
-                //  $(this).parent().prev().prev().remove();
-                //  $(this).parent().prev().remove();
-                // $(this).parent().remove();
-            });
-
-
-
-            console.log('Directive === addAnswer');
-        }
-    };
-
-}]);
-
-/*-----  End of Directive = addAnswer  ------*/
-
-/*================================================================
-Directive = addCalendar
-==================================================================*/
-/*global app,$*/
-app.directive('addCalendar', ['$rootScope', '$compile', function($rootScope, $compile) {
-    'use strict';
-
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var counter = 0;
-            scope.calendarEventNameArray = [];
-            scope.calendarEventDateArray = [];
-            $(element).on('click', function() {
-                counter++;
-                var test = $compile('<div class="form-group calendar-div-' + counter + '">'+
-                   '<div class="col-sm-5"> <div class="form-group"><label for="calendarEventName" class="col-sm-5 control-label lable-font">Event Name</label>'+
-                    '<div class="col-sm-7"><input type="text" class="form-control" placeholder="Enter Here" ng-model="calendarEventNameArray[' + counter + ']" id="calendarEventName-' + counter + '"/>'+
-                    '</div></div></div>'+
-
-                    '<div class="col-sm-5"><div class="form-group"><label for="calendarEventDate" class="col-sm-5 control-label lable-font">Event Date</label>'+
-                                '<div class="col-sm-7"><input type="text" class="form-control" placeholder="Enter Here" ng-model="calendarEventDateArray[' + counter + ']" id="calendarEventDate-' + counter + '"/>'+
-                    '</div></div></div>'+
-                    '<div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedCalendar(' + counter + ')">X</div>'+
-                    '</div>')(scope);
-                $('.calendar-div').append(test);
-                $('#eventCalendar-' + counter).focus();
-                //scope.ans.push(scope.ans+counter);
-            });
-
-
-                
-
-
-            $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
-                // $event.preventDefault();
-                //  $(this).parent().prev().prev().remove();
-                //  $(this).parent().prev().remove();
-                // $(this).parent().remove();
-            });
-
-
-
-            console.log('Directive === addCalendar');
-        }
-    };
-
-}]);
-
-/*-----  End of Directive = addCalendar  ------*/
-
-/*================================================================
-Directive = addCollegeRanking
-==================================================================*/
-/*global app,$*/
-app.directive('addCollegeRanking', ['$rootScope', '$compile', function($rootScope, $compile) {
-    'use strict';
-
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var counter = 0;
-            scope.clgRankingArray = [];
-            scope.clgRankingPointsArray = [];
-            $(element).on('click', function() {
-                counter++;
-                var clgRank = $compile('<div class="form-group college-ranking-' + counter + '">' +
-                    '<div class="col-xs-5">' +
-                    '<input type="text" class="form-control" placeholder="Enter Here" ng-model="clgRankingArray[' + counter + ']" id="rank-' + counter + '"/>' +
-                    '</div>' +
-                    '<div class="col-xs-5">' +
-                    '<input type="text" class="form-control" placeholder="Enter Here" ng-model="clgRankingPointsArray[' + counter + ']" id="rank-' + counter + '"/>' +
-                    '</div>' +
-                    '<div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedCollegeRanking(' + counter + ')">X</div></div>')(scope);
-                $('.college-ranking').append(clgRank);
-                $('#rank-' + counter).focus();
-                //scope.ans.push(scope.ans+counter);
-            });
-
-            $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
-                // $event.preventDefault();
-                //  $(this).parent().prev().prev().remove();
-                //  $(this).parent().prev().remove();
-                // $(this).parent().remove();
-            });
-
-
-
-            console.log('Directive === addCollegeRanking');
-        }
-    };
-
-}]);
-
-/*-----  End of Directive = addCollegeRanking  ------*/
-
-/*================================================================
-Directive = addProminent
-==================================================================*/
-/*global app,$*/
-app.directive('addProminent', ['$rootScope', '$compile', function($rootScope, $compile) {
-    'use strict';
-
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var counter = 0;
-            scope.prominentArray = [];
-            $(element).on('click', function() {
-                counter++;
-                var prominentAlumni = $compile('<div class="form-group prominent-alumni-div-' + counter + '"><div class="col-xs-10"><input type="text" class="form-control" placeholder="Enter Here" ng-model="prominentArray[' + counter + ']" id="promp-' + counter + '"/></div><div style="cursor: pointer;  margin: 9px 2px; color:#000;" class="col-xs-1 closeLang' + counter + '" ng-click="delSelectedProminent(' + counter + ')">X</div></div>')(scope);
-                $('.prominent-alumni').append(prominentAlumni);
-                $('#promp-' + counter).focus();
-                //scope.ans.push(scope.ans+counter);
-            });
-
-            $('div').on('click', '.test', function($event) {
-                console.log('$event', $event);
-                // $event.preventDefault();
-                //  $(this).parent().prev().prev().remove();
-                //  $(this).parent().prev().remove();
-                // $(this).parent().remove();
-            });
-
-
-
-            console.log('Directive === addProminent');
-        }
-    };
-
-}]);
-
-/*-----  End of Directive = addProminent  ------*/
-
-app.directive('afterRepeatDirective', ['$rootScope', function($rootScope) {
-    'use strict';
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            if (scope.$last) {
-                // iteration is complete, do whatever post-processing is necessary
-                //element.parent().css('border', '1px solid black');
-                // var objIntendedStudyOption = scope.$parent.intendedStudyOption;
-                // for (var i = 0; i < objIntendedStudyOption.length; i++) {
-                //     var obj = objIntendedStudyOption[i];
-                //     var ele = obj.sysIntendedStudyOptionName.slice(0,-1).split(' ').join('');
-                //     debugger;
-                //     //console.log(obj.sysIntendedStudyOptionName);
-                //     $('#'+ele).bootstrapToggle();
-                //     console.log(document.getElementById(ele));//.bootstrapToggle();
-                // }
-                //element.bootstrapToggle();
-                scope.$evalAsync(attrs.afterRepeatDirective);
-                //scope.$parent.intendedStudyOption[0].sysIntendedStudyOptionName
-            }
-        }
-    };
-}]);
-
-/*================================================================
-Directive = calendarRepeatDirecitve
-==================================================================*/
-/*global app,$*/
-app.directive('myPostRepeatDirective', ['$rootScope', '$compile', function($rootScope, $compile) {
-    'use strict';
-    var counter = 0;
-  return function(scope, element, attrs) {
-    
-    ++counter;
-    console.log(scope.data);
-    var ele = element.find('input')[1];
-    ele.id = ele.id +''+counter;
-    $('#'+ele.id).datepicker({
-			      changeMonth: true,
-			      changeYear: true,
-			      dateFormat: 'yy-mm-dd'
-			    });
-  };
-}]);
-
-/*-----  End of Directive = calendarRepeatDirecitve  ------*/
-// /*================================================================
-// Directive = datepicker
-// ==================================================================*/
-// /*global app,$*/
-
-// app.directive('dateTimePicker', ['$rootScope', function ($rootScope) {
-// 'use strict';
-
-// 	return {
-// 		restrict: 'A',
-// 		link: function (scope, element, attrs) {
-// 			    $( "#datepicker" ).datepicker({
-// 			      changeMonth: true,
-// 			      changeYear: true
-// 			    });
-			 
-// 			// $(element).on('click', function() {
-// 			// 	console.log('m in date picker');
-// 			// 	// var ngModel = $(this).attr('ng-model'); //getting ng-model name
-// 			// 	// console.log(event.target.value)
-// 			// 	// scope[ngModel] = event.target.value; //update the new value to ng-model
-// 			// 	// scope.$apply();
-// 			// 	$(element).datepicker( );
-// 			// });
-			
-// 			console.log('Directive === datepicker');
-// 		}
-
-// 	};
-
-// }]);
-
-
-// /*-----  End of Directive = datepicker  ------*/
-
-
-
-/*================================================================
-Directive = calendarRepeatDirecitve
-==================================================================*/
-/*global app,$*/
-app.directive('myPostRepeatDirective', ['$rootScope', '$compile', function($rootScope, $compile) {
-    'use strict';
-    var counter = 0;
-  return function(scope, element, attrs) {
-    
-    ++counter;
-    // console.log(scope.data);
-    var ele = element.find('input')[1];
-    ele.id = ele.id +''+counter;
-    $('#'+ele.id).datepicker({
-			      changeMonth: true,
-			      changeYear: true,
-			      dateFormat: 'yy-mm-dd'
-			    });
-  };
-}]);
-
-/*-----  End of Directive = calendarRepeatDirecitve  ------*/
-
-/*================================================================
-Directive = editcollege
-==================================================================*/
-/*global app,$*/
-app.directive('editcollege', ['$rootScope', function ($rootScope) {
-'use strict';	
-
-	return {
-		restrict: 'A',
-		link: function (scope, element, attrs) {
-			
-			(function() {
-			    $( "#accordion" ).accordion({
-			      collapsible: true,
-			      heightStyle: "content",
-			      autoHeight: false,
-    			  navigation: true
-			    });
-			  })();
-			
-			console.log('Directive === edit_college');
-			$(function() {
-			    $( "#tabs" ).tabs();
-			    $( "#tabs_sports" ).tabs();
-			});
-			
-		}
-
-
-	};
-
-}]);
-
-
-/*-----  End of Directive = editcollege  ------*/
-app.directive('fileModel', ['$parse', function ($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
-            
-            element.bind('change', function(){
-                scope.$apply(function(){
-                    modelSetter(scope, element[0].files[0]);
-                });
-            });
-        }
-    };
-}]);
-/*!
- * jQuery Cookie Plugin v1.4.1
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2006, 2014 Klaus Hartl
- * Released under the MIT license
- */
-(function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD (Register as an anonymous module)
-		define(['jquery'], factory);
-	} else if (typeof exports === 'object') {
-		// Node/CommonJS
-		module.exports = factory(require('jquery'));
-	} else {
-		// Browser globals
-		factory(jQuery);
-	}
-}(function ($) {
-
-	var pluses = /\+/g;
-
-	function encode(s) {
-		return config.raw ? s : encodeURIComponent(s);
-	}
-
-	function decode(s) {
-		return config.raw ? s : decodeURIComponent(s);
-	}
-
-	function stringifyCookieValue(value) {
-		return encode(config.json ? JSON.stringify(value) : String(value));
-	}
-
-	function parseCookieValue(s) {
-		if (s.indexOf('"') === 0) {
-			// This is a quoted cookie as according to RFC2068, unescape...
-			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-		}
-
-		try {
-			// Replace server-side written pluses with spaces.
-			// If we can't decode the cookie, ignore it, it's unusable.
-			// If we can't parse the cookie, ignore it, it's unusable.
-			s = decodeURIComponent(s.replace(pluses, ' '));
-			return config.json ? JSON.parse(s) : s;
-		} catch(e) {}
-	}
-
-	function read(s, converter) {
-		var value = config.raw ? s : parseCookieValue(s);
-		return $.isFunction(converter) ? converter(value) : value;
-	}
-
-	var config = $.cookie = function (key, value, options) {
-
-		// Write
-
-		if (arguments.length > 1 && !$.isFunction(value)) {
-			options = $.extend({}, config.defaults, options);
-
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
-			}
-
-			return (document.cookie = [
-				encode(key), '=', stringifyCookieValue(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
-		}
-
-		// Read
-
-		var result = key ? undefined : {},
-			// To prevent the for loop in the first place assign an empty array
-			// in case there are no cookies at all. Also prevents odd result when
-			// calling $.cookie().
-			cookies = document.cookie ? document.cookie.split('; ') : [],
-			i = 0,
-			l = cookies.length;
-
-		for (; i < l; i++) {
-			var parts = cookies[i].split('='),
-				name = decode(parts.shift()),
-				cookie = parts.join('=');
-
-			if (key === name) {
-				// If second argument (value) is a function it's a converter...
-				result = read(cookie, value);
-				break;
-			}
-
-			// Prevent storing a cookie that we couldn't decode.
-			if (!key && (cookie = read(cookie)) !== undefined) {
-				result[name] = cookie;
-			}
-		}
-
-		return result;
-	};
-
-	config.defaults = {};
-
-	$.removeCookie = function (key, options) {
-		// Must not alter options, thus extending a fresh object...
-		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
-		return !$.cookie(key);
-	};
-
-}));
-/*================================================================
-Filter = convertMiliSecondsIntoDate
-==================================================================*/
-
-app.filter('convertMiliSecondsIntoDate', function () {
-	'use strict';
-
-	return function (input) {
-
-		var mydate = new Date(input);
-			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
-			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
-			//$scope.timesData.push(finalDate);
-			var month = mydate.getMonth();
-			//month = month.parseInt();
-			month = month +1;
-			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
-			console.log('mydate',mydate);	
-			return mydate;
-		console.log('Filter == convertMiliSecondsIntoDate');
-
-		
-	};
-});
-
-app.filter('convertMiliSecondsIntoDate1', function () {
-	'use strict';
-
-	return function (input) {
-
-		var mydate = new Date(input);
-			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
-			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
-			//$scope.timesData.push(finalDate);
-			var month = mydate.getMonth();
-			//month = month.parseInt();
-			month = month +1;
-			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
-			console.log('mydate',mydate);	
-			return mydate;
-		console.log('Filter == convertMiliSecondsIntoDate');
-
-		
-	};
-});
-
-/*-----  End of Filter = convertMiliSecondsIntoDate  ------*/
-
-/*================================================================
-=>                   Filter = genderFilter
-==================================================================*/
-/*global app*/
-
-app.filter('genderFilter', function () {
-	
-	'use strict';
-
-	return function (data) {
-		//var dateDiff = 0;
-		console.log('data',data);
-		if (data == 1) {
-			return 'male';
-		}else if (data == 2) {
-			return 'female';
-		} else {
-			return data;
-		}
-	};
-});
-
-
-/*-----  End of Filter = genderFilter  ------*/
-/*================================================================
-=>                   Filter = remainingTime
-==================================================================*/
-/*global app*/
-
-app.filter('remainingTime', function () {
-	
-	'use strict';
-
-	return function (data) {
-		//var dateDiff = 0;
-		var finalDate = 0;
-		//for(var count = 0; count < data.length; count++) {
-			//dateDiff = data[count].endDate - data[count].startDate;
-			//console.log(dateDiff);
-			var mydate = new Date(data);
-			console.log('mydate',mydate);
-			finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
-			console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
-			//$scope.timesData.push(finalDate);
-			console.log('finalDate',finalDate);
-			return finalDate;
-		//console.log('in filter ',data);
-		
-	};
-});
-
-
-/*-----  End of Filter = remainingTime  ------*/
-/*================================================================
-=>                   Filter = userType
-==================================================================*/
-/*global app*/
-
-app.filter('userType', function () {
-	
-	'use strict';
-
-	return function (data) {
-		//var dateDiff = 0;
-		console.log('data',data);
-		if (data == 1) {
-			return 'male';
-		}else if (data == 2) {
-			return 'female';
-		} else {
-			return data;
-		}
-	};
-});
-
-
-/*-----  End of Filter = userType  ------*/
 /*================================================================
 Service = adminViewApi
 ==================================================================*/
@@ -3012,7 +2908,7 @@ app.service('classviewAPI', ['$rootScope', '$q', 'appConfig', '$http', function 
 ==================================================================*/
 /*global app, $http*/
 
-app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($rootScope, $q, appConfig, $http) {
+app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog','usSpinnerService', function ($rootScope, $q, appConfig, $http, ngDialog, usSpinnerService) {
 
 	'use strict';
 
@@ -3026,7 +2922,11 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
-				alert('Unable to load list of colleges..');
+				// alert('Unable to load list of colleges..');
+				ngDialog.open({
+                template: '<p>Unable to load list of colleges..</p>',
+                plain: true
+            });
 				deferred.reject(err);
 			});
 
@@ -3043,7 +2943,11 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
-				alert('Unable to load list of similar school colleges..');
+				// alert('Unable to load list of similar school colleges..');
+				ngDialog.open({
+                template: '<p>Unable to load list of similar school colleges..</p>',
+                plain: true
+            });
 				deferred.reject(err);
 			});
 
@@ -3061,7 +2965,11 @@ app.service('CollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($
 				deferred.resolve(data);
 			})
 			.error(function (err) {
-				alert('Unable to load list of Users..');
+				// alert('Unable to load list of Users..');
+				ngDialog.open({
+                template: '<p>Unable to load list of Users..</p>',
+                plain: true
+            });
 				deferred.reject(err);
 			});
 
@@ -3161,7 +3069,7 @@ app.service('DashboardAPI', ['$rootScope', '$q', 'appConfig', '$http', function 
 ==================================================================*/
 /*global app, $http*/
 
-app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', function($rootScope, $q, appConfig, $http) {
+app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', 'ngDialog','usSpinnerService', function($rootScope, $q, appConfig, $http, ngDialog, usSpinnerService) {
 
     'use strict';
 
@@ -3175,6 +3083,10 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
                 deferred.resolve(data);
             })
             .error(function(err) {
+                ngDialog.open({
+                template: '<p>Connection Error..</p>',
+                plain: true
+            });
                 deferred.reject(err);
             });
 
@@ -3188,11 +3100,19 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                alert('College Details Uploaded Successfully');
+                 ngDialog.open({
+                template: '<p>College Details Uploaded Successfully.</p>',
+                plain: true
+            });
+                // alert('College Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
-                alert('College Details Failed to Upload');
+                 ngDialog.open({
+                template: '<p>College Details Failed to Upload.</p>',
+                plain: true
+            });
+                // alert('College Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -3206,11 +3126,19 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                alert('College Details Uploaded Successfully');
+                 ngDialog.open({
+                template: '<p>College Details Uploaded Successfully.</p>',
+                plain: true
+            });
+                // alert('College Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
-                alert('College Details Failed to Upload');
+                 ngDialog.open({
+                template: '<p>College Details Failed to Upload.</p>',
+                plain: true
+            });
+                // alert('College Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -3225,12 +3153,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
-                alert('Freshman Details Uploaded Successfully');
+             ngDialog.open({
+                template: '<p>Freshman Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Freshman Details Uploaded Successfully');
                 console.log('Freshman save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
-                alert('Freshman Details Failed to Upload');
+                 ngDialog.open({
+                template: '<p>Freshman Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Freshman Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -3245,11 +3181,19 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
 
         .success(function(data) {
+            // ngDialog.open({
+            //     template: '<p>Geographic Details Uploaded Successfully.</p>',
+            //     plain: true
+            //     });
                 //alert('Geographic Details Uploaded Successfully');
                 console.log('geographics save data=======>', data)
                 deferred.resolve(data);
             })
             .error(function(err) {
+                //  ngDialog.open({
+                // template: '<p>Geographic Details Uploaded Successfully.</p>',
+                // plain: true
+                // });
                 //alert('Geographic Details Failed to Upload');
                 deferred.reject(err);
             });
@@ -3300,13 +3244,21 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
 
         $http.post(serviceUrl, data)
             .success(function(data) {
-                alert('Calendar Details Uploaded Successfully');
+                 ngDialog.open({
+                template: '<p>Calendar Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Calendar Details Uploaded Successfully');
                 console.log('Calendar save data=======>', data)
 
                 deferred.resolve(data);
             })
             .error(function(err) {
-                alert('Calendar Details Failed to Upload');
+                 ngDialog.open({
+                template: '<p>Calendar Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Calendar Details Failed to Upload');
                 deferred.reject(err);
             });
 
@@ -3321,12 +3273,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess weather', data);
-                alert('Weather Details Uploaded Successfully');
+                 ngDialog.open({
+                template: '<p>Weather Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Weather Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Weather Details Failed to Upload');
+                 ngDialog.open({
+                template: '<p>Weather Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Weather Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3341,12 +3301,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess saveProminentAlumniDetail', data);
-                alert('Prominent Alumni Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>Prominent Alumni Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Prominent Alumni Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Prominent Alumni Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Prominent Alumni Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Prominent Alumni Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3361,12 +3329,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess college ranking', data);
-                alert('College Ranking Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>College Ranking Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('College Ranking Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('College Ranking Details Failed to Upload');
+                 ngDialog.open({
+                template: '<p>College Ranking Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('College Ranking Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3381,12 +3357,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess intended Study', data);
-                alert('Intended Study Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>Intended Study Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Intended Study Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Intended Study Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Intended Study Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Intended Study Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3400,12 +3384,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addQuickFactsForWeb', data);
-                alert('Quick Facts Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>Quick Facts Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Quick Facts Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Quick Facts Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Quick Facts Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Quick Facts Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3420,12 +3412,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
-                alert('Link And Address Details Uploaded Successfully');
+                 ngDialog.open({
+                template: '<p>Link And Address Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Link And Address Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Link And Address Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Link And Address Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Link And Address Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3440,12 +3440,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess aaddCollegeAddressForWeb', data);
-                alert('Fees And Financial Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>Fees And Financial Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Fees And Financial Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Fees And Financial Details Failed to Upload');
+                 ngDialog.open({
+                template: '<p>Fees And Financial Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Fees And Financial Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3460,12 +3468,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess updateAdmissionOptionForWeb', data);
-                alert('Admissions Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>Admissions Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Admissions Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Admissions Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Admissions Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3480,12 +3496,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addSimilarSchools', data);
-                alert('Admissions Details Uploaded Successfully');
+                 ngDialog.open({
+                template: '<p>Similar School Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Admissions Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Admissions Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Similar School Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Admissions Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3500,12 +3524,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addCollegeScore', data);
-                alert('Test Score Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>Test Score Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Test Score Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Test Score Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Test Score Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Test Score Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3519,12 +3551,20 @@ app.service('editCollegeAPI', ['$rootScope', '$q', 'appConfig', '$http', functio
         $http.post(serviceUrl, data)
             .success(function(data) {
                 console.log('sucess addCollegeSportsForWeb', data);
-                alert('Sports Details Uploaded Successfully');
+                ngDialog.open({
+                template: '<p>Sports Details Uploaded Successfully.</p>',
+                plain: true
+                });
+                // alert('Sports Details Uploaded Successfully');
                 deferred.resolve(data);
             })
             .error(function(err) {
                 console.log('error');
-                alert('Sports Details Failed to Upload');
+                ngDialog.open({
+                template: '<p>Sports Details Failed to Upload.</p>',
+                plain: true
+                });
+                // alert('Sports Details Failed to Upload');
                 deferred.reject(err);
             });
         console.log('promise');
@@ -3814,9 +3854,30 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 	this.fgtPwd = function (data) {
 		console.log('data',data);
 		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/forgotPassword/'+ data.emailID +'/';
+		var serviceUrl = appConfig.baseURL + '/forgotPasswordForAdmin/'+ data.emailID +'/';
 
 		$http.get(serviceUrl)
+			.success(function (data) {
+				console.log('Controller ===  apisuccess');
+				
+				deferred.resolve(data);
+
+			})
+			.error(function (err) {
+				console.log('Controller =====>apifail');
+				
+				deferred.reject(err);
+			});
+
+		return deferred.promise;
+	};
+
+	this.changePassword = function (data) {
+		console.log('data',data);
+		var deferred = $q.defer();
+		var serviceUrl = appConfig.baseURL + '/changePasswordForAdmin/'+ data.emailID + '/' + data.password + '/';
+
+		$http.post(serviceUrl)
 			.success(function (data) {
 				console.log('Controller ===  apisuccess');
 				
@@ -4049,3 +4110,242 @@ app.service('univViewApi', ['$rootScope', '$q', 'appConfig', '$http', function (
 
 
 /*-----  End of Service = univViewApi  ------*/
+/*!
+ * jQuery Cookie Plugin v1.4.1
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2006, 2014 Klaus Hartl
+ * Released under the MIT license
+ */
+(function (factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD (Register as an anonymous module)
+		define(['jquery'], factory);
+	} else if (typeof exports === 'object') {
+		// Node/CommonJS
+		module.exports = factory(require('jquery'));
+	} else {
+		// Browser globals
+		factory(jQuery);
+	}
+}(function ($) {
+
+	var pluses = /\+/g;
+
+	function encode(s) {
+		return config.raw ? s : encodeURIComponent(s);
+	}
+
+	function decode(s) {
+		return config.raw ? s : decodeURIComponent(s);
+	}
+
+	function stringifyCookieValue(value) {
+		return encode(config.json ? JSON.stringify(value) : String(value));
+	}
+
+	function parseCookieValue(s) {
+		if (s.indexOf('"') === 0) {
+			// This is a quoted cookie as according to RFC2068, unescape...
+			s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+		}
+
+		try {
+			// Replace server-side written pluses with spaces.
+			// If we can't decode the cookie, ignore it, it's unusable.
+			// If we can't parse the cookie, ignore it, it's unusable.
+			s = decodeURIComponent(s.replace(pluses, ' '));
+			return config.json ? JSON.parse(s) : s;
+		} catch(e) {}
+	}
+
+	function read(s, converter) {
+		var value = config.raw ? s : parseCookieValue(s);
+		return $.isFunction(converter) ? converter(value) : value;
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// Write
+
+		if (arguments.length > 1 && !$.isFunction(value)) {
+			options = $.extend({}, config.defaults, options);
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
+			}
+
+			return (document.cookie = [
+				encode(key), '=', stringifyCookieValue(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// Read
+
+		var result = key ? undefined : {},
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling $.cookie().
+			cookies = document.cookie ? document.cookie.split('; ') : [],
+			i = 0,
+			l = cookies.length;
+
+		for (; i < l; i++) {
+			var parts = cookies[i].split('='),
+				name = decode(parts.shift()),
+				cookie = parts.join('=');
+
+			if (key === name) {
+				// If second argument (value) is a function it's a converter...
+				result = read(cookie, value);
+				break;
+			}
+
+			// Prevent storing a cookie that we couldn't decode.
+			if (!key && (cookie = read(cookie)) !== undefined) {
+				result[name] = cookie;
+			}
+		}
+
+		return result;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		// Must not alter options, thus extending a fresh object...
+		$.cookie(key, '', $.extend({}, options, { expires: -1 }));
+		return !$.cookie(key);
+	};
+
+}));
+/*================================================================
+Filter = convertMiliSecondsIntoDate
+==================================================================*/
+
+app.filter('convertMiliSecondsIntoDate', function () {
+	'use strict';
+
+	return function (input) {
+
+		var mydate = new Date(input);
+			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
+			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
+			//$scope.timesData.push(finalDate);
+			var month = mydate.getMonth();
+			//month = month.parseInt();
+			month = month +1;
+			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
+			console.log('mydate',mydate);	
+			return mydate;
+		console.log('Filter == convertMiliSecondsIntoDate');
+
+		
+	};
+});
+
+app.filter('convertMiliSecondsIntoDate1', function () {
+	'use strict';
+
+	return function (input) {
+
+		var mydate = new Date(input);
+			//finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
+			//console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
+			//$scope.timesData.push(finalDate);
+			var month = mydate.getMonth();
+			//month = month.parseInt();
+			month = month +1;
+			mydate = mydate.getDate()+'/'+ month  +'/'+ mydate.getUTCFullYear();
+			console.log('mydate',mydate);	
+			return mydate;
+		console.log('Filter == convertMiliSecondsIntoDate');
+
+		
+	};
+});
+
+/*-----  End of Filter = convertMiliSecondsIntoDate  ------*/
+
+/*================================================================
+=>                   Filter = genderFilter
+==================================================================*/
+/*global app*/
+
+app.filter('genderFilter', function () {
+	
+	'use strict';
+
+	return function (data) {
+		//var dateDiff = 0;
+		console.log('data',data);
+		if (data == 1) {
+			return 'male';
+		}else if (data == 2) {
+			return 'female';
+		} else {
+			return data;
+		}
+	};
+});
+
+
+/*-----  End of Filter = genderFilter  ------*/
+/*================================================================
+=>                   Filter = remainingTime
+==================================================================*/
+/*global app*/
+
+app.filter('remainingTime', function () {
+	
+	'use strict';
+
+	return function (data) {
+		//var dateDiff = 0;
+		var finalDate = 0;
+		//for(var count = 0; count < data.length; count++) {
+			//dateDiff = data[count].endDate - data[count].startDate;
+			//console.log(dateDiff);
+			var mydate = new Date(data);
+			console.log('mydate',mydate);
+			finalDate = mydate.getDay()+" day, "+mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes";
+			console.log(mydate.getUTCHours()+" hours, "+mydate.getUTCMinutes()+" minutes");
+			//$scope.timesData.push(finalDate);
+			console.log('finalDate',finalDate);
+			return finalDate;
+		//console.log('in filter ',data);
+		
+	};
+});
+
+
+/*-----  End of Filter = remainingTime  ------*/
+/*================================================================
+=>                   Filter = userType
+==================================================================*/
+/*global app*/
+
+app.filter('userType', function () {
+	
+	'use strict';
+
+	return function (data) {
+		//var dateDiff = 0;
+		console.log('data',data);
+		if (data == 1) {
+			return 'male';
+		}else if (data == 2) {
+			return 'female';
+		} else {
+			return data;
+		}
+	};
+});
+
+
+/*-----  End of Filter = userType  ------*/
