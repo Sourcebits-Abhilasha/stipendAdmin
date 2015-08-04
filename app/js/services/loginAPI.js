@@ -57,12 +57,17 @@ app.service('loginAPI', ['$rootScope', '$q', 'appConfig', '$http', function ($ro
 		return deferred.promise;
 	};
 
+	// var data = {
+	 //                'emailId': emailId,
+	 //                'authCode': authCode,
+	 //                'password': userData.newPassword
+	 //            }
 	this.changePassword = function (data) {
 		console.log('data',data);
 		var deferred = $q.defer();
-		var serviceUrl = appConfig.baseURL + '/changePasswordForAdmin/'+ data.emailID + '/' + data.password + '/';
+		var serviceUrl = appConfig.baseURL + '/changePasswordForAdmin/';
 
-		$http.post(serviceUrl)
+		$http.post(serviceUrl, data)//get
 			.success(function (data) {
 				console.log('Controller ===  apisuccess');
 				

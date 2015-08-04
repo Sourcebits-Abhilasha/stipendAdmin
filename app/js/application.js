@@ -181,7 +181,7 @@ app.constant('appConfig', {
 
     
     //baseURL : 'http://192.168.10.229:8080/stipendadmin'
-    baseURL : 'http://ec2-52-10-5-217.us-west-2.compute.amazonaws.com:8080/Stipend' 
+    baseURL : 'http://ec2-52-10-5-217.us-west-2.compute.amazonaws.com:8080/StipendProd' 
     // baseURL : 'http://192.168.11.134:8085/Stipend'
     
 });

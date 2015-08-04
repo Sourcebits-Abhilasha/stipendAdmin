@@ -733,7 +733,7 @@
                     </div> 
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group" ng-repeat="obj in intendedStudyOption" after-repeat-directive="testing()">
+                            <div class="form-group" ng-repeat="obj in intendedStudyOption" after-repeat-directive="toggalBtn()">
                                 <label class="col-sm-5 lable-font control-label" >{{obj.sysIntendedStudyOptionName}}</label>
                         <div class="col-sm-7">
                                     <input type="checkbox" class="form-control" id="{{(obj.sysIntendedStudyOptionName).slice(0,-1).split(' ').join('')}}" data-on="YES" data-off="NO">

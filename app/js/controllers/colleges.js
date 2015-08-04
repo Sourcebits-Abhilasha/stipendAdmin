@@ -381,7 +381,7 @@ app.controller('CollegeCtrl', ['$scope', 'CollegeAPI', 'editCollegeAPI', '$rootS
                             $scope.AvgFees = data.FeesAndFinancialAids;
 
 
-                            var dataFees = data.FeesAndFinancialAids;
+                            var dataFees = data.FeesAndFinancialAids.Fees;
 
                             for (var i = 0; i < dataFees.length; i++) {
                                 tempFees[dataFees[i].sysFeesStructureID] = dataFees[i].fees;
@@ -1344,6 +1344,7 @@ usSpinnerService.spin('spinner-1');
     }
 
     $scope.changeAmount = function(ele) {
+        debugger;
         console.log(tempFees + '' + $scope.feesAndFinancial);
         var sysFeesStructureID = ele.data.sysFeesStructureID;
 

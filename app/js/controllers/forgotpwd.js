@@ -3,8 +3,15 @@
 ==================================================================*/
 /*global app*/
 
-app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog','usSpinnerService', function($scope, loginAPI, ngProgress, ngDialog, usSpinnerService) {
+app.controller('ForgotpwdCtrl', [ '$rootScope','$scope', 'loginAPI', 'ngProgress', 'ngDialog','usSpinnerService', function($rootScope, $scope, loginAPI, ngProgress, ngDialog, usSpinnerService) {
     'use strict';
+
+    $rootScope.$on('$routeChangeSuccess', function () {
+        debugger;
+            console.log("i am here");
+            // console.log($routeParams.type)
+        });
+
     $scope.resetPassword = {
         visible: false
     };
@@ -41,14 +48,21 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog',
     // $scope.newConfirmPasswordModel = '';
     $scope.setNewPassword = function(userData) {
 
+
+        var emailId = $scope.getParameterByName('emailId');
+        var authCode = $scope.getParameterByName('authCode');
+        console.log(emailId + '       ' + authCode);
+   
+
         //debugger;
         var flag = (userData.newPassword === userData.confirmPassword);
         if(flag){
             //ngProgress.start();
             usSpinnerService.spin('spinner-1');
             var data = {
-                'emailID': 'asd@asd.com',
-                'password': $scope.password
+                'emailId': emailId,
+                'authCode': authCode,
+                'password': userData.newPassword
             }
             loginAPI.changePassword(data).then(
                 function(data) {
@@ -60,7 +74,7 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog',
                             $scope.statusMsg = 'Email Address That you Entered is invalid';
                         } else {
                             $scope.statusMsg = 'Reset Password Link Sent to your Email Address';
-                            $scope.resetPassword.visible = true;
+                            //$scope.resetPassword.visible = true;
                         }
                         //ngProgress.complete();
                          usSpinnerService.stop('spinner-1');
@@ -80,6 +94,12 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog',
 
     }
 
+    $scope.getParameterByName = function(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
 
     $scope.getPassword = function(isValid) {
 
@@ -105,7 +125,7 @@ app.controller('ForgotpwdCtrl', ['$scope', 'loginAPI', 'ngProgress', 'ngDialog',
                             $scope.statusMsg = 'Email Address That you Entered is invalid';
                         } else {
                             $scope.statusMsg = 'Reset Password Link Sent to your Email Address';
-                            $scope.resetPassword.visible = true;
+                            //$scope.resetPassword.visible = true;
                         }
                         ngProgress.complete();
                     };
